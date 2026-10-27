@@ -1,35 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&family=Inter:wght@400;600&display=swap');
 
-/* Main Wrapper */
+/* ========================================================
+   GLOBAL PROFILE CONTAINER
+   ======================================================== */
 .km-hub {
-  max-width: 650px;
+  max-width: 680px;
   margin: 0 auto;
   text-align: center;
   color: #ffffff;
   font-family: 'Rajdhani', sans-serif;
+  padding: 10px;
 }
 
-/* Slanted Typography */
+/* ========================================================
+   1. CYBER TYPOGRAPHY
+   ======================================================== */
 .km-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 2.2rem;
+  font-family: 'Orbitron', -apple-system, sans-serif;
+  font-size: 2.3rem;
   font-weight: 900;
   font-style: italic;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: #ffffff;
-  margin: 12px 0 4px 0;
+  margin: 14px 0 2px 0;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
-.km-subtitle {
-  font-size: 13px;
+.km-stats {
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 3px;
   color: #9ca3af;
   margin-bottom: 24px;
 }
 
-/* Dual-Tone Cyber Border Buttons */
+/* ========================================================
+   2. DUAL-TONE GRADIENT BORDER BUTTONS (Cyan -> Red)
+   ======================================================== */
 .km-btn {
   display: inline-block;
   padding: 10px 28px;
@@ -43,9 +51,9 @@
   background: #080808;
   border: 2px solid;
   border-image: linear-gradient(90deg, #00f2fe 0%, #ff0844 100%) 1;
-  box-shadow: 0 0 15px rgba(0, 242, 254, 0.25), 0 0 15px rgba(255, 8, 68, 0.25);
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.2), 0 0 15px rgba(255, 8, 68, 0.2);
   transition: all 0.25s ease;
-  margin: 0.5rem;
+  margin: 0.4rem;
 }
 
 .km-btn:hover {
@@ -55,34 +63,59 @@
   transform: translateY(-2px);
 }
 
-/* Bracket Pill Links */
+/* ========================================================
+   3. BRACKET PILL LINKS
+   ======================================================== */
 .km-bracket {
   display: inline-block;
-  padding: 6px 14px;
+  padding: 7px 16px;
   font-family: 'Orbitron', sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
   text-decoration: none !important;
   color: #d1d5db !important;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 4px;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .km-bracket:hover {
   border-color: #00f2fe;
   color: #00f2fe !important;
+  background: rgba(0, 242, 254, 0.08);
 }
 
-/* Neon Avatar Glow (Optional) */
-.km-avatar {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #22c55e;
-  box-shadow: 0 0 25px #22c55e, 0 0 55px rgba(34, 197, 94, 0.45);
-  display: inline-block;
+/* ========================================================
+   4. CHUB CHARACTER CARDS & NATIVE UI OVERRIDES
+   ======================================================== */
+.ant-card {
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgba(18, 18, 22, 0.85) !important;
+  backdrop-filter: blur(10px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+}
+
+.ant-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: #00f2fe !important;
+  box-shadow: 0 8px 24px rgba(0, 242, 254, 0.25) !important;
+}
+
+/* Card images */
+.ant-card-cover img {
+  transition: transform 0.35s ease !important;
+}
+.ant-card:hover .ant-card-cover img {
+  transform: scale(1.03) !important;
+}
+
+/* Tags */
+.ant-tag {
+  border-radius: 4px !important;
+  background: rgba(0, 242, 254, 0.1) !important;
+  border: 1px solid rgba(0, 242, 254, 0.3) !important;
+  color: #00f2fe !important;
 }
