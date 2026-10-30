@@ -1,50 +1,50 @@
-# KM Chub Bots
+# KM Chub Themes & Bots
 
-Unofficial helper bots and themes for [Chub AI](https://chub.ai), made by [KarlMuzen](https://github.com/KarlMuzen).
+Independent Chub community tools by [KarlMuzen](https://github.com/KarlMuzen). Not affiliated with or endorsed by Chub.
 
-> Not affiliated with or endorsed by Chub. Built from [docs.chub.ai](https://docs.chub.ai) and live-app testing. Chub changes often, so labels can go stale. Anything unverified is marked "unverified".
+## KM Warm theme
 
-## Get a bot
+A warm, low-distraction Chub theme with automatic light/dark colours. The current public source is **KM Warm v3.6 LITE**.
 
-| Bot | What it does | Status | Get it |
-|---|---|---|---|
-| **Chub Helper** | Support for API setup, Configuration, presets, lorebooks, macros, card review, troubleshooting | v1.5.7 live, v1.5.8 in testing | [Chub page](https://chub.ai/characters/KarlMuzen/chub-helper-beta-unofficial-07e3084a3003) / [Folder](bots/chub-helper) |
-| **Card & Lorebook Builder** | Writes and reviews character cards and lorebook entries | Planned | - |
-| **Theme Builder** | Chub-only CSS themes, checked against the live UI | Planned | - |
+- **[Open the mobile-first theme generator](https://karlmuzen.github.io/KM-CHUB-THEME/)**
+- [Download the latest LITE CSS](https://github.com/KarlMuzen/KM-CHUB-THEME/releases/latest/download/KM-Warm-lite-v3.6.min.css)
+- [Download the compatibility CSS](https://github.com/KarlMuzen/KM-CHUB-THEME/releases/latest/download/KM-Warm-compat-v3.6.min.css)
+- [Report a problem or request a feature](https://github.com/KarlMuzen/KM-CHUB-THEME/issues)
 
-## Install in 3 steps
+### Install in Chub
 
-**Easiest:** open the bot's Chub page above and start a chat. No download needed.
+1. Download a CSS file (or build a custom one with the generator).
+2. Open **Profile → Edit Theme**, or inside a chat use **bottom-left kebab → Change Theme**.
+3. Choose **Upload Custom CSS**. Leave other theme settings on **Default**.
 
-**From this repo:**
-1. Open the bot's folder, open its `.json` file and tap **Raw** (or **Download raw file**). Save it.
-2. In Chub, create a character and upload the file. Chub accepts Tavern / Character Card V2 cards; JSON import is unverified here, so if it is rejected use the Chub page instead.
-3. In a chat, open **Menu > Configuration > Prompt Structure** and turn on **Use V2 Spec.** so the card's own instructions and lorebook apply.
+Chub accepts a CSS file upload; there is no paste box. Use **Clear Custom CSS** to remove the theme.
 
-Each bot's folder lists its own recommended settings.
+### Compatibility
 
-## What is in this repo
+The main LITE build requires a browser with light-dark() and color-mix() support. The compatibility build includes legacy colour fallbacks, but may look less exact in older browsers. The base theme is phone-tested; desktop remains beta.
 
-```
-bots/        one folder per bot: README, card file, CHANGELOG, tests
-themes/      CSS themes for Chub, each with its tested date
-docs/        shared notes on the live Chub UI (verified vs unverified)
-```
+A true FULL build is not published yet: it requires the original v3.5 full-effects stylesheet, which is not part of the supplied v3.6 LITE source.
 
-## Roadmap
+## Bots
 
-1. **Chub Helper v1.5.8**: contradiction and POV checks in card review, test-question output, reverse proxy steps, question-style greetings.
-2. **Card & Lorebook Builder**: one bot or two, decided after Helper testing.
-3. **Theme Builder**: only writes CSS for elements whose HTML was checked in the live app.
+| Bot | Purpose | Status |
+|---|---|---|
+| Chub Helper | Chub setup, configuration, presets, lorebooks, macros and troubleshooting | Existing bot; see its [Chub page](https://chub.ai/characters/KarlMuzen/chub-helper-beta-unofficial-07e3084a3003) |
+| Chub Theme Helper | Explains KM Warm options, installation and troubleshooting | In development |
 
-## Feedback
+## Repository layout
 
-Open an [Issue](../../issues) with the bot name, your API and model, and what the bot said. Wrong answers and out-of-date UI labels are the most useful reports.
+- themes/km-warm/ — original CSS source and build notes
+- scripts/ — CSS build, lint and tests
+- docs/ — generator parameter contract
+- bots/ — bot cards and supporting material
 
-## Credits
+## Build locally
 
-Ideas for Chub Helper v1.5.8 came from community bots: Character Card Builder v3 by Xioro, Interviewer by nikkey2xx2, and Samantha (OpenRouter helper) by bleachbunny. Their cards are not included here.
+Run python scripts/build.py, python scripts/lint.py, and python -m unittest scripts/test_build.py -v.
+
+The CI workflow runs these checks on pushes and pull requests.
 
 ## License
 
-Not set yet.
+MIT. See [LICENSE](LICENSE).
