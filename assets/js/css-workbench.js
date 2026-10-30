@@ -52,15 +52,18 @@
     var bytes = byteLength(css);
     var errors = [];
     var warnings = [];
-    if (!css.trim()) errors.push("The CSS is empty.");
-    if (bytes > MAX_BYTES) errors.push("The CSS exceeds the 1 MB import limit.");
-    errors = errors.concat(scanCss(css));
+    var empty = !css.trim();
+    var oversized = bytes > MAX_BYTES;
+    if (empty) errors.push("The CSS is empty.");
+    if (oversized) errors.push("The CSS exceeds the 1 MB import limit.");
+    if (!oversized) errors = errors.concat(scanCss(css));
     if (/@import\b/i.test(css)) warnings.push("Contains @import. Imported stylesheets are preserved, but the referenced files may not be available when exported or uploaded.");
     if (/url\(\s*(['"]?)(?:https?:)?\/\//i.test(css)) warnings.push("Contains remote URL references. External fonts or images may not load in Chub.");
     if (/@font-face\b/i.test(css)) warnings.push("Contains @font-face. Font availability and remote font loading depend on the target platform.");
     if (/\bexpression\s*\(/i.test(css) || /javascript\s*:/i.test(css)) warnings.push("Contains legacy or suspicious CSS patterns. Review the stylesheet before installing it.");
     return {
       valid: errors.length === 0,
+      importable: !empty && !oversized,
       bytes: bytes,
       maxBytes: MAX_BYTES,
       errors: errors,
@@ -71,7 +74,7 @@
 
   function createImport(css, fileName) {
     var report = analyzeCss(css);
-    if (!report.valid) return { ok: false, report: report, value: null };
+    if (!report.importable) return { ok: false, report: report, value: null };
     return {
       ok: true,
       report: report,
