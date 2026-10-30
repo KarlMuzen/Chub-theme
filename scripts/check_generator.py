@@ -7,12 +7,19 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "index.html"
+PROJECT_MODULE = ROOT / "assets/js/theme-project.js"
 html = PAGE.read_text(encoding="utf-8")
 scripts = re.findall(r"<script>([\s\S]*?)</script>", html)
 if len(scripts) != 1:
     raise SystemExit(f"Expected one inline application script, found {len(scripts)}")
 
 required = [
+    'src="assets/js/theme-project.js"',
+    'id="guide"',
+    'id="guide-step"',
+    'id="guide-next"',
+    'id="studio-workspace"',
+    'id="change-guide"',
     'class="brand-lockup"',
     'class="brand-symbol"',
     "KM THEMES",
@@ -38,7 +45,8 @@ with tempfile.NamedTemporaryFile("w", suffix=".js", encoding="utf-8", delete=Fal
     js_path = Path(handle.name)
 try:
     subprocess.run(["node", "--check", str(js_path)], check=True)
+    subprocess.run(["node", "--check", str(PROJECT_MODULE)], check=True)
 finally:
     js_path.unlink(missing_ok=True)
 
-print("KM Themes brand hooks, Studio HTML hooks, five presets and embedded JavaScript syntax: OK")
+print("KM Themes branding, guided onboarding, project module, Studio hooks and five presets: OK")
