@@ -13,36 +13,32 @@ Completed:
 - Added a repository-wide AI working contract and canonical product/architecture documentation.
 
 Still open:
-- Verify live DOM and computed styles for chat and character routes on a current Chub build.
+- Verify live DOM and computed styles for chat and character routes on a current Chub build using `chub-capture.html`.
 - Verify responsive states on actual mobile browser widths.
 
 ## Phase 1 — KM Warm / Chub compatibility audit
 
-**Priority:** First implementation task.
+**State:** Completed for the 2026-10-07 snapshot; live DOM verification open.
 
-Tasks:
-1. Inventory the selectors and Chub tokens currently used by KM Warm.
-2. Compare them to the dated reference and current live DOM.
-3. Classify each selector as confirmed, candidate, stale, missing, or overridden by Chub.
-4. Map KM semantic colors and typography to Chub's own variables where suitable.
-5. Check CSS specificity and the four mode/layout combinations.
-6. Identify the smallest set of KM-owned adapter rules needed.
-7. Record the result in a compatibility matrix.
+Completed:
+1. Inventoried the selectors and Chub tokens used by KM Warm (`docs/chub-frontend-reference.md` Section 5).
+2. Identified and patched the `@media (max-width:640px)` phone typography override bug that blocked `--c-fs` and `--c-lh` on mobile screens.
+3. Synchronized LITE card opacity (`--c-ga` `.82` dark / `.85` light) and italic action color (`--c-act`) between the Studio preview and exported CSS.
+4. Mapped Chub native variables (`--message-font-size`, `--message-line-height`, `--dark-primary-color`, `--light-primary-color`, `--bright-icon`) and mode classes (`.light-mode-override`, `.light-mobile-override`) in the adapter layer without modifying `themes/km-warm/source.css`.
+5. Synchronized `bots/km-theme-studio/CARD.md` and `docs/generator-params.md`.
 
-Acceptance criteria:
-- Every selector added or changed for compatibility has evidence and a verification state.
-- No reliance on selectors observed only in a dated bundle without a warning.
-- The original source.css is unchanged unless an explicit change is required.
-- Existing build, lint and tests pass.
-- Manual Chub checks are recorded separately from automated test results.
+Still open:
+- Confirm candidate chat composer (`.chat-input-container`) and card selectors against a fresh live DOM capture.
 
 ## Phase 2 — Incremental application modularization
 
+**Priority:** Next implementation task.
+
 Tasks:
-- Identify responsibilities currently embedded in index.html.
-- Extract one responsibility at a time into native JavaScript ES modules.
+- Identify responsibilities currently embedded in `index.html`.
+- Extract one responsibility at a time into native JavaScript modules (`palettes`, `chub-adapter`, `preview`, `guide`) while updating `scripts/check_generator.py` in lockstep.
 - Keep the guide, theme preview, generated CSS, URL parameters and CSS Workbench behavior unchanged.
-- Reuse theme-project.js and css-workbench.js rather than duplicate their logic.
+- Reuse `theme-project.js` and `css-workbench.js` rather than duplicate their logic.
 - Add regression tests before moving complex behavior.
 
 Acceptance criteria:
@@ -54,7 +50,7 @@ Acceptance criteria:
 ## Phase 3 — Semantic token engine and Chub adapter
 
 Tasks:
-- Define a platform-neutral token vocabulary.
+- Define a platform-neutral roleplay token vocabulary (including narration, spoken dialogue and action/thought tokens).
 - Move preset values into data definitions.
 - Implement one deterministic compiler path from project state to preview tokens and exported CSS.
 - Isolate Chub custom properties and selectors in the Chub adapter.
@@ -70,7 +66,7 @@ Acceptance criteria:
 ## Phase 4 — Preview fidelity
 
 Priority order:
-1. Mobile portrait chat and message layout.
+1. Mobile portrait chat and message layout (bot + user messages, cover art backdrop toggle).
 2. Chat composer and controls.
 3. Character cards and profile presentation.
 4. Desktop chat and navigation.
@@ -105,4 +101,4 @@ Acceptance criteria:
 - Cloud project synchronization or user accounts.
 - SillyTavern and RisuAI adapters.
 - Cloudflare Workers or other backend services.
-- Additional effects or a FULL KM Warm package unless the missing original source is obtained.
+- Additional effects or a FULL KM Warm package unless the missing original source is obtained or a dedicated full-effects compiler module is approved.

@@ -1,15 +1,16 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-studio-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#19221c">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="dark light">
 <meta name="description" content="KM Themes is an independent Chub customization ecosystem. Explore themes, personalize palettes and build your own CSS in KM Theme Studio.">
 <title>KM Themes — Theme Studio</title>
 <style>
-:root{color-scheme:light;--bg:#f4f2ea;--panel:#fffefa;--panel2:#e9ede4;--line:#d5dcd1;--text:#26342a;--muted:#627164;--accent:#c66a4b;--accent-strong:#a45137;--focus:#718f73;--link:#99533d;--button-ink:#211b17;--shadow:0 10px 30px #26342a0b}
-@media(prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#19221c;--panel:#222d25;--panel2:#28362d;--line:#425246;--text:#e9efe5;--muted:#adbdab;--accent:#c66a4b;--accent-strong:#db8b6c;--focus:#a7c1a1;--link:#e1a083;--button-ink:#211b17;--shadow:0 12px 32px #00000024}}
+:root{color-scheme:dark;--bg:#19221c;--panel:#222d25;--panel2:#28362d;--line:#425246;--text:#e9efe5;--muted:#adbdab;--accent:#c66a4b;--accent-strong:#db8b6c;--focus:#a7c1a1;--link:#e1a083;--button-ink:#211b17;--shadow:0 12px 32px #00000024}
+html[data-studio-theme="light"]{color-scheme:light;--bg:#f4f2ea;--panel:#fffefa;--panel2:#e9ede4;--line:#d5dcd1;--text:#26342a;--muted:#627164;--accent:#c66a4b;--accent-strong:#a45137;--focus:#718f73;--link:#99533d;--button-ink:#211b17;--shadow:0 10px 30px #26342a0b}
+@media(prefers-color-scheme:light){html[data-studio-theme="system"]{color-scheme:light;--bg:#f4f2ea;--panel:#fffefa;--panel2:#e9ede4;--line:#d5dcd1;--text:#26342a;--muted:#627164;--accent:#c66a4b;--accent-strong:#a45137;--focus:#718f73;--link:#99533d;--button-ink:#211b17;--shadow:0 10px 30px #26342a0b}}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:radial-gradient(60% 28% at 8% 0,#c66a4b12,transparent 75%),radial-gradient(50% 24% at 96% 8%,#8fa78b18,transparent 75%),var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;transition:background .18s,color .18s}
@@ -59,33 +60,40 @@ button.secondary{background:var(--panel2);color:var(--text);border:1px solid var
 button.tertiary{background:transparent;border:1px solid var(--line);color:var(--text)}
 button:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .preview-panel{padding:17px}
-.preview-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.preview-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.preview-controls{display:flex;gap:6px;flex-wrap:wrap}
 .mode-switch{display:flex;gap:4px;padding:4px;background:var(--panel2);border:1px solid var(--line);border-radius:11px}
 .mode-button{padding:6px 10px;min-height:34px;background:transparent;border:0;color:var(--muted);font-size:.78rem}
 .mode-button[aria-pressed=true]{background:var(--accent);color:var(--button-ink)}
-.mock-shell{--pv-bg:#262624;--pv-page:#30302e;--pv-raised:#3a3935;--pv-text:#e3e1d7;--pv-strong:#faf9f5;--pv-muted:#a3a198;--pv-accent:#d97757;--pv-accent-hi:#e8936f;--pv-font:Georgia,serif;--pv-size:1rem;--pv-line:1.55;--pv-card-alpha:25%;width:min(100%,340px);height:clamp(620px,min(720px,184vw),720px);margin:0 auto;background:var(--pv-page);color:var(--pv-text);border:1px solid color-mix(in srgb,var(--pv-text) 18%,transparent);border-radius:18px;overflow:hidden;font-family:var(--pv-font);display:flex;flex-direction:column;box-shadow:0 5px 18px #00000018}
+.mock-shell{--pv-bg:#262624;--pv-page:#30302e;--pv-raised:#3a3935;--pv-text:#e3e1d7;--pv-strong:#faf9f5;--pv-muted:#a3a198;--pv-accent:#d97757;--pv-accent-hi:#e8936f;--pv-act:#e2b295;--pv-font:Georgia,serif;--pv-size:1.06rem;--pv-line:1.70;--pv-card-alpha:82%;width:min(100%,340px);height:clamp(620px,min(720px,184vw),720px);margin:0 auto;background:var(--pv-bg);color:var(--pv-text);border:1px solid color-mix(in srgb,var(--pv-text) 18%,transparent);border-radius:18px;overflow:hidden;font-family:var(--pv-font);display:flex;flex-direction:column;box-shadow:0 5px 18px #00000018}
 .mock-safe{height:34px;flex:0 0 34px;background:#000;display:flex;justify-content:center;align-items:center}
 .mock-safe:after{content:"";width:38px;height:4px;border-radius:99px;background:#161616}
-.mock-nav{height:39px;flex:0 0 39px;background:var(--pv-bg);color:var(--pv-text);display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:0 14px;border-bottom:1px solid color-mix(in srgb,var(--pv-text) 7%,transparent);font-family:system-ui,sans-serif}
+.mock-nav{height:39px;flex:0 0 39px;background:color-mix(in srgb,var(--pv-bg) 88%,transparent);color:var(--pv-text);display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:0 14px;border-bottom:1px solid color-mix(in srgb,var(--pv-text) 14%,transparent);font-family:system-ui,sans-serif}
 .nav-side{display:flex;align-items:center;gap:12px}.nav-side.right{justify-content:flex-end}
 .nav-back{width:19px;height:19px;border-radius:50%;display:grid;place-items:center;background:var(--pv-text);color:var(--pv-bg);font-size:18px;line-height:1;font-weight:800}
 .nav-avatar{width:29px;height:29px;border-radius:50%;justify-self:center;display:grid;place-items:center;background:linear-gradient(145deg,#665b4d,#292d27);border:1px solid #ffffff35;color:#f1c3a2;font-size:19px;line-height:1}
 .nav-icon{display:grid;place-items:center;width:20px;height:24px;color:var(--pv-text)}
 .nav-icon svg{width:20px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .nav-menu{font-size:25px;line-height:1}
-.mock-stage{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;background:var(--pv-page)}
-.mock-message{margin:7px 7px 0;padding:13px 14px 14px;border:1px solid color-mix(in srgb,var(--pv-text) 17%,transparent);border-radius:18px;background:color-mix(in srgb,var(--pv-raised) var(--pv-card-alpha),var(--pv-page));box-shadow:0 1px 3px #00000012}
-.mock-message-head{display:flex;align-items:center;gap:9px;margin-bottom:12px}
-.mock-bot-avatar{width:20px;height:20px;flex:0 0 20px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#786653,#282b25);color:#f4c5a2;font:14px/1 system-ui,sans-serif}
-.mock-bot-name{font-size:1.04rem;line-height:1.2;color:var(--pv-strong);font-weight:600}
+.mock-stage{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;background:radial-gradient(90% 50% at 50% -10%,color-mix(in srgb,var(--pv-accent) 14%,transparent),transparent 70%),var(--pv-bg);position:relative}
+.mock-shell[data-backdrop="art"] .mock-stage{background:linear-gradient(180deg,color-mix(in srgb,var(--pv-bg) 32%,transparent),color-mix(in srgb,var(--pv-bg) 52%,transparent)),radial-gradient(circle at 22% 28%,color-mix(in srgb,var(--pv-accent) 48%,#2b3a42) 0%,transparent 52%),radial-gradient(circle at 78% 68%,#596e59 0%,transparent 55%),linear-gradient(135deg,#2c2523 0%,#1f292e 50%,#382c26 100%)}
+.mock-message{margin:7px 7px 0;padding:12px 14px 13px;border:1px solid color-mix(in srgb,var(--pv-text) 16%,transparent);border-radius:18px;background:color-mix(in srgb,var(--pv-page) var(--pv-card-alpha),transparent);box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 12%,transparent),0 1px 3px #00000018}
+.mock-message-head{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:9px;font-family:system-ui,sans-serif}
+.mock-message-who{display:flex;align-items:center;gap:8px}
+.mock-bot-avatar{width:20px;height:20px;flex:0 0 20px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#786653,#282b25);color:#f4c5a2;font:13px/1 system-ui,sans-serif}
+.mock-bot-name{font-size:.95rem;line-height:1.2;color:var(--pv-strong);font-weight:600}
+.mock-msg-tag{font-size:.66rem;color:var(--pv-muted);letter-spacing:.04em;text-transform:uppercase}
 .mock-message-text{font-size:var(--pv-size);line-height:var(--pv-line);color:var(--pv-text);overflow-wrap:anywhere}
-.mock-message-text p{margin:0 0 12px;color:inherit}.mock-message-text p:last-child{margin-bottom:0}.mock-message-text em{color:var(--pv-accent-hi)}
-.mock-empty{flex:1;min-height:55px}
-.mock-composer-bar{height:90px;flex:0 0 90px;display:flex;align-items:center;gap:8px;padding:8px 12px 10px;border-top:1px solid color-mix(in srgb,var(--pv-text) 14%,transparent);background:var(--pv-page);font-family:system-ui,sans-serif}
+.mock-message-text p{margin:0 0 10px;color:inherit}.mock-message-text p:last-child{margin-bottom:0}
+.mock-message-text em{color:var(--pv-act);font-style:italic}
+.mock-message-text strong{color:var(--pv-strong);font-weight:600}
+.mock-message-text q{color:var(--pv-text)}
+.mock-empty{flex:1;min-height:18px}
+.mock-composer-bar{height:86px;flex:0 0 86px;display:flex;align-items:center;gap:8px;padding:8px 12px 10px;border-top:1px solid color-mix(in srgb,var(--pv-text) 14%,transparent);background:color-mix(in srgb,var(--pv-bg) 90%,transparent);font-family:system-ui,sans-serif}
 .mock-kebab{width:15px;flex:0 0 15px;color:var(--pv-accent);font-size:21px;line-height:1;text-align:center}
-.mock-input{height:72px;min-width:0;flex:1;border:1px solid color-mix(in srgb,var(--pv-text) 24%,transparent);border-radius:20px;padding:9px 11px;background:color-mix(in srgb,var(--pv-raised) 18%,var(--pv-page));color:var(--pv-muted);font:.72rem/1.45 var(--pv-font);display:flex;align-items:flex-start;overflow:hidden}
+.mock-input{height:68px;min-width:0;flex:1;border:1px solid color-mix(in srgb,var(--pv-text) 26%,transparent);border-radius:20px;padding:9px 11px;background:var(--pv-page);color:var(--pv-muted);font:.74rem/1.42 var(--pv-font);display:flex;align-items:flex-start;overflow:hidden}
 .mock-input span{opacity:.9}
-.mock-send-tools{display:flex;flex-direction:column;align-items:center;justify-content:space-around;gap:7px;flex:0 0 18px;height:70px;color:var(--pv-accent)}
+.mock-send-tools{display:flex;flex-direction:column;align-items:center;justify-content:space-around;gap:7px;flex:0 0 18px;height:66px;color:var(--pv-accent)}
 .mock-send-tools svg{width:18px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .status{font-size:.86rem;min-height:1.35em;margin:12px 0 0}
 .small{font-size:.79rem}.muted{color:var(--muted)}
@@ -96,7 +104,7 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 .footer-brand svg{width:27px;height:27px}
 .footer-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:7px}
 @media(max-width:760px){main{padding:16px 14px 44px}.studio-grid{grid-template-columns:1fr;gap:0}.controls-panel{grid-row:auto}.preview-panel{grid-row:1}.panel{padding:15px;margin:10px 0}.hero-copy{font-size:.96rem}}
-@media(max-width:390px){.preset-grid{grid-template-columns:1fr 1fr}.field-grid{grid-template-columns:1fr}.preview-toolbar{align-items:flex-start;flex-direction:column}.mode-switch{width:100%}.mode-button{flex:1}}
+@media(max-width:390px){.preset-grid{grid-template-columns:1fr 1fr}.field-grid{grid-template-columns:1fr}.preview-toolbar{align-items:flex-start;flex-direction:column}.preview-controls{width:100%}.mode-switch{flex:1}.mode-button{flex:1}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 
 [hidden]{display:none!important}
@@ -123,7 +131,6 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 .workspace-heading-actions{display:flex;gap:7px;flex-wrap:wrap}
 @media(max-width:390px){.guide-choice-grid{grid-template-columns:1fr}.guide-choice{min-height:70px}.guide-panel{margin:10px 0}}
 
-
 .css-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .css-tools button{flex:1 1 130px}
 .css-workbench,.raw-css-panel{margin-top:14px}
@@ -143,7 +150,6 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 .raw-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .raw-toolbar button{flex:1 1 120px}
 @media(min-width:700px){.css-workbench-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}}
-
 </style>
 </head>
 <body>
@@ -182,7 +188,7 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
  <p class="guide-status" id="guide-status" role="status" aria-live="polite">Phone is selected by default. You can change it.</p>
 </section>
 <div id="studio-workspace" hidden>
-<div class="studio-grid">
+<div class="studio-grid" id="studio-grid">
 <section class="panel controls-panel" aria-labelledby="customize-title">
 <div class="section-head"><div><h2 id="customize-title">Make it yours</h2><p>Start with a palette, then adjust the details.</p></div><div class="workspace-heading-actions"><button class="tertiary" id="change-guide" type="button">New theme</button></div></div>
 <h3>01 · Choose a palette</h3>
@@ -199,7 +205,7 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 <div class="field"><label for="rp">Reading font</label><select id="rp"><option value="serif">Serif</option><option value="sans">Sans serif</option><option value="mono">Monospace</option></select></div>
 <div class="field"><label for="fs">Message size · <output id="fsout">1.06 rem</output></label><input id="fs" type="range" min=".90" max="1.40" step=".01" value="1.06"></div>
 <div class="field"><label for="lh">Line height · <output id="lhout">1.70</output></label><input id="lh" type="range" min="1.40" max="2.00" step=".01" value="1.70"></div>
-<div class="field" style="grid-column:1/-1"><label for="ga">Chat-card opacity · <output id="gaout">Automatic by mode</output></label><input id="ga" type="range" min="0" max="1" step=".01" value=".25"></div>
+<div class="field" style="grid-column:1/-1"><label for="ga">Chat-card opacity · <output id="gaout">Automatic by mode (0.82 dark / 0.85 light)</output></label><input id="ga" type="range" min="0" max="1" step=".01" value=".82"></div>
 </div>
 <div class="actions"><button id="download" type="button" disabled>Download custom CSS</button><button class="secondary" id="copy-generated-css" type="button" disabled>Copy CSS</button><button class="secondary" id="share" type="button">Copy share link</button><button class="tertiary" id="reset" type="button">Reset</button></div><div class="css-tools"><button class="secondary" id="open-css-import" type="button">Import existing CSS</button><button class="tertiary" id="open-raw-css" type="button" disabled>Advanced CSS editor</button></div>
 <p id="status" class="status" role="status" aria-live="polite">Loading the KM Warm source…</p>
@@ -208,8 +214,11 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 
 <section class="panel preview-panel" aria-labelledby="preview-title">
 <div class="preview-toolbar"><div><h2 id="preview-title">Live preview</h2><p class="small">Chub mobile layout reference · preview is approximate</p></div>
-<div class="mode-switch" role="group" aria-label="Preview colour mode"><button class="mode-button" type="button" data-mode-choice="light" aria-pressed="false">Light</button><button class="mode-button" type="button" data-mode-choice="dark" aria-pressed="true">Dark</button></div></div>
-<div class="mock-shell" id="mock-shell" data-mode="dark">
+<div class="preview-controls">
+<div class="mode-switch" role="group" aria-label="Preview backdrop"><button class="mode-button" type="button" data-backdrop-choice="art" aria-pressed="true">Cover art</button><button class="mode-button" type="button" data-backdrop-choice="solid" aria-pressed="false">Solid</button></div>
+<div class="mode-switch" role="group" aria-label="Preview colour mode"><button class="mode-button" type="button" data-mode-choice="light" aria-pressed="false">Light</button><button class="mode-button" type="button" data-mode-choice="dark" aria-pressed="true">Dark</button></div>
+</div></div>
+<div class="mock-shell" id="mock-shell" data-mode="dark" data-backdrop="art">
 <div class="mock-safe"></div>
 <div class="mock-nav">
  <div class="nav-side"><span class="nav-back">‹</span></div>
@@ -218,11 +227,17 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 </div>
 <div class="mock-stage">
  <article class="mock-message">
-  <div class="mock-message-head"><span class="mock-bot-avatar">✿</span><span class="mock-bot-name">Theme Helper</span></div>
+  <div class="mock-message-head"><div class="mock-message-who"><span class="mock-bot-avatar">✿</span><span class="mock-bot-name">Theme Helper</span></div><span class="mock-msg-tag">Bot</span></div>
   <div class="mock-message-text" id="mock-message-text">
-   <p>Unofficial KM Warm theme helper. Tell me the look you want (colour, text size, how solid the chat cards are) and I'll give you a link that builds your theme file. Say "install" for the steps.</p>
-   <p>Setup: enable <b>Use V2 Spec</b>. (Menu &gt; Configuration &gt; Prompt Structure). Phone-tested; desktop is beta.</p>
-   <p><em>(For API, preset or lorebook help, use the Chub Helper bot.)</em></p>
+   <p><em>*Lantern light warms the paper cards against the evening backdrop.*</em></p>
+   <p><q>"Tell me the look you want—colour, text size, or how solid the chat cards feel over cover art—and I'll build your Chub stylesheet."</q></p>
+   <p>Setup: enable <strong>Use V2 Spec</strong>. Phone-tested; desktop is beta.</p>
+  </div>
+ </article>
+ <article class="mock-message">
+  <div class="mock-message-head"><div class="mock-message-who"><span class="mock-bot-avatar">✦</span><span class="mock-bot-name">You</span></div><span class="mock-msg-tag">User</span></div>
+  <div class="mock-message-text">
+   <p><em>*Adjusts the card opacity slider to check readability over the background art.*</em> <q>"Make the text comfortable to read at night."</q></p>
   </div>
  </article>
  <div class="mock-empty"></div>
@@ -233,7 +248,7 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
  <div class="mock-send-tools"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21V4M5 11l7-7 7 7"/></svg></div>
 </div>
 </div>
-<p class="small muted" id="preview-caption">Dark mode reference · the downloaded CSS keeps automatic light/dark behaviour.</p>
+<p class="small muted" id="preview-caption">Dark mode reference · toggle "Cover art" to test how card opacity looks over a character background.</p>
 </section>
 
 <section class="panel" aria-labelledby="install-title">
@@ -288,7 +303,7 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 </section>
 </div>
 <footer>
-<div class="footer-brand"><svg  viewBox="0 0 100 100" role="img" aria-label="KM Themes rosette emblem" xmlns="http://www.w3.org/2000/svg">
+<div class="footer-brand"><svg viewBox="0 0 100 100" role="img" aria-label="KM Themes rosette emblem" xmlns="http://www.w3.org/2000/svg">
  <circle cx="50" cy="50" r="46" fill="#19221C" stroke="#8FA78B" stroke-width="2"/>
  <g fill="#C66A4B" stroke="#F2EBDD" stroke-width="1.5">
   <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z"/>
@@ -313,8 +328,8 @@ Independent Chub customization tools by KM Themes. Not affiliated with or endors
 <script>
 (function(){
 "use strict";
-var sourceParts=null,gaTouched=false,selectedPalette="warm",previewMode="dark",activeProject=null,rawSaveTimer=null,rawEditorBaselineValue=null,pendingFileCss=null,pendingFileDisplay=null;
-var defaults={p:"warm",a:"c6613f",fs:1.06,lh:1.70,ga:.25,rp:"serif",fx:"lite"};
+var sourceParts=null,gaTouched=false,selectedPalette="warm",previewMode="dark",previewBackdrop="art",activeProject=null,rawSaveTimer=null,rawEditorBaselineValue=null,pendingFileCss=null,pendingFileDisplay=null;
+var defaults={p:"warm",a:"c6613f",fs:1.06,lh:1.70,ga:.82,rp:"serif",fx:"lite"};
 var ranges={fs:[.90,1.40],lh:[1.40,2.00],ga:[0,1]};
 var fontStacks={serif:'"Source Serif 4","Anthropic Serif",Tiempos,"Iowan Old Style","Palatino Linotype",Georgia,"Noto Serif",serif',sans:'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif',mono:"ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"};
 var palettes={
@@ -328,6 +343,10 @@ var el=function(id){return document.getElementById(id)};
 function clamp(n,min,max){return Math.min(max,Math.max(min,n))}
 function num(value,key){if(value===null||String(value).trim()==="")return defaults[key];var n=Number(value);if(!Number.isFinite(n))return defaults[key];return clamp(n,ranges[key][0],ranges[key][1])}
 function validPalette(value){return Object.prototype.hasOwnProperty.call(palettes,value)?value:"warm"}
+function applyStudioAppearance(appearance){
+ var mode=(appearance==="light"||appearance==="system")?appearance:"dark";
+ document.documentElement.setAttribute("data-studio-theme",mode);
+}
 function parseParams(){
  var q=new URLSearchParams(location.search),p={};
  p.p=validPalette(q.get("p"));
@@ -344,7 +363,10 @@ function readControls(){
 function updateControls(p){
  selectedPalette=validPalette(p.p);gaTouched=!!p.gaTouched;
  el("accent").value="#"+(/^[0-9a-f]{6}$/.test(p.a||"")?p.a:palettes[selectedPalette].accent);
- el("fs").value=p.fs;el("lh").value=p.lh;el("ga").value=p.ga;el("rp").value=p.rp;el("fsout").textContent=p.fs.toFixed(2)+" rem";el("lhout").textContent=p.lh.toFixed(2);el("gaout").textContent=gaTouched?p.ga.toFixed(2):"Automatic by mode";
+ el("fs").value=p.fs;el("lh").value=p.lh;el("ga").value=gaTouched?p.ga:defaults.ga;el("rp").value=p.rp;
+ el("fsout").textContent=p.fs.toFixed(2)+" rem";
+ el("lhout").textContent=p.lh.toFixed(2);
+ el("gaout").textContent=gaTouched?p.ga.toFixed(2):"Automatic by mode (0.82 dark / 0.85 light)";
  Array.prototype.forEach.call(document.querySelectorAll("[data-palette]"),function(btn){var active=btn.getAttribute("data-palette")===selectedPalette;btn.setAttribute("aria-pressed",active?"true":"false")});
 }
 function safeParams(p){
@@ -365,12 +387,15 @@ function paletteOverrides(p){
  var rows=Object.keys(map).map(function(key){return map[key]+":light-dark("+pal.light[key]+","+pal.dark[key]+");"});
  return "\n/* Selected palette: "+p.p+" */\nhtml{"+rows.join("")+"}\n";
 }
+function chubAdapterFixes(){
+ return "\n/* Chub compatibility adapter (phone typography & native token sync) */\nhtml:not(#_){--message-font-size:var(--c-fs)!important;--message-line-height:var(--c-lh)!important;--dark-primary-color:var(--c-btn)!important;--light-primary-color:var(--c-btn)!important;--bright-icon:var(--c-accent)!important}\nhtml:is(.light-mode-override,.light-mobile-override){color-scheme:light}\n:where(html:is(.light-mode-override,.light-mobile-override)){--c-ga:.85}\n.msg-mkdn-container:not(#_){font-size:var(--c-fs)!important;line-height:var(--c-lh)!important}\n";
+}
 function accentOverrides(p){
  var x="#"+p.a,base=palettes[p.p].accent;
  var fs=p.fs.toFixed(2).replace(/0+$/,"").replace(/\.$/,""),lh=p.lh.toFixed(2).replace(/0+$/,"").replace(/\.$/,""),ga=p.ga.toFixed(2).replace(/0+$/,"").replace(/\.$/,"");
  var accent=p.a!==base?"--c-accent:"+x+";--c-accent-hi:light-dark(color-mix(in srgb,"+x+" 78%,#000),color-mix(in srgb,"+x+" 78%,#fff));--c-btn:"+x+";--c-btn-hv:light-dark(color-mix(in srgb,"+x+" 88%,#000),color-mix(in srgb,"+x+" 88%,#fff));--c-act:light-dark(color-mix(in srgb,"+x+" 72%,#000),color-mix(in srgb,"+x+" 55%,#fff));":"";
  var extra=p.gaTouched?"--c-ga:"+ga+";":"";
- return "\n/* Generated options — validated settings only */\nhtml{"+accent+"--c-fs:"+fs+"rem;--c-lh:"+lh+";"+extra+"--c-rp:"+fontStacks[p.rp]+";}\n";
+ return "\n/* Generated options — validated settings only */\nhtml{"+accent+"--c-fs:"+fs+"rem;--c-lh:"+lh+";"+extra+"--c-rp:"+fontStacks[p.rp]+";}\n"+chubAdapterFixes();
 }
 function buildCSS(p){
  if(!sourceParts)throw new Error("Theme source has not loaded.");
@@ -383,6 +408,11 @@ function splitSource(css){
  if(!(pos.preset<pos.core&&pos.core<pos.lite&&pos.lite<pos.overrides))throw new Error("Source CSS section order is invalid.");
  return {preset:css.slice(pos.preset,pos.core),core:css.slice(pos.core,pos.lite),lite:css.slice(pos.lite,pos.overrides),overrides:css.slice(pos.overrides)};
 }
+function setPreviewBackdrop(mode){
+ previewBackdrop=mode==="solid"?"solid":"art";
+ Array.prototype.forEach.call(document.querySelectorAll("[data-backdrop-choice]"),function(btn){btn.setAttribute("aria-pressed",btn.getAttribute("data-backdrop-choice")===previewBackdrop?"true":"false")});
+ el("mock-shell").setAttribute("data-backdrop",previewBackdrop);
+}
 function setPreviewMode(mode){
  previewMode=mode==="light"?"light":"dark";
  Array.prototype.forEach.call(document.querySelectorAll("[data-mode-choice]"),function(btn){btn.setAttribute("aria-pressed",btn.getAttribute("data-mode-choice")===previewMode?"true":"false")});
@@ -391,7 +421,10 @@ function setPreviewMode(mode){
  renderPreview(readControls());
 }
 function renderPreview(p){
- var pal=palettes[p.p],colors=pal[previewMode],mock=el("mock-shell"),accent=p.a!==pal.accent?"#"+p.a:colors.accent;
+ var pal=palettes[p.p],colors=pal[previewMode],mock=el("mock-shell"),customAccent=p.a!==pal.accent,accent=customAccent?"#"+p.a:colors.accent;
+ var mixTarget=previewMode==="light"?"#000":"#fff";
+ var accentHi=customAccent?"color-mix(in srgb, "+accent+" 78%, "+mixTarget+")":colors.accentHi;
+ var actColor=customAccent?"color-mix(in srgb, "+accent+" "+(previewMode==="light"?"72%":"55%")+", "+mixTarget+")":colors.act;
  mock.style.setProperty("--pv-bg",colors.bg);
  mock.style.setProperty("--pv-page",colors.surface);
  mock.style.setProperty("--pv-raised",colors.raised);
@@ -399,15 +432,18 @@ function renderPreview(p){
  mock.style.setProperty("--pv-strong",colors.strong);
  mock.style.setProperty("--pv-muted",colors.muted);
  mock.style.setProperty("--pv-accent",accent);
- mock.style.setProperty("--pv-accent-hi",p.a!==pal.accent?accent:colors.accentHi);
- mock.style.setProperty("--pv-card-alpha",Math.round((p.gaTouched?p.ga:(previewMode==="light"?.55:.25))*100)+"%");
+ mock.style.setProperty("--pv-accent-hi",accentHi);
+ mock.style.setProperty("--pv-act",actColor);
+ mock.style.setProperty("--pv-card-alpha",Math.round((p.gaTouched?p.ga:(previewMode==="light"?.85:.82))*100)+"%");
  mock.style.setProperty("--pv-font",fontStacks[p.rp]);
  mock.style.setProperty("--pv-size",p.fs+"rem");
  mock.style.setProperty("--pv-line",p.lh.toFixed(2));
 }
 function render(){
  var p=readControls();
- el("fsout").textContent=p.fs.toFixed(2)+" rem";el("lhout").textContent=p.lh.toFixed(2);el("gaout").textContent=p.gaTouched?p.ga.toFixed(2):"Automatic by mode";
+ el("fsout").textContent=p.fs.toFixed(2)+" rem";
+ el("lhout").textContent=p.lh.toFixed(2);
+ el("gaout").textContent=p.gaTouched?p.ga.toFixed(2):"Automatic by mode (0.82 dark / 0.85 light)";
  renderPreview(p);safeParams(p);saveActiveProject();
 }
 function selectPalette(name){
@@ -426,8 +462,10 @@ function copyText(value){
  return fallbackCopy(value);
 }
 
-var profile=window.KMThemeProject?window.KMThemeProject.loadProfile():{device:"phone",platform:"chub",appearance:"system"};
+var storedProfile=window.KMThemeProject?window.KMThemeProject.loadProfile():null;
+var profile=storedProfile||{device:"phone",platform:"chub",appearance:"dark"};
 var guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"dark",goal:"",method:"preset",palette:"warm"};
+applyStudioAppearance(guideState.appearance);
 var progressLabels=["Step 1 · Device","Step 2 · Platform","Step 3 · Goal","Step 4 · Starting point","Step 5 · Theme"];
 var paletteNotes={warm:"Claude cream & warm clay",oled:"Pure black & crisp contrast",midnight:"Deep navy & blue",forest:"Forest green & sage",parchment:"Antique paper & ink"};
 function guideCard(field,value,title,note,selected,meta,disabled){
@@ -450,7 +488,7 @@ function renderGuide(){
    guideCard("device","tablet","Tablet","iPad or Android tablet",guideState.device==="tablet")+
    guideCard("device","desktop","Desktop","Computer or laptop",guideState.device==="desktop")+
    guideCard("device","multiple","Multiple devices","Use more than one",guideState.device==="multiple")+
-   '</div><div class="field guide-select"><label for="guide-appearance">Preferred preview appearance</label><select id="guide-appearance"><option value="dark">Always dark</option><option value="system">Follow device settings</option><option value="light">Always light</option></select></div>';
+   '</div><div class="field guide-select"><label for="guide-appearance">Studio & preview appearance</label><select id="guide-appearance"><option value="dark">Always dark (default)</option><option value="system">Follow device settings</option><option value="light">Always light</option></select></div>';
  }else if(step===1){
   markup='<h3 class="guide-question">Which chat platform do you use?</h3><p class="guide-intro">Platform support is handled separately from your AI model provider.</p><div class="guide-choice-grid">'+
    guideCard("platform","chub","Chub","Theme upload through Chub settings",guideState.platform==="chub","Available")+
@@ -463,7 +501,7 @@ function renderGuide(){
    guideCard("goal","custom","Create a custom theme","Build a theme using a guided editor",guideState.goal==="custom")+
    '</div>';
  }else if(step===3){
-  markup='<h3 class="guide-question">How would you like to start?</h3><p class="guide-intro">CSS file import and raw CSS paste will be available in the editor as those tools are completed.</p><div class="guide-choice-grid">'+
+  markup='<h3 class="guide-question">How would you like to start?</h3><p class="guide-intro">CSS file import and raw CSS paste are available in the Studio workbench.</p><div class="guide-choice-grid">'+
    guideCard("method","preset","Use a preset","Choose a designed starting point",guideState.method==="preset")+
    guideCard("method","remix","Remix a theme","Start from one of the KM palettes",guideState.method==="remix")+
    guideCard("method","scratch","Start from scratch","Open a clean Warm-based canvas",guideState.method==="scratch")+
@@ -486,7 +524,7 @@ function renderGuide(){
 }
 function initialPreviewMode(appearance){
  if(appearance==="dark"||appearance==="light")return appearance;
- return window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
+ return window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";
 }
 function saveActiveProject(){
  if(!activeProject||!window.KMThemeProject)return;
@@ -500,6 +538,7 @@ function startWorkspace(sourceKind,palette,label,settingsOverride){
  };
  updateControls(settings);
  profile={device:guideState.device,platform:guideState.platform,appearance:guideState.appearance};
+ applyStudioAppearance(profile.appearance);
  if(window.KMThemeProject){
   window.KMThemeProject.saveProfile(profile);
   activeProject=window.KMThemeProject.createProject({
@@ -519,6 +558,7 @@ function returnToGuide(){
  if(window.KMThemeProject)window.KMThemeProject.clearProject();
  activeProject=null;
  guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"dark",goal:"",method:"preset",palette:"warm"};
+ applyStudioAppearance(guideState.appearance);
  el("studio-workspace").hidden=true;el("guide").hidden=false;
  el("studio-grid").hidden=false;el("css-workbench").hidden=true;el("raw-css-panel").hidden=true;
  el("css-file").value="";el("css-source").value="";pendingFileCss=null;pendingFileDisplay=null;
@@ -548,7 +588,10 @@ function installGuideEvents(){
   renderGuide();
  });
  el("guide-step").addEventListener("change",function(event){
-  if(event.target.id==="guide-appearance")guideState.appearance=event.target.value;
+  if(event.target.id==="guide-appearance"){
+   guideState.appearance=event.target.value;
+   applyStudioAppearance(guideState.appearance);
+  }
  });
  el("guide-next").addEventListener("click",handleGuideNext);
  el("guide-back").addEventListener("click",function(){
@@ -557,7 +600,6 @@ function installGuideEvents(){
   renderGuide();
  });
 }
-
 
 function formatBytes(bytes){
  if(bytes<1024)return bytes+" bytes";
@@ -641,7 +683,7 @@ function loadImportedCss(css,label){
   name:label||"Imported theme",
   platform:profile.platform||"chub",
   device:profile.device||"phone",
-  appearance:profile.appearance||"system",
+  appearance:profile.appearance||"dark",
   editorMode:"raw",
   theme:{source:result.value,settings:readControls()}
  });
@@ -735,6 +777,7 @@ function restoreOriginalCss(){
 function installEvents(){
  Array.prototype.forEach.call(document.querySelectorAll("[data-palette]"),function(btn){btn.addEventListener("click",function(){selectPalette(btn.getAttribute("data-palette"))})});
  Array.prototype.forEach.call(document.querySelectorAll("[data-mode-choice]"),function(btn){btn.addEventListener("click",function(){setPreviewMode(btn.getAttribute("data-mode-choice"))})});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-backdrop-choice]"),function(btn){btn.addEventListener("click",function(){setPreviewBackdrop(btn.getAttribute("data-backdrop-choice"))})});
  ["accent","fs","lh","ga","rp"].forEach(function(id){el(id).addEventListener("input",function(){if(id==="accent")window.accentWasCustom=el("accent").value.slice(1).toLowerCase()!==palettes[selectedPalette].accent;if(id==="ga")gaTouched=true;render()})});
  el("download").addEventListener("click",function(){
   try{var p=readControls(),blob=new Blob([buildCSS(p)],{type:"text/css;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
@@ -785,7 +828,8 @@ fetch("themes/km-warm/source.css").then(function(r){if(!r.ok)throw new Error("Co
  }else{
   var saved=window.KMThemeProject?window.KMThemeProject.loadProject():null;
   if(saved){
-   activeProject=saved;profile={device:saved.device,platform:saved.platform,appearance:saved.appearance};
+   activeProject=saved;profile={device:saved.device,platform:saved.platform,appearance:saved.appearance||"dark"};
+   applyStudioAppearance(profile.appearance);
    window.accentWasCustom=saved.theme.settings.a!==palettes[saved.theme.settings.p].accent;
    updateControls(saved.theme.settings);el("guide").hidden=true;el("studio-workspace").hidden=false;
    if(saved.editorMode==="raw" && saved.theme.source.workingCss){
@@ -804,7 +848,8 @@ fetch("themes/km-warm/source.css").then(function(r){if(!r.ok)throw new Error("Co
    }
    el("status").textContent="Your last theme project was restored from this device.";
   }else{
-   guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"system",goal:"",method:"preset",palette:"warm"};
+   guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"dark",goal:"",method:"preset",palette:"warm"};
+   applyStudioAppearance(guideState.appearance);
    el("guide").hidden=false;el("studio-workspace").hidden=true;renderGuide();
   }
  }

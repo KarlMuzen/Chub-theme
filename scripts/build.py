@@ -129,6 +129,15 @@ def light_dark_to_dark(css: str) -> str:
             i += 1
     return "".join(out)
 
+def chub_adapter_patch():
+    """Compatibility rules appended during build without modifying source.css."""
+    return """/* Chub compatibility adapter */
+html:not(#_){--message-font-size:var(--c-fs)!important;--message-line-height:var(--c-lh)!important;--dark-primary-color:var(--c-btn)!important;--light-primary-color:var(--c-btn)!important;--bright-icon:var(--c-accent)!important}
+html:is(.light-mode-override,.light-mobile-override){color-scheme:light}
+:where(html:is(.light-mode-override,.light-mobile-override)){--c-ga:.85}
+.msg-mkdn-container:not(#_){font-size:var(--c-fs)!important;line-height:var(--c-lh)!important}
+"""
+
 def compat_fallback():
     return """@supports not (color:light-dark(white,black)){html{--c-bg:#262624;--c-surface:#30302e;--c-raised:#3a3935;--c-text:#e3e1d7;--c-strong:#faf9f5;--c-muted:#a3a198;--c-accent:#d97757;--c-accent-hi:#e8936f;--c-btn:#bc5a3c;--c-btn-hv:#cc6a49;--c-act:#e2b295}
 @media(prefers-color-scheme:light){html{--c-bg:#faf9f5;--c-surface:#fffdf9;--c-raised:#f0eee6;--c-text:#1f1e1d;--c-strong:#141413;--c-muted:#6b6a64;--c-accent:#c6613f;--c-accent-hi:#a8472a;--c-btn:#bc5a3c;--c-btn-hv:#a94e32;--c-act:#9a4a30}}}
@@ -140,7 +149,7 @@ def main():
     source = SOURCE.read_text(encoding="utf-8")
     sections = split_source(source)
     DIST.mkdir(exist_ok=True)
-    lite = sections["preset"] + sections["core"] + sections["lite"] + sections["overrides"]
+    lite = sections["preset"] + sections["core"] + sections["lite"] + chub_adapter_patch() + sections["overrides"]
     compat = lite + compat_fallback()
     outputs = {
         "KM-Warm-lite-v3.6.min.css": minify(lite),
@@ -149,7 +158,7 @@ def main():
     full_source = ROOT / "themes/km-warm/source-full.css"
     if full_source.exists():
         full = split_source(full_source.read_text(encoding="utf-8"))
-        outputs["KM-Warm-full-v3.6.min.css"] = minify(full["preset"] + full["core"] + full["overrides"])
+        outputs["KM-Warm-full-v3.6.min.css"] = minify(full["preset"] + full["core"] + chub_adapter_patch() + full["overrides"])
     for name, content in outputs.items():
         (DIST / name).write_text(content + "\n", encoding="utf-8")
         print(f"{name}: {len(content.encode('utf-8'))} bytes")
