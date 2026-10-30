@@ -13,6 +13,10 @@ if len(scripts) != 1:
     raise SystemExit(f"Expected one inline application script, found {len(scripts)}")
 
 required = [
+    'class="brand-lockup"',
+    'class="brand-symbol"',
+    "KM THEMES",
+    "Make Chub feel like yours.",
     'id="mock-shell"',
     'class="mock-nav"',
     'class="mock-message-text"',
@@ -37,4 +41,4 @@ try:
 finally:
     js_path.unlink(missing_ok=True)
 
-print("Studio HTML hooks, five presets and embedded JavaScript syntax: OK")
+print("KM Themes brand hooks, Studio HTML hooks, five presets and embedded JavaScript syntax: OK")
