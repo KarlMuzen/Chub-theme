@@ -23,8 +23,10 @@ jobs:
           enablement: true
       - name: Prepare site
         run: |
-          mkdir -p _site/assets/js _site/themes/km-warm
+          mkdir -p _site/assets/js _site/themes/km-warm _site/tools
           cp index.html _site/index.html
+          cp chub-capture.html _site/chub-capture.html
+          cp tools/chub-reference-capture.js _site/tools/chub-reference-capture.js
           cp assets/js/theme-project.js _site/assets/js/theme-project.js
           cp assets/js/css-workbench.js _site/assets/js/css-workbench.js
           cp themes/km-warm/source.css _site/themes/km-warm/source.css
