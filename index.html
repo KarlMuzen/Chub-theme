@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#262624">
+<meta name="description" content="Build a personal KM Warm theme for Chub. Download one CSS file and upload it in Chub.">
+<title>KM Warm — Chub Theme Generator</title>
+<style>
+:root{color-scheme:dark;--bg:#242321;--panel:#302e2a;--line:#51483f;--text:#f1e9dd;--muted:#b8aa99;--accent:#d97757}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(90% 45% at 50% 0,#6a392b55,transparent 70%),var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{width:min(760px,100%);margin:auto;padding:24px 16px 56px}header{padding:18px 0 22px}h1{font:500 clamp(2rem,8vw,3rem)/1.08 Georgia,serif;margin:0 0 10px}h2{font-size:1.05rem;margin:0 0 14px}p{margin:8px 0;color:var(--muted)}a{color:#efaa8e}section,.preview{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}label{font-size:.88rem;color:var(--muted)}input,select,button{font:inherit}input,select{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#211f1d;color:var(--text)}input[type=color]{padding:4px;height:44px}input[type=range]{padding:0;accent-color:var(--accent)}.wide{grid-column:1/-1}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}button{border:0;border-radius:12px;padding:12px 18px;background:var(--accent);color:#1c1714;font-weight:700;min-height:46px}button.secondary{background:#48413a;color:var(--text)}button:disabled{opacity:.45}.status{font-size:.9rem;min-height:1.4em}.preview-card{border:1px solid #d9775744;border-radius:14px;padding:14px;background:#3a3935}.preview-card strong{display:block;color:#faf9f5;font:500 1.15rem Georgia,serif}.preview-card p{color:#e3e1d7}.steps{padding-left:22px;color:var(--muted)}.steps li{padding:4px 0}.small{font-size:.82rem}.pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:3px 9px;font-size:.78rem;color:var(--muted)}footer{padding:10px 0;color:var(--muted);font-size:.82rem}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}main{padding-inline:14px}section{padding:15px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<span class="pill">KM Warm v3.6 · LITE</span>
+<h1>Make Chub feel warmer.</h1>
+<p>Choose a few options, download one CSS file, then upload it in Chub. No account, paste box, or external stylesheet.</p>
+</header>
+<section>
+<h2>Customize your theme</h2>
+<div class="grid">
+<div class="field"><label for="palette">Palette</label><select id="palette"><option value="warm">Warm (default)</option></select></div>
+<div class="field"><label for="accent">Accent colour</label><input id="accent" type="color" value="#c6613f"></div>
+<div class="field"><label for="fs">Message size <output id="fsout">1.06 rem</output></label><input id="fs" type="range" min=".90" max="1.40" step=".01" value="1.06"></div>
+<div class="field"><label for="lh">Line height <output id="lhout">1.70</output></label><input id="lh" type="range" min="1.40" max="2.00" step=".01" value="1.70"></div>
+<div class="field"><label for="ga">Chat-card opacity <output id="gaout">Default (dark .25 / light .55)</output></label><input id="ga" type="range" min="0" max="1" step=".01" value=".25"></div>
+<div class="field"><label for="rp">Reading font</label><select id="rp"><option value="serif">Serif (default)</option><option value="sans">Sans serif</option><option value="mono">Monospace</option></select></div>
+<div class="field wide"><label for="fx">Effects profile</label><select id="fx"><option value="lite">LITE — smoother scrolling, no blur</option><option value="full" disabled>FULL — source file not supplied yet</option></select><p class="small">The uploaded v3.6 source is the LITE variant. The earlier v3.5 full-effects source is not available, so a true FULL build cannot be reconstructed.</p></div>
+</div>
+<div class="actions"><button id="download" disabled>Download custom CSS</button><button class="secondary" id="reset">Reset options</button></div>
+<p id="status" class="status" role="status">Loading the KM Warm source…</p>
+</section>
+<div class="preview">
+<h2>Preview · approximate</h2>
+<div class="preview-card" id="preview"><strong>Warmth, without the noise.</strong><p>Your messages stay readable, with a softer paper surface and a clay accent.</p><span class="pill">KM Warm</span></div>
+</div>
+<section>
+<h2>Install in Chub</h2>
+<ol class="steps">
+<li>Download your CSS file above.</li>
+<li>Open Chub profile → <b>Edit Theme</b>, or in a chat use bottom-left kebab → <b>Change Theme</b>.</li>
+<li>Choose <b>Upload Custom CSS</b> and select the downloaded file. Leave other theme settings on Default.</li>
+</ol>
+<p class="small">To remove it, use <b>Clear Custom CSS</b>. Chub accepts a file upload; there is no paste box.</p>
+</section>
+<section>
+<h2>Need a ready-made file?</h2>
+<p><a href="https://github.com/KarlMuzen/KM-CHUB-THEME/releases/latest/download/KM-Warm-lite-v3.6.min.css">Download KM Warm LITE (release asset)</a></p>
+<p><a href="https://github.com/KarlMuzen/KM-CHUB-THEME/releases/latest/download/KM-Warm-compat-v3.6.min.css">Download compatibility build</a> · <a href="https://github.com/KarlMuzen/KM-CHUB-THEME/issues">Report a problem</a></p>
+<p class="small">Phone-tested base theme; desktop remains beta. The compatibility build uses legacy colour fallbacks and may look less exact in older browsers.</p>
+</section>
+<footer>KM Warm is an independent community theme and is not affiliated with Chub. <a href="https://github.com/KarlMuzen/KM-CHUB-THEME">Source and updates</a>.</footer>
+</main>
+<script>
+(function(){
+"use strict";
+var sourceParts=null,gaTouched=false;
+var defaults={p:"warm",a:"c6613f",fs:1.06,lh:1.70,ga:.25,rp:"serif",fx:"lite"};
+var ranges={fs:[.90,1.40],lh:[1.40,2.00],ga:[0,1]};
+var el=function(id){return document.getElementById(id)};
+function clamp(n,min,max){return Math.min(max,Math.max(min,n))}
+function num(value,key){if(value===null||String(value).trim()==="")return defaults[key];var n=Number(value);if(!Number.isFinite(n))return defaults[key];return clamp(n,ranges[key][0],ranges[key][1])}
+function parseParams(){
+ var q=new URLSearchParams(location.search),p={};
+ p.p=q.get("p")==="warm"?"warm":"warm";
+ var a=q.get("a");p.a=/^[0-9a-fA-F]{6}$/.test(a||"")?a.toLowerCase():defaults.a;
+ p.fs=num(q.get("fs")===null?String(defaults.fs):q.get("fs"),"fs");
+ p.lh=num(q.get("lh")===null?String(defaults.lh):q.get("lh"),"lh");
+ p.ga=num(q.get("ga")===null?String(defaults.ga):q.get("ga"),"ga");
+ p.gaTouched=q.has("ga");p.rp=["serif","sans","mono"].indexOf(q.get("rp"))>=0?q.get("rp"):"serif";p.fx="lite";
+ return p;
+}
+function readControls(){
+ return {p:"warm",a:el("accent").value.slice(1),fs:num(el("fs").value,"fs"),lh:num(el("lh").value,"lh"),ga:num(el("ga").value,"ga"),gaTouched:gaTouched,rp:["serif","sans","mono"].indexOf(el("rp").value)>=0?el("rp").value:"serif",fx:"lite"};
+}
+function updateControls(p){
+ gaTouched=!!p.gaTouched;
+ el("palette").value=p.p;el("accent").value="#"+p.a;el("fs").value=p.fs;el("lh").value=p.lh;el("ga").value=p.ga;el("rp").value=p.rp;el("fx").value="lite";
+ el("fsout").textContent=p.fs.toFixed(2)+" rem";el("lhout").textContent=p.lh.toFixed(2);
+ el("gaout").textContent=gaTouched?p.ga.toFixed(2):"Default (dark .25 / light .55)";
+ el("preview").style.fontSize=p.fs+"rem";el("preview").style.lineHeight=p.lh;
+ el("preview").style.borderColor="#"+p.a+"66";
+}
+function safeParams(p){
+ var q=new URLSearchParams();q.set("v","1");
+ if(p.a!==defaults.a)q.set("a",p.a);
+ if(p.fs!==defaults.fs)q.set("fs",p.fs.toFixed(2));
+ if(p.lh!==defaults.lh)q.set("lh",p.lh.toFixed(2));
+ if(p.gaTouched)q.set("ga",p.ga.toFixed(2));
+ if(p.rp!=="serif")q.set("rp",p.rp);
+ history.replaceState(null,"",location.pathname+(q.toString()?"?"+q.toString():""));
+}
+function accentOverrides(p){
+ var x="#"+p.a;
+ var rp={serif:'"Source Serif 4","Anthropic Serif",Tiempos,"Iowan Old Style","Palatino Linotype",Georgia,"Noto Serif",serif',sans:'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif',mono:"ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"}[p.rp];
+ var fs=p.fs.toFixed(2).replace(/0+$/,"").replace(/\.$/,"");
+ var lh=p.lh.toFixed(2).replace(/0+$/,"").replace(/\.$/,"");
+ var ga=p.ga.toFixed(2).replace(/0+$/,"").replace(/\.$/,"");
+ var extra=p.gaTouched?"--c-ga:"+ga+";":"";
+ return "\n/* Generated options — validated URL parameters only */\nhtml{\n--c-accent:"+x+";\n--c-accent-hi:light-dark(color-mix(in srgb,"+x+" 78%,#000),color-mix(in srgb,"+x+" 78%,#fff));\n--c-btn:"+x+";\n--c-btn-hv:light-dark(color-mix(in srgb,"+x+" 88%,#000),color-mix(in srgb,"+x+" 88%,#fff));\n--c-act:light-dark(color-mix(in srgb,"+x+" 72%,#000),color-mix(in srgb,"+x+" 55%,#fff));\n--c-fs:"+fs+"rem;--c-lh:"+lh+";"+extra+"--c-rp:"+rp+";\n}\n";
+}
+function buildCSS(p){
+ if(!sourceParts)throw new Error("Theme source has not loaded.");
+ var override=sourceParts.overrides.replace(/html\s*\{\s*\}\s*$/,"");
+ return "/* KM Warm v3.6 LITE — generated in your browser. Palette: "+p.p+"; options validated. */\n"+sourceParts.preset+sourceParts.core+sourceParts.lite+override+accentOverrides(p);
+}
+function splitSource(css){
+ var anchors={preset:"/* ===== PRESET",core:"/* KM Warm v2.1",lite:"/* ===================================================================================\n   LITE — performance pass.",overrides:"/* ===== YOUR OVERRIDES"};
+ var keys=Object.keys(anchors),pos={};
+ keys.forEach(function(k){pos[k]=css.indexOf(anchors[k]);if(pos[k]<0)throw new Error("The source CSS is missing its "+k+" section.");});
+ if(!(pos.preset<pos.core&&pos.core<pos.lite&&pos.lite<pos.overrides))throw new Error("Source CSS section order is invalid.");
+ return {preset:css.slice(pos.preset,pos.core),core:css.slice(pos.core,pos.lite),lite:css.slice(pos.lite,pos.overrides),overrides:css.slice(pos.overrides)};
+}
+function render(){var p=readControls();updateControls(p);safeParams(p)}
+fetch("themes/km-warm/source.css").then(function(r){if(!r.ok)throw new Error("Could not load source CSS ("+r.status+").");return r.text()}).then(function(css){
+ sourceParts=splitSource(css);el("download").disabled=false;el("status").textContent="Ready. Your CSS is assembled locally in this browser.";
+ updateControls(parseParams());
+ ["accent","fs","lh","ga","rp","palette"].forEach(function(id){el(id).addEventListener("input",function(){if(id==="ga")gaTouched=true;render()});el(id).addEventListener("change",function(){if(id==="ga")gaTouched=true;render()})});
+ el("download").addEventListener("click",function(){
+  try{var p=readControls(),blob=new Blob([buildCSS(p)],{type:"text/css;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+   a.href=url;a.download="KM-Warm-lite-v3.6.css";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+   el("status").textContent="Downloaded KM-Warm-lite-v3.6.css. Upload that file in Chub.";
+  }catch(e){el("status").textContent=e.message}
+ });
+ el("reset").addEventListener("click",function(){gaTouched=false;updateControls(defaults);safeParams(defaults)});
+}).catch(function(e){el("status").textContent=e.message+" Open an issue if this continues."});
+})();
+</script>
+</body>
+</html>
