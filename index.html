@@ -313,7 +313,7 @@ Independent Chub customization tools by KM Themes. Not affiliated with or endors
 <script>
 (function(){
 "use strict";
-var sourceParts=null,gaTouched=false,selectedPalette="warm",previewMode="dark",activeProject=null;
+var sourceParts=null,gaTouched=false,selectedPalette="warm",previewMode="dark",activeProject=null,rawSaveTimer=null;
 var defaults={p:"warm",a:"c6613f",fs:1.06,lh:1.70,ga:.25,rp:"serif",fx:"lite"};
 var ranges={fs:[.90,1.40],lh:[1.40,2.00],ga:[0,1]};
 var fontStacks={serif:'"Source Serif 4","Anthropic Serif",Tiempos,"Iowan Old Style","Palatino Linotype",Georgia,"Noto Serif",serif',sans:'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif',mono:"ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"};
@@ -515,8 +515,13 @@ function startWorkspace(sourceKind,palette,label,settingsOverride){
 }
 function returnToGuide(){
  profile=window.KMThemeProject?window.KMThemeProject.loadProfile():profile;
+ if(window.KMThemeProject)window.KMThemeProject.clearProject();
+ activeProject=null;
  guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"system",goal:"",method:"preset",palette:"warm"};
- el("studio-workspace").hidden=true;el("guide").hidden=false;renderGuide();window.scrollTo(0,0);
+ el("studio-workspace").hidden=true;el("guide").hidden=false;
+ el("studio-grid").hidden=false;el("css-workbench").hidden=true;el("raw-css-panel").hidden=true;
+ el("css-file").value="";el("css-source").value="";
+ renderGuide();window.scrollTo(0,0);
 }
 function handleGuideNext(){
  var step=guideState.step;
@@ -552,6 +557,165 @@ function installGuideEvents(){
  });
 }
 
+
+function formatBytes(bytes){
+ if(bytes<1024)return bytes+" bytes";
+ if(bytes<1024*1024)return (bytes/1024).toFixed(1)+" KB";
+ return (bytes/(1024*1024)).toFixed(2)+" MB";
+}
+function renderCssReport(target,report){
+ target.innerHTML="";
+ target.hidden=false;
+ var heading=document.createElement("strong");
+ heading.textContent=report.valid?"Structure check passed":"CSS needs attention";
+ target.appendChild(heading);
+ var summary=document.createElement("p");
+ summary.textContent=formatBytes(report.bytes)+" · Original text is not modified by this check.";
+ target.appendChild(summary);
+ [["errors",report.errors,"report-error"],["warnings",report.warnings,"report-warning"]].forEach(function(group){
+  if(!group[1].length)return;
+  var list=document.createElement("ul");
+  group[1].forEach(function(message){
+   var item=document.createElement("li");
+   item.className=group[2];item.textContent=message;list.appendChild(item);
+  });
+  target.appendChild(list);
+ });
+}
+function saveRawProject(){
+ if(!activeProject||!window.KMThemeProject)return false;
+ activeProject.theme.source.workingCss=el("raw-css-editor").value;
+ activeProject.editorMode="raw";
+ activeProject.updatedAt=new Date().toISOString();
+ var saved=window.KMThemeProject.saveProject(activeProject);
+ el("raw-css-state").textContent=saved?"Saved on this device":"Could not save locally";
+ return saved;
+}
+function updateRawMeta(){
+ var value=el("raw-css-editor").value;
+ el("raw-css-size").textContent=formatBytes(window.KMCssWorkbench.byteLength(value));
+ el("raw-css-state").textContent="Unsaved changes";
+}
+function showRawEditor(){
+ if(!activeProject||!window.KMCssWorkbench)return;
+ var source=activeProject.theme.source;
+ if(!source.workingCss){
+  var generated=buildCSS(readControls());
+  source.originalCss=generated;
+  source.workingCss=generated;
+ }
+ activeProject.editorMode="raw";
+ el("raw-css-editor").value=source.workingCss;
+ el("raw-css-title").textContent=source.label?"Raw CSS · "+source.label:"Raw CSS editor";
+ el("raw-css-subtitle").textContent=source.kind==="imported"?"Editing imported CSS. The original file remains available for restore.":"Editing the generated stylesheet. Your visual settings remain saved separately.";
+ el("raw-css-preservation").textContent=source.kind==="imported"?"The imported original is preserved byte-for-byte. Edits affect only the working copy.":"A snapshot of the generated CSS is preserved as the restore point. Edits affect only the working copy.";
+ el("restore-original-css").disabled=!source.originalCss;
+ el("css-workbench").hidden=true;
+ el("studio-grid").hidden=true;
+ el("raw-css-panel").hidden=false;
+ el("raw-css-report").hidden=true;
+ el("raw-css-size").textContent=formatBytes(window.KMCssWorkbench.byteLength(source.workingCss));
+ el("raw-css-state").textContent="Saved on this device";
+ window.KMThemeProject.saveProject(activeProject);
+ el("raw-css-editor").focus();
+ window.scrollTo(0,0);
+}
+function openImportPanel(){
+ el("css-workbench").hidden=false;
+ el("css-import-report").hidden=true;
+ el("css-source").focus();
+ el("css-workbench").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function loadImportedCss(css,label){
+ var result=window.KMCssWorkbench.createImport(css,label);
+ renderCssReport(el("css-import-report"),result.report);
+ if(!result.ok)return false;
+ activeProject=window.KMThemeProject.createProject({
+  name:label||"Imported theme",
+  platform:profile.platform||"chub",
+  device:profile.device||"phone",
+  appearance:profile.appearance||"system",
+  editorMode:"raw",
+  theme:{source:result.value,settings:readControls()}
+ });
+ window.KMThemeProject.saveProject(activeProject);
+ el("raw-css-editor").value=result.value.workingCss;
+ el("raw-css-title").textContent="Raw CSS · "+result.value.label;
+ el("raw-css-subtitle").textContent="Imported stylesheet. Review compatibility notes before installing.";
+ el("raw-css-preservation").textContent="The original imported stylesheet is preserved byte-for-byte. Editing changes only the working copy; Restore original returns to the exact imported text.";
+ el("restore-original-css").disabled=false;
+ el("css-workbench").hidden=true;
+ el("studio-grid").hidden=true;
+ el("raw-css-panel").hidden=false;
+ renderCssReport(el("raw-css-report"),result.report);
+ el("raw-css-size").textContent=formatBytes(result.report.bytes);
+ el("raw-css-state").textContent="Saved on this device";
+ window.scrollTo(0,0);
+ return true;
+}
+function readSelectedFile(file){
+ if(!file)return;
+ if(!/\.css$/i.test(file.name||"") && file.type!=="text/css"){
+  renderCssReport(el("css-import-report"),{valid:false,bytes:0,errors:["Choose a .css file."],warnings:[]});
+  return;
+ }
+ if(file.size>window.KMCssWorkbench.MAX_BYTES){
+  renderCssReport(el("css-import-report"),{valid:false,bytes:file.size,errors:["The CSS exceeds the 1 MB import limit."],warnings:[]});
+  return;
+ }
+ var reader=new FileReader();
+ reader.onload=function(){
+  var value=typeof reader.result==="string"?reader.result:"";
+  el("css-source").value=value;
+  renderCssReport(el("css-import-report"),window.KMCssWorkbench.analyzeCss(value));
+ };
+ reader.onerror=function(){
+  renderCssReport(el("css-import-report"),{valid:false,bytes:file.size,errors:["The selected file could not be read by this browser."],warnings:[]});
+ };
+ reader.readAsText(file);
+}
+function handleImport(){
+ var file=el("css-file").files&&el("css-file").files[0];
+ var css=el("css-source").value;
+ var label=file?file.name:"Pasted CSS";
+ if(!css.trim()){
+  renderCssReport(el("css-import-report"),{valid:false,bytes:0,errors:["Choose a CSS file or paste CSS before continuing."],warnings:[]});
+  return;
+ }
+ loadImportedCss(css,label);
+}
+function copyRawCss(){
+ var value=el("raw-css-editor").value;
+ copyText(value).then(function(){
+  el("raw-css-state").textContent="Copied to clipboard";
+ }).catch(function(error){
+  el("raw-css-state").textContent=error.message;
+ });
+}
+function downloadRawCss(){
+ var value=el("raw-css-editor").value;
+ var report=window.KMCssWorkbench.analyzeCss(value);
+ renderCssReport(el("raw-css-report"),report);
+ if(!report.valid)return;
+ var blob=new Blob([value],{type:"text/css;charset=utf-8"});
+ var url=URL.createObjectURL(blob),anchor=document.createElement("a");
+ anchor.href=url;anchor.download="KM-Theme.css";
+ document.body.appendChild(anchor);anchor.click();anchor.remove();
+ setTimeout(function(){URL.revokeObjectURL(url)},1200);
+ el("raw-css-state").textContent="Downloaded CSS";
+}
+function restoreOriginalCss(){
+ if(!activeProject)return;
+ var original=activeProject.theme.source.originalCss;
+ if(typeof original!=="string"||!original)return;
+ el("raw-css-editor").value=original;
+ activeProject.theme.source.workingCss=original;
+ saveRawProject();
+ updateRawMeta();
+ el("raw-css-state").textContent="Original restored";
+ renderCssReport(el("raw-css-report"),window.KMCssWorkbench.analyzeCss(original));
+}
+
 function installEvents(){
  Array.prototype.forEach.call(document.querySelectorAll("[data-palette]"),function(btn){btn.addEventListener("click",function(){selectPalette(btn.getAttribute("data-palette"))})});
  Array.prototype.forEach.call(document.querySelectorAll("[data-mode-choice]"),function(btn){btn.addEventListener("click",function(){setPreviewMode(btn.getAttribute("data-mode-choice"))})});
@@ -568,11 +732,35 @@ function installEvents(){
  });
  el("reset").addEventListener("click",function(){window.accentWasCustom=false;gaTouched=false;updateControls({p:"warm",a:palettes.warm.accent,fs:defaults.fs,lh:defaults.lh,ga:defaults.ga,gaTouched:false,rp:"serif"});render();el("status").textContent="Settings reset to the Warm default."});
  el("change-guide").addEventListener("click",returnToGuide);
+ el("open-css-import").addEventListener("click",openImportPanel);
+ el("cancel-css-import").addEventListener("click",function(){el("css-workbench").hidden=true;});
+ el("css-file").addEventListener("change",function(){readSelectedFile(el("css-file").files&&el("css-file").files[0]);});
+ el("load-imported-css").addEventListener("click",handleImport);
+ el("open-raw-css").addEventListener("click",showRawEditor);
+ el("raw-css-editor").addEventListener("input",function(){
+  updateRawMeta();
+  if(rawSaveTimer)clearTimeout(rawSaveTimer);
+  rawSaveTimer=setTimeout(saveRawProject,350);
+ });
+ el("raw-css-editor").addEventListener("change",saveRawProject);
+ el("validate-raw-css").addEventListener("click",function(){
+  var report=window.KMCssWorkbench.analyzeCss(el("raw-css-editor").value);
+  renderCssReport(el("raw-css-report"),report);
+ });
+ el("copy-raw-css").addEventListener("click",copyRawCss);
+ el("download-raw-css").addEventListener("click",downloadRawCss);
+ el("restore-original-css").addEventListener("click",restoreOriginalCss);
+ el("new-theme-from-raw").addEventListener("click",returnToGuide);
+ el("copy-generated-css").addEventListener("click",function(){
+  try{copyText(buildCSS(readControls())).then(function(){el("status").textContent="Generated CSS copied."}).catch(function(e){el("status").textContent=e.message})}
+  catch(e){el("status").textContent=e.message}
+ });
+ window.addEventListener("pagehide",saveRawProject);
  installGuideEvents();
 }
 window.accentWasCustom=false;
 fetch("themes/km-warm/source.css").then(function(r){if(!r.ok)throw new Error("Could not load source CSS ("+r.status+").");return r.text()}).then(function(css){
- sourceParts=splitSource(css);el("download").disabled=false;installEvents();
+ sourceParts=splitSource(css);el("download").disabled=false;el("copy-generated-css").disabled=false;el("open-raw-css").disabled=false;installEvents();
  var query=new URLSearchParams(location.search),hasShared=["p","a","fs","lh","ga","rp"].some(function(key){return query.has(key)});
  if(hasShared){
   var shared=parseParams();window.accentWasCustom=shared.a!==palettes[shared.p].accent;
@@ -583,8 +771,20 @@ fetch("themes/km-warm/source.css").then(function(r){if(!r.ok)throw new Error("Co
    activeProject=saved;profile={device:saved.device,platform:saved.platform,appearance:saved.appearance};
    window.accentWasCustom=saved.theme.settings.a!==palettes[saved.theme.settings.p].accent;
    updateControls(saved.theme.settings);el("guide").hidden=true;el("studio-workspace").hidden=false;
-   setPreviewMode(initialPreviewMode(profile.appearance));render();
-   el("status").textContent="Your last theme project was restored. Changes are autosaved in this browser.";
+   if(saved.editorMode==="raw" && saved.theme.source.workingCss){
+    el("raw-css-editor").value=saved.theme.source.workingCss;
+    el("studio-grid").hidden=true;el("raw-css-panel").hidden=false;el("css-workbench").hidden=true;
+    el("raw-css-title").textContent="Raw CSS · "+(saved.theme.source.label||saved.name);
+    el("raw-css-subtitle").textContent=saved.theme.source.kind==="imported"?"Restored imported stylesheet.":"Restored working stylesheet.";
+    el("restore-original-css").disabled=!saved.theme.source.originalCss;
+    el("raw-css-size").textContent=formatBytes(window.KMCssWorkbench.byteLength(saved.theme.source.workingCss));
+    el("raw-css-state").textContent="Restored from this device";
+    renderCssReport(el("raw-css-report"),window.KMCssWorkbench.analyzeCss(saved.theme.source.workingCss));
+   }else{
+    el("studio-grid").hidden=false;el("raw-css-panel").hidden=true;
+    setPreviewMode(initialPreviewMode(profile.appearance));render();
+   }
+   el("status").textContent="Your last theme project was restored from this device.";
   }else{
    guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"system",goal:"",method:"preset",palette:"warm"};
    el("guide").hidden=false;el("studio-workspace").hidden=true;renderGuide();
