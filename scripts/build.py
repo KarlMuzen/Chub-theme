@@ -141,8 +141,7 @@ def main():
     sections = split_source(source)
     DIST.mkdir(exist_ok=True)
     lite = sections["preset"] + sections["core"] + sections["lite"] + sections["overrides"]
-    compat_base = light_dark_to_dark(lite)
-    compat = compat_base + compat_fallback() + "@supports (color:light-dark(white,black)){" + lite + "}"
+    compat = lite + compat_fallback()
     outputs = {
         "KM-Warm-lite-v3.6.min.css": minify(lite),
         "KM-Warm-compat-v3.6.min.css": minify(compat),
