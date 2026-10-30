@@ -1,8 +1,10 @@
 # KM Theme Studio: URL parameter spec (v1)
 
-Contract between the Studio page, the Chub Theme Helper bot, and shareable configuration links. The page is static (GitHub Pages): no server, no third-party requests. It builds the CSS in the browser and offers a download.
+Contract between KM Theme Studio, the Chub Theme Helper bot, and shareable configuration links. The page is static (GitHub Pages): no server, no third-party requests. It builds CSS in the browser and offers a download.
 
-Example: https://karlmuzen.github.io/KM-CHUB-THEME/?v=1&p=midnight&a=5b8def&fs=1.16
+Studio: https://karlmuzen.github.io/KM-THEMES/
+
+Example: https://karlmuzen.github.io/KM-THEMES/?v=1&p=midnight&a=5b8def&fs=1.16
 
 Only changed parameters are needed. Unknown parameters are ignored. Invalid values use defaults.
 
@@ -23,9 +25,13 @@ Only changed parameters are needed. Unknown parameters are ignored. Invalid valu
 
 The Studio includes five palettes: Warm, OLED, Midnight, Forest and Parchment. A true FULL profile is not offered because the supplied v3.6 source is already LITE; its effects were removed and cannot be reconstructed from that file. A genuine FULL profile requires the original v3.5 full-effects CSS.
 
+## Brand system
+
+KM Themes is the parent identity and independent Chub customization ecosystem. The visual identity uses a geometric rosette, earthy botanical styling, evergreen, warm paper, terracotta, sage and antique gold. The tagline is **Make Chub feel like yours.** The Studio's interface uses the stable brand palette; the chat preview continues to display the user's selected theme palette.
+
 ## Live preview and sharing
 
-- The preview is illustrative and is not a pixel-perfect reproduction of Chub's interface.
+- The preview is a Chub-inspired mobile layout reference, not a pixel-perfect reproduction of Chub.
 - Light/dark preview mode affects only the preview. Generated CSS retains automatic light/dark behaviour based on the user's system and Chub settings.
 - Share links encode only changed, validated settings in the query string. Opening a link preloads those values. No account, analytics endpoint, or backend is used.
 - The page's CSS source is fetched from the same GitHub Pages origin; all configuration and CSS assembly runs in the browser.
