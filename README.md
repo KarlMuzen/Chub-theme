@@ -4,6 +4,18 @@
 
 KM Themes is an independent Chub customization ecosystem: thoughtfully designed themes, browser-based tools, configuration helpers and reusable presets. Built by [KarlMuzen](https://github.com/KarlMuzen). Not affiliated with or endorsed by Chub.
 
+## Start here
+
+- **[AI and contributor instructions](AGENTS.md)** — required reading and repository working contract.
+- **[Canonical project brief](PROJECT.md)** — product scope, stable decisions and constraints.
+- **[Current status](docs/STATUS.md)** — implementation state, known gaps and verification.
+- **[Architecture](docs/ARCHITECTURE.md)** — current system and approved target structure.
+- **[Decision record](docs/DECISIONS.md)** — accepted product and technical decisions.
+- **[Roadmap](docs/ROADMAP.md)** — planned implementation phases.
+- **[Documentation index](docs/README.md)** — all project documentation.
+
+AI assistants should read AGENTS.md and PROJECT.md before doing work. The repository documentation is the source of truth; prior chat context is not.
+
 ## The ecosystem
 
 | Product | Purpose |
@@ -47,20 +59,22 @@ The KM Themes brand is the stable identity across the Studio and project materia
 ## Repository layout
 
 - themes/km-warm/ — original CSS source and build notes
+- assets/js/ — browser-side project and CSS Workbench modules
 - scripts/ — CSS build, lint and tests
-- docs/ — generator parameter contract
+- docs/ — architecture, status, research, decisions and specifications
 - bots/ — bot cards and supporting material
 
-## Build locally
+## Build and test
 
 Run:
 
     python scripts/build.py
     python scripts/lint.py
     python scripts/check_generator.py
+    node --test scripts/test_theme_project.js scripts/test_css_workbench.js scripts/test_chub_reference_capture.js
     python -m unittest scripts/test_build.py -v
 
-The CI workflow runs these checks on pushes and pull requests.
+GitHub Actions runs these checks on pushes and pull requests.
 
 ## License
 

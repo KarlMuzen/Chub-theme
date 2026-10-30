@@ -1,110 +1,200 @@
-# Chub Frontend Compatibility Reference
+# Chub frontend compatibility reference
 
-## Source and scope
+Research snapshot: Chub asset build timestamp 2026-10-07  
+Archives supplied by the project owner and inspected: 2026-10-30  
+Status: dated technical reference; not a public Chub API contract.
 
-Analyzed from the user-provided `chub_frontend.zip` on 2026-10-30. The archive contains:
+## 1. Evidence and provenance
 
-- `index.html` (2,255 bytes)
-- Vite-style entry bundle `index-20261007T172809077Z-Ci4IISAQ.js` (184,683 bytes)
-- Stylesheet `index-20261007T172809077Z-D9wZgLkk.css` (174,627 bytes)
-- Web app manifest and favicon
+The research was performed on user-supplied downloads of public-facing Chub web assets. Two archives were inspected. They are not committed to this repository because they contain Chub's compiled frontend code and stylesheets.
 
-The hashed asset names indicate a build timestamp of 2026-10-07. Treat this as a dated compatibility snapshot, not proof of the exact assets currently served by Chub.
+### Initial archive
 
-## Important completeness limitation
+The initial archive contains:
+- search.html: 2,264 bytes.
+- manifest: manifest-20261007T172809077Z-BdAyOY0s.json, 12,742 bytes.
+- entry JavaScript: index-20261007T172809077Z-Ci4IISAQ.js, 184,683 bytes.
+- main stylesheet: index-20261007T172809077Z-D9wZgLkk.css, 174,627 bytes.
+- lazy-loaded App bundle: App-20261007T172809077Z-ERVMRKOe.js, 12,972,777 bytes.
+- favicon.
 
-The HTML mounts the app at `#root`. The entry bundle uses React and React Query, then lazy-loads `./App-20261007T172809077Z-ERVMRKOe.js`. That App chunk is not present in the supplied archive. The archive therefore contains useful global styles and some runtime code, but not the complete application component tree or all dynamically imported route chunks. Do not treat it as a complete offline copy or as proof that every selector is active on every route.
+The first archive initially lacked the App bundle; the owner later downloaded it and supplied an updated archive. The App bundle is therefore no longer a missing research input.
 
-## Findings useful to the theme adapter
+### Targeted archive
 
-### Global CSS variables
+The second archive contains:
+- index-20261007T172809077Z-DDbVZ1ue.js, 808,955 bytes.
+- index-20261007T172809077Z-cI-S1NHQ.js, 169,927 bytes.
+- index-20261007T172809077Z-3F1lK23c.js, 86,524 bytes.
+- MarsPrice-20261007T172809077Z-CWgRp40j.js, 31,219 bytes.
+- StageManager-20261007T172809077Z-Cab0Ilqq.js, 124,846 bytes.
+- TagFormItem-20261007T172809077Z-DkVugSu5.js, 5,271 bytes.
+- ProgressBar-20261007T172809077Z-D1Y-H6w0.js, 839 bytes.
+- antd-img-crop.esm-20261007T172809077Z-CAzp6Ot0.js, 32,208 bytes.
+- empty-20261007T172809077Z-8jb3Ej7A.js, 201,214 bytes.
+- index-20261007T172809077Z-Cy8LOuom.css, 19,423 bytes.
+- empty-20261007T172809077Z-WkBljMO6.css, 399 bytes.
 
-The stylesheet declares 36 unique custom properties in `:root` (some repeated). High-value theme tokens include:
+The large App bundle references the targeted chunks by their timestamped asset names. The downloaded chunks are useful for static string and selector analysis; their compiled source is not a complete supported development API.
 
-| Token | Snapshot value |
+## 2. Global stylesheet findings
+
+The main stylesheet exposes Chub theme variables and layout hooks. High-value observed root variables include:
+
+| Variable | Value in captured build |
 |---|---|
-| `--dark-background-color` | `#001529` |
-| `--light-background-color` | `#DBDADA` |
-| `--dark-primary-color` | `#3c38a8` |
-| `--light-primary-color` | `#3c38a8` |
-| `--dark-header-color` | `#C74900` |
-| `--light-header-color` | `#DBDADA` |
-| `--background-deep-alpha` | `rgb(36, 37, 37, .94)` |
-| `--background-shallow-alpha` | `rgb(219, 218, 218, .9)` |
-| `--background-shallow-solid` | `rgb(219, 218, 218, 1)` |
-| `--ribbon-color` | `rgb(29, 37, 60)` |
-| `--bright-border` | `#3c38a8` |
-| `--bright-icon` | `#3C74A6` |
-| `--quote-color` | `#e5e0d8` |
-| `--opposite-color` | `white` |
-| `--message-font-size` | `1rem` |
-| `--message-line-height` | `1.5` |
+| --dark-background-color | #001529 |
+| --light-background-color | #DBDADA |
+| --dark-primary-color | #3c38a8 |
+| --light-primary-color | #3c38a8 |
+| --dark-header-color | #C74900 |
+| --light-header-color | #DBDADA |
+| --background-deep-alpha | rgb(36, 37, 37, .94) |
+| --background-shallow-alpha | rgb(219, 218, 218, .9) |
+| --background-shallow-solid | rgb(219, 218, 218, 1) |
+| --ribbon-color | rgb(29, 37, 60) |
+| --bright-border | #3c38a8 |
+| --bright-icon | #3C74A6 |
+| --quote-color | #e5e0d8 |
+| --opposite-color | white |
+| --message-font-size | 1rem |
+| --message-line-height | 1.5 |
 
-Other root properties cover button colours, muted/strong text, integration badges and syntax highlighting. Preserve the original token names in the Chub adapter; KM's internal `--c-*` variables should map to platform tokens rather than assume the names are interchangeable.
+Other variables cover button states, muted/strong text, integration badges and syntax highlighting. Preserve Chub variable names in the adapter; KM's internal --c-* variables are not interchangeable unless an explicit mapping exists.
 
-### Runtime class scopes observed in the stylesheet
+### Mode scopes and candidate selectors
 
-These selectors are present in the supplied stylesheet and are useful inspection targets. Runtime presence and specificity still need confirmation on the corresponding live screen.
+Mode scopes present in the captured stylesheet:
+- .chub-css-override
+- .light-mode-override
+- .mobile-override
+- .light-mobile-override
 
-**Theme / mode scopes**
+Application layout and surfaces:
+- .main-layout-content
+- .bg-color-main
+- .galaxy-bg
+- .alpha-background
+- .fake-ribbon
+- .char-card-class
+- #chara-list
 
-- `.chub-css-override`
-- `.light-mode-override`
-- `.mobile-override`
-- `.light-mobile-override`
+Chat and message surfaces:
+- #chat-messages
+- .message-full
+- .message-title
+- .message-control-buttons
+- .font-size-message
+- .msg-mkdn-container
+- .chat-input-background
+- .chat-input-container
+- .message-details
 
-**Application layout and surfaces**
+Other panels:
+- .chub-drawer-body
+- .tools-and-connectors
+- .notif-sidebar
 
-- `.main-layout-content`
-- `.bg-color-main`
-- `.galaxy-bg`
-- `.alpha-background`
-- `.fake-ribbon`
-- `.char-card-class`
-- `#chara-list`
+The stylesheet combines some selectors with Ant Design classes, including .ant-layout, .ant-layout-header, .ant-layout-footer, .ant-card, .ant-menu, .ant-input, .ant-select, .ant-dropdown and .ant-drawer.
 
-**Chat and message surfaces**
+These selectors are research candidates, not guaranteed stable hooks. Their presence in a compiled stylesheet does not prove they are active on every route or have sufficient specificity against current runtime styles.
 
-- `#chat-messages`
-- `.message-full`
-- `.message-title`
-- `.message-control-buttons`
-- `.font-size-message`
-- `.msg-mkdn-container`
-- `.chat-input-background`
-- `.chat-input-container`
-- `.message-details`
+### Responsive evidence
 
-**Other panels**
+The stylesheet includes media-query breakpoints at 480, 576, 767, 768, 769, 992, 1080 and 1200 pixels, plus minimum-width rules at 768 and 992 pixels. It contains mobile-specific mode scopes. Verify current behavior against a live viewport rather than copying breakpoint assumptions without testing.
 
-- `.chub-drawer-body`
-- `.tools-and-connectors`
-- `.notif-sidebar`
+## 3. Targeted JavaScript findings
 
-Many selectors are combined with Ant Design classes such as `.ant-layout`, `.ant-layout-header`, `.ant-layout-footer`, `.ant-card`, `.ant-menu`, `.ant-input`, `.ant-select`, `.ant-dropdown` and `.ant-drawer`. The implementation should scope overrides narrowly and avoid broad overrides of every `.ant-*` element.
+### Chat-related chunk: index-...-DDbVZ1ue.js
 
-### Responsive and mobile behaviour
+Observed strings include:
+- my_chats query key.
+- /api/core/chats endpoint.
+- .message-control-buttons class.
+- .chat-input-container class.
+- .font-size-message class.
+- character/chat references.
 
-The stylesheet includes media query breakpoints at 480, 576, 767, 768, 769, 992, 1080 and 1200 pixels, plus minimum-width rules at 768 and 992 pixels. It contains 33 media rules and 4 keyframe definitions in the top-level stylesheet parse.
+This is strong evidence that the chunk contains chat-list and chat-interface logic. It is suitable for identifying candidate chat structures and control names, but not for copying React components or implementation code.
 
-Mobile-specific scopes include `.mobile-override` and `.light-mobile-override`. Examples in the snapshot include zero horizontal padding on `.ant-layout-header`, explicit mobile border widths on `.ant-card-bordered`, and separate light-mobile layout/background rules.
+### Character/favorites-related chunk: index-...-cI-S1NHQ.js
 
-### Practical implications
+Observed strings include:
+- Character and favorites UI text.
+- Favorites tab identifiers and related character data.
+- Character API paths.
+- An edit path fragment.
 
-1. Build the Chub adapter around Chub's own CSS custom properties first, then apply targeted component rules where a token does not cover the surface.
-2. Keep dark, light, mobile-dark and mobile-light behaviour as separate test cases. The stylesheet itself contains separate override scopes for these combinations.
-3. Keep the preview's Chub layout structurally distinct from KM's Studio UI. Theme tokens can be shared; platform DOM and component selectors cannot be assumed portable.
-4. Prefer stable class hooks and platform variables. Avoid broad selectors such as `[class*=...]` unless a live inspection proves they are necessary.
-5. Treat selectors in this file as candidates from a dated stylesheet, not as a guaranteed supported public API. Confirm them against a fresh live DOM capture before relying on them in released CSS.
+This supports classifying it as character/favorites-related code. Do not infer a complete route map from these strings alone.
 
-## Missing material for a higher-fidelity reference
+### Account/profile-related chunk: index-...-3F1lK23c.js
 
-The most valuable missing file is the lazy-loaded App bundle:
+Observed strings include account endpoints, account preferences, sorting controls and an Edit Theme label. This indicates account/profile settings code is present. The dedicated User Theme controls are in the MarsPrice chunk described below.
 
-`https://chub.ai/assets/App-20261007T172809077Z-ERVMRKOe.js`
+### User Theme settings chunk: MarsPrice-...-CWgRp40j.js
 
-The browser may load additional lazy chunks for individual routes or features. A fresh resource capture from the current Chub build should include those assets, plus one privacy-safe DOM/computed-style capture for the mobile chat route. Avoid collecting message text, form values, cookies, tokens or request payloads.
+The captured User Theme dialog exposes controls for:
+- Light Mode Active / Dark Mode Active.
+- Custom CSS Enabled / Disabled.
+- Show / Hide Background Image.
+- Font Size.
+- Line Height.
+- Card Font Size.
+- In-Chat Avatar Size.
+- Text Color and Emphasis Color.
+- Quote Color and Link Color.
+- Chat Background Color and Message Background Color.
+- Site Background Color, Menu Color and Sub Menu Color.
+- Sidebar Enabled / Disabled.
+- Upload Custom CSS and Clear Custom CSS.
+- Theme presets.
 
-## Usage in KM Themes
+Observed theme object properties include mode, show_custom_css, show_background, font_size, line_height, card_font_size, chat_avatar_size, text_color, em_color, quote_color, quote_color_light, link_color, light/dark chat and message background values, and sidebar state.
 
-This document is a compatibility note derived from the supplied public-facing asset snapshot. Do not redistribute Chub's compiled JavaScript or stylesheet as KM Themes assets. Use the observed variable names, selector hooks and layout behaviour to write KM-owned theme CSS and preview code.
+The compiled code updates a localData object through an updateLocalData context function. This is evidence about that captured frontend implementation only; KM Themes must not access or manipulate Chub's internal localData.
+
+### Other targeted chunks
+
+- StageManager, TagFormItem, ProgressBar, antd-img-crop and the empty chunk were downloaded because the App bundle referenced them. Their precise product responsibilities have not been established for KM compatibility work. Do not assign them roles without further inspection.
+- The 19,423-byte CSS chunk is separate from the main 174,627-byte stylesheet. Its precise relevance to theme generation has not been established here.
+
+## 4. Chub custom CSS uploader checks
+
+The captured User Theme code checks CSS text against three patterns before upload:
+- HTTP or HTTPS references inside url(...).
+- @import.
+- expression(.
+
+The UI reports a potentially harmful CSS error when one of these checks matches.
+
+This is a snapshot of client-side checks in the captured build, not a complete security model or guarantee of server-side acceptance. Do not rely on bypassing these checks.
+
+The KM repository's own scripts/lint.py is intentionally stricter in some respects: it rejects @import, @font-face and @charset, and rejects non-data url(...) except its recognized url(x) feature-test placeholder. Keep project lint policy authoritative for KM output.
+
+The existing KM Warm source contains a data-URI SVG. The build and lint pipeline should preserve and validate it.
+
+## 5. Compatibility implications for KM Themes
+
+1. Prefer mapping semantic KM tokens to Chub's existing CSS variables before writing selector-level overrides.
+2. Use narrow component overrides only when a variable cannot control the required surface.
+3. Keep dark/light and mobile/desktop cases distinct in tests.
+4. Avoid broad overrides of all .ant-* classes.
+5. Keep Chub selectors in a dedicated adapter, not inside generic palette data.
+6. The preview must remain KM-authored and only approximate Chub's DOM/layout.
+7. The user's CSS is uploaded through Chub's own UI. KM Themes does not have account integration or an automatic installation API.
+
+## 6. Required next research
+
+Before a high-impact Chub selector is relied on in released CSS:
+- Capture the current live build's asset names and date.
+- Inspect a fresh mobile chat route and character route.
+- Capture only structural DOM paths, computed styles, viewport and CSS custom properties.
+- Do not collect message text, form contents, cookies, tokens, local storage, request bodies or response payloads.
+- Confirm selector presence, specificity and computed effect.
+- Record route, viewport, build ID/date and verification result in a compatibility matrix.
+
+The existing privacy-conscious capture helper is in chub-capture.html and tools/chub-reference-capture.js.
+
+## 7. Handling and licensing boundary
+
+The archives were provided for private technical analysis. Do not commit or redistribute Chub's compiled JavaScript, CSS, source maps, copied component source or large excerpts. Record concise observations, selectors, variable names and compatibility conclusions only. Implement KM-owned CSS and preview code independently.

@@ -1,0 +1,8 @@
+---
+description: Canonical project instructions for KM Themes
+alwaysApply: true
+---
+
+Read the root AGENTS.md and PROJECT.md before making changes. Follow the required reading order, source-of-truth hierarchy, working contract, and testing requirements in AGENTS.md. Consult docs/STATUS.md, docs/ARCHITECTURE.md, docs/DECISIONS.md, and the relevant research note before changing related areas.
+
+Do not use chat history as the authoritative project specification. Keep project documentation updated with code changes.
