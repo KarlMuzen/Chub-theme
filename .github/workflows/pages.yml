@@ -26,6 +26,7 @@ jobs:
           mkdir -p _site/assets/js _site/themes/km-warm
           cp index.html _site/index.html
           cp assets/js/theme-project.js _site/assets/js/theme-project.js
+          cp assets/js/css-workbench.js _site/assets/js/css-workbench.js
           cp themes/km-warm/source.css _site/themes/km-warm/source.css
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
