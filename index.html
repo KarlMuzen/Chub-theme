@@ -122,8 +122,8 @@ function parseParams(){
  var a=q.get("a");p.a=/^[0-9a-fA-F]{6}$/.test(a||"")?a.toLowerCase():palettes[p.p].accent;
  p.fs=num(q.get("fs")===null?String(defaults.fs):q.get("fs"),"fs");
  p.lh=num(q.get("lh")===null?String(defaults.lh):q.get("lh"),"lh");
- p.ga=num(q.get("ga")===null?String(defaults.ga):q.get("ga"),"ga");
- p.gaTouched=q.has("ga");p.rp=["serif","sans","mono"].indexOf(q.get("rp"))>=0?q.get("rp"):"serif";p.fx="lite";
+ var gaParam=q.get("ga");p.ga=num(gaParam===null?String(defaults.ga):gaParam,"ga");
+ p.gaTouched=gaParam!==null&&gaParam.trim()!==""&&Number.isFinite(Number(gaParam));p.rp=["serif","sans","mono"].indexOf(q.get("rp"))>=0?q.get("rp"):"serif";p.fx="lite";
  return p;
 }
 function readControls(){
@@ -196,7 +196,7 @@ function render(){
 }
 function selectPalette(name){
  selectedPalette=validPalette(name);
- if(el("accent").value.slice(1).toLowerCase()===palettes[Object.keys(palettes).find(function(k){return k===selectedPalette;})].accent || !window.accentWasCustom){el("accent").value="#"+palettes[selectedPalette].accent;window.accentWasCustom=false}
+ if(el("accent").value.slice(1).toLowerCase()===palettes[selectedPalette].accent || !window.accentWasCustom){el("accent").value="#"+palettes[selectedPalette].accent;window.accentWasCustom=false}
  render();
  Array.prototype.forEach.call(document.querySelectorAll("[data-palette]"),function(btn){btn.setAttribute("aria-pressed",btn.getAttribute("data-palette")===selectedPalette?"true":"false")});
 }
