@@ -22,6 +22,16 @@ test("reports remote resources without deleting or rejecting them", () => {
   assert.equal(result.value.originalCss, original);
 });
 
+test("allows malformed but size-safe CSS to be imported for repair", () => {
+  const broken = ".chat { color: red;";
+  const result = css.createImport(broken, "broken.css");
+  assert.equal(result.ok, true);
+  assert.equal(result.report.valid, false);
+  assert.equal(result.report.importable, true);
+  assert.equal(result.value.originalCss, broken);
+  assert.equal(result.value.workingCss, broken);
+});
+
 test("rejects empty and oversized CSS", () => {
   assert.equal(css.createImport("   ").ok, false);
   assert.equal(css.analyzeCss("a{}".repeat(css.MAX_BYTES)).valid, false);
