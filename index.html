@@ -313,7 +313,7 @@ Independent Chub customization tools by KM Themes. Not affiliated with or endors
 <script>
 (function(){
 "use strict";
-var sourceParts=null,gaTouched=false,selectedPalette="warm",previewMode="dark",activeProject=null,rawSaveTimer=null;
+var sourceParts=null,gaTouched=false,selectedPalette="warm",previewMode="dark",activeProject=null,rawSaveTimer=null,rawEditorBaselineValue=null,pendingFileCss=null,pendingFileDisplay=null;
 var defaults={p:"warm",a:"c6613f",fs:1.06,lh:1.70,ga:.25,rp:"serif",fx:"lite"};
 var ranges={fs:[.90,1.40],lh:[1.40,2.00],ga:[0,1]};
 var fontStacks={serif:'"Source Serif 4","Anthropic Serif",Tiempos,"Iowan Old Style","Palatino Linotype",Georgia,"Noto Serif",serif',sans:'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif',mono:"ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"};
@@ -584,7 +584,11 @@ function renderCssReport(target,report){
 }
 function saveRawProject(){
  if(!activeProject||!window.KMThemeProject)return false;
- activeProject.theme.source.workingCss=el("raw-css-editor").value;
+ var displayed=el("raw-css-editor").value;
+ if(displayed!==rawEditorBaselineValue){
+  activeProject.theme.source.workingCss=displayed;
+  rawEditorBaselineValue=displayed;
+ }
  activeProject.editorMode="raw";
  activeProject.updatedAt=new Date().toISOString();
  var saved=window.KMThemeProject.saveProject(activeProject);
@@ -606,6 +610,7 @@ function showRawEditor(){
  }
  activeProject.editorMode="raw";
  el("raw-css-editor").value=source.workingCss;
+ rawEditorBaselineValue=el("raw-css-editor").value;
  el("raw-css-title").textContent=source.label?"Raw CSS · "+source.label:"Raw CSS editor";
  el("raw-css-subtitle").textContent=source.kind==="imported"?"Editing imported CSS. The original file remains available for restore.":"Editing the generated stylesheet. Your visual settings remain saved separately.";
  el("raw-css-preservation").textContent=source.kind==="imported"?"The imported original is preserved byte-for-byte. Edits affect only the working copy.":"A snapshot of the generated CSS is preserved as the restore point. Edits affect only the working copy.";
@@ -641,6 +646,7 @@ function loadImportedCss(css,label){
  });
  var projectSaved=window.KMThemeProject.saveProject(activeProject);
  el("raw-css-editor").value=result.value.workingCss;
+ rawEditorBaselineValue=el("raw-css-editor").value;
  el("raw-css-title").textContent="Raw CSS · "+result.value.label;
  el("raw-css-subtitle").textContent="Imported stylesheet. Review compatibility notes before installing.";
  el("raw-css-preservation").textContent="The original imported stylesheet is preserved byte-for-byte. Editing changes only the working copy; Restore original returns to the exact imported text.";
@@ -667,7 +673,9 @@ function readSelectedFile(file){
  var reader=new FileReader();
  reader.onload=function(){
   var value=typeof reader.result==="string"?reader.result:"";
+  pendingFileCss=value;
   el("css-source").value=value;
+  pendingFileDisplay=el("css-source").value;
   renderCssReport(el("css-import-report"),window.KMCssWorkbench.analyzeCss(value));
  };
  reader.onerror=function(){
@@ -677,7 +685,8 @@ function readSelectedFile(file){
 }
 function handleImport(){
  var file=el("css-file").files&&el("css-file").files[0];
- var css=el("css-source").value;
+ var displayed=el("css-source").value;
+ var css=(pendingFileCss!==null && displayed===pendingFileDisplay)?pendingFileCss:displayed;
  var label=file?file.name:"Pasted CSS";
  if(!css.trim()){
   renderCssReport(el("css-import-report"),{valid:false,bytes:0,errors:["Choose a CSS file or paste CSS before continuing."],warnings:[]});
@@ -687,7 +696,7 @@ function handleImport(){
 }
 function copyRawCss(){
  saveRawProject();
- var value=el("raw-css-editor").value;
+ var value=activeProject?activeProject.theme.source.workingCss:el("raw-css-editor").value;
  copyText(value).then(function(){
   el("raw-css-state").textContent="Copied to clipboard";
  }).catch(function(error){
@@ -696,7 +705,7 @@ function copyRawCss(){
 }
 function downloadRawCss(){
  saveRawProject();
- var value=el("raw-css-editor").value;
+ var value=activeProject?activeProject.theme.source.workingCss:el("raw-css-editor").value;
  var report=window.KMCssWorkbench.analyzeCss(value);
  renderCssReport(el("raw-css-report"),report);
  var blob=new Blob([value],{type:"text/css;charset=utf-8"});
@@ -711,8 +720,11 @@ function restoreOriginalCss(){
  var original=activeProject.theme.source.originalCss;
  if(typeof original!=="string"||!original)return;
  el("raw-css-editor").value=original;
+ rawEditorBaselineValue=el("raw-css-editor").value;
  activeProject.theme.source.workingCss=original;
- saveRawProject();
+ activeProject.updatedAt=new Date().toISOString();
+ var restored=window.KMThemeProject.saveProject(activeProject);
+ el("raw-css-state").textContent=restored?"Original restored":"Restored in editor; local save failed";
  updateRawMeta();
  el("raw-css-state").textContent="Original restored";
  renderCssReport(el("raw-css-report"),window.KMCssWorkbench.analyzeCss(original));
@@ -776,6 +788,7 @@ fetch("themes/km-warm/source.css").then(function(r){if(!r.ok)throw new Error("Co
    updateControls(saved.theme.settings);el("guide").hidden=true;el("studio-workspace").hidden=false;
    if(saved.editorMode==="raw" && saved.theme.source.workingCss){
     el("raw-css-editor").value=saved.theme.source.workingCss;
+    rawEditorBaselineValue=el("raw-css-editor").value;
     el("studio-grid").hidden=true;el("raw-css-panel").hidden=false;el("css-workbench").hidden=true;
     el("raw-css-title").textContent="Raw CSS · "+(saved.theme.source.label||saved.name);
     el("raw-css-subtitle").textContent=saved.theme.source.kind==="imported"?"Restored imported stylesheet.":"Restored working stylesheet.";
