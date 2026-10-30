@@ -139,6 +139,17 @@
     }
   }
 
+  function clearProject(storage) {
+    var target = getStorage(storage);
+    if (!target) return false;
+    try {
+      target.removeItem(PROJECT_KEY);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   function cleanProfile(input) {
     input = isObject(input) ? input : {};
     return {
@@ -178,6 +189,7 @@
     normalizeProject: normalizeProject,
     saveProject: saveProject,
     loadProject: loadProject,
+    clearProject: clearProject,
     saveProfile: saveProfile,
     loadProfile: loadProfile,
     cleanSettings: cleanSettings
