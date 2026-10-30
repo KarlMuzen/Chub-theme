@@ -29,7 +29,8 @@ Local storage is best-effort. If browser storage is disabled or full, the editor
       "kind": "preset",
       "label": "Forest",
       "originalCss": "",
-      "overrides": ""
+      "overrides": "",
+      "workingCss": ""
     },
     "settings": {
       "p": "forest",
@@ -41,7 +42,8 @@ Local storage is best-effort. If browser storage is disabled or full, the editor
       "rp": "serif",
       "fx": "lite"
     }
-  }
+  },
+  "editorMode": "visual"
 }
 ```
 
@@ -61,9 +63,9 @@ Local storage is best-effort. If browser storage is disabled or full, the editor
 
 ## CSS preservation contract
 
-`source.originalCss` is reserved for the exact imported stylesheet. Import processing must not normalize, minify, or rewrite this field. Visual changes belong in `source.overrides`. A future import implementation must preserve unsupported CSS and report what the visual editor cannot represent. It must never silently discard imported rules.
+`source.originalCss` is the immutable restore point. `source.workingCss` is the editable stylesheet. Import processing stores the exact original string in both fields and never normalizes, minifies, sanitizes, or rewrites it. Raw edits update only `workingCss`. Restore copies `originalCss` back into `workingCss`. The current raw editor checks basic structure (balanced blocks, parentheses, comments and strings) and reports selected compatibility/security warnings; it is not a complete CSS parser. Imported CSS is not injected into the Studio preview. The current implementation does not map arbitrary third-party CSS into visual controls, so imported projects open in Raw mode.
 
-The v1 browser module validates and stores the project structure. CSS file import, raw CSS editing, project history, and multi-project management are separate product features and are not claimed as complete by this format.
+The v1 browser modules validate and store the project structure, import a `.css` file or pasted CSS (up to 1 MB), provide raw editing, copy and download actions, and restore the original import. Project history and multi-project management remain future features.
 
 ## Compatibility
 
