@@ -18,7 +18,7 @@ jobs:
       - run: python scripts/build.py
       - run: python scripts/lint.py
       - run: python scripts/check_generator.py
-      - run: node --test scripts/test_theme_project.js scripts/test_css_workbench.js
+      - run: node --test scripts/test_theme_project.js scripts/test_css_workbench.js scripts/test_chub_reference_capture.js
       - run: python -m unittest scripts/test_build.py -v
       - uses: actions/upload-artifact@v4
         with:
