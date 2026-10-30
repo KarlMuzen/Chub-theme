@@ -4,9 +4,9 @@ Independent Chub community tools by [KarlMuzen](https://github.com/KarlMuzen). N
 
 ## KM Warm theme
 
-A warm, low-distraction Chub theme with automatic light/dark colours. The current public source is **KM Warm v3.6 LITE**.
+A warm, low-distraction Chub theme with automatic light/dark colours. The current public source is **KM Warm v3.6 LITE**. The companion Studio lets users preview and configure palettes, then build a standalone CSS file locally in the browser.
 
-- **[Open the mobile-first theme generator](https://karlmuzen.github.io/KM-CHUB-THEME/)**
+- **[Open KM Theme Studio](https://karlmuzen.github.io/KM-CHUB-THEME/)** — live chat preview, five palettes, custom accents, typography controls and shareable settings links.
 - [Download the latest LITE CSS](https://github.com/KarlMuzen/KM-CHUB-THEME/releases/latest/download/KM-Warm-lite-v3.6.min.css)
 - [Download the compatibility CSS](https://github.com/KarlMuzen/KM-CHUB-THEME/releases/latest/download/KM-Warm-compat-v3.6.min.css)
 - [Report a problem or request a feature](https://github.com/KarlMuzen/KM-CHUB-THEME/issues)
