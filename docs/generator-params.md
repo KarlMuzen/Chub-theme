@@ -1,8 +1,8 @@
-# KM Theme Generator: URL parameter spec (v1)
+# KM Theme Studio: URL parameter spec (v1)
 
-Contract between the generator page, the Chub Theme Helper bot, and shared links. The page is static (GitHub Pages): no server, no third-party requests. It builds the CSS in the browser and offers a download.
+Contract between the Studio page, the Chub Theme Helper bot, and shareable configuration links. The page is static (GitHub Pages): no server, no third-party requests. It builds the CSS in the browser and offers a download.
 
-Example: https://karlmuzen.github.io/KM-CHUB-THEME/?v=1&p=warm&a=5b8def&fs=1.16
+Example: https://karlmuzen.github.io/KM-CHUB-THEME/?v=1&p=midnight&a=5b8def&fs=1.16
 
 Only changed parameters are needed. Unknown parameters are ignored. Invalid values use defaults.
 
@@ -11,8 +11,8 @@ Only changed parameters are needed. Unknown parameters are ignored. Invalid valu
 | Key | Meaning | Allowed | Default | Emits |
 |---|---|---|---|---|
 | v | spec version | 1 | 1 | n/a |
-| p | palette | warm (v1) | warm | selects the warm PRESET |
-| a | accent colour | six hex digits, no # | c6613f | accent family |
+| p | palette | warm, oled, midnight, forest, parchment | warm | selects a palette token set |
+| a | accent colour | six hex digits, no # | selected palette accent | accent family |
 | fs | message text size (rem) | 0.90–1.40 | 1.06 | --c-fs |
 | lh | line height | 1.40–2.00 | 1.70 | --c-lh |
 | ga | chat-card opacity | 0–1 | automatic dark .25 / light .55 | --c-ga when explicitly changed |
@@ -21,7 +21,14 @@ Only changed parameters are needed. Unknown parameters are ignored. Invalid valu
 | blur | glass blur px | 0–20 | 10 | reserved for a future FULL source |
 | m | forced dark/light | reserved | n/a | n/a |
 
-Planned palettes (oled, midnight, forest, parchment) are not shipped. Only warm is accepted in v1. The FULL profile is not offered because the supplied v3.6 source is already LITE; its effects were removed and cannot be reconstructed from that file. A genuine FULL profile requires the original v3.5 full-effects CSS.
+The Studio includes five palettes: Warm, OLED, Midnight, Forest and Parchment. A true FULL profile is not offered because the supplied v3.6 source is already LITE; its effects were removed and cannot be reconstructed from that file. A genuine FULL profile requires the original v3.5 full-effects CSS.
+
+## Live preview and sharing
+
+- The preview is illustrative and is not a pixel-perfect reproduction of Chub's interface.
+- Light/dark preview mode affects only the preview. Generated CSS retains automatic light/dark behaviour based on the user's system and Chub settings.
+- Share links encode only changed, validated settings in the query string. Opening a link preloads those values. No account, analytics endpoint, or backend is used.
+- The page's CSS source is fetched from the same GitHub Pages origin; all configuration and CSS assembly runs in the browser.
 
 ## Font stacks
 
@@ -49,9 +56,7 @@ All numeric inputs are parsed, checked for finiteness, clamped to the documented
 
 ## Source assembly
 
-The original source.css is kept byte-for-byte as supplied. To avoid editing that source, the build script identifies the PRESET, CORE, LITE and OVERRIDES boundaries using their existing section headings. Assembly order is PRESET → CORE → LITE → generated OVERRIDES.
-
-The browser generator fetches only the same-origin source.css file. It has no external CSS imports, remote assets, or server-side generation.
+The original source.css is kept byte-for-byte as supplied. To avoid editing that source, the browser generator identifies the PRESET, CORE, LITE and OVERRIDES boundaries using their existing section headings. Assembly order is PRESET → CORE → LITE → source overrides → selected palette → generated options.
 
 ## Builds
 
@@ -67,7 +72,8 @@ The source and generated CSS must not contain @import, remote url(), @font-face,
 
 ## Verify on a phone
 
-- Confirm the release asset link downloads instead of opening as text.
-- Upload the generated file in Chub without the harmful-content rejection.
-- Check custom accent contrast in both light and dark modes.
+- Preview Warm, OLED, Midnight, Forest and Parchment in both preview modes.
+- Change accent, font, message size and line height; confirm the preview reacts.
+- Copy a share link, open it in a fresh tab, and confirm the same settings load.
+- Download the generated file and upload it in Chub without the harmful-content rejection.
 - Confirm Clear Custom CSS restores the default theme.
