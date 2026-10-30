@@ -19,7 +19,8 @@ for path in FILES:
             ERRORS.append(f"{path.relative_to(ROOT)}: forbidden {label}")
     for match in re.finditer(r"url\(\s*([^)]*)\)", text, re.I):
         value = match.group(1).strip(" \t\r\n'\"")
-        # url(x) is a CSS @supports feature-test placeholder, not a fetched asset.\n        if not value.lower().startswith("data:") and value.lower() != "x":
+        # url(x) is a CSS @supports feature-test placeholder, not a fetched asset.
+        if not value.lower().startswith("data:") and value.lower() != "x":
             ERRORS.append(f"{path.relative_to(ROOT)}: non-data url() is not allowed")
             break
 if ERRORS:
