@@ -101,8 +101,9 @@ function accentOverrides(p){
  var fs=p.fs.toFixed(2).replace(/0+$/,"").replace(/\.$/,"");
  var lh=p.lh.toFixed(2).replace(/0+$/,"").replace(/\.$/,"");
  var ga=p.ga.toFixed(2).replace(/0+$/,"").replace(/\.$/,"");
+ var accent=p.a!==defaults.a?"--c-accent:"+x+";--c-accent-hi:light-dark(color-mix(in srgb,"+x+" 78%,#000),color-mix(in srgb,"+x+" 78%,#fff));--c-btn:"+x+";--c-btn-hv:light-dark(color-mix(in srgb,"+x+" 88%,#000),color-mix(in srgb,"+x+" 88%,#fff));--c-act:light-dark(color-mix(in srgb,"+x+" 72%,#000),color-mix(in srgb,"+x+" 55%,#fff));":"";
  var extra=p.gaTouched?"--c-ga:"+ga+";":"";
- return "\n/* Generated options — validated URL parameters only */\nhtml{\n--c-accent:"+x+";\n--c-accent-hi:light-dark(color-mix(in srgb,"+x+" 78%,#000),color-mix(in srgb,"+x+" 78%,#fff));\n--c-btn:"+x+";\n--c-btn-hv:light-dark(color-mix(in srgb,"+x+" 88%,#000),color-mix(in srgb,"+x+" 88%,#fff));\n--c-act:light-dark(color-mix(in srgb,"+x+" 72%,#000),color-mix(in srgb,"+x+" 55%,#fff));\n--c-fs:"+fs+"rem;--c-lh:"+lh+";"+extra+"--c-rp:"+rp+";\n}\n";
+ return "\n/* Generated options — validated URL parameters only */\nhtml{\n"+accent+"--c-fs:"+fs+"rem;--c-lh:"+lh+";"+extra+"--c-rp:"+rp+";\n}\n";
 }
 function buildCSS(p){
  if(!sourceParts)throw new Error("Theme source has not loaded.");
