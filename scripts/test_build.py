@@ -20,5 +20,13 @@ class BuildTests(unittest.TestCase):
         self.assertIn("data:image/svg+xml;utf8", result)
         self.assertIn("color:red", result)
 
+    def test_chub_adapter_patch_in_minified_lite(self):
+        parts = build.split_source(build.SOURCE.read_text(encoding="utf-8"))
+        lite = build.minify(parts["preset"] + parts["core"] + parts["lite"] + build.chub_adapter_patch() + parts["overrides"])
+        self.assertIn("--message-font-size:var(--c-fs)!important", lite)
+        self.assertIn("--message-line-height:var(--c-lh)!important", lite)
+        self.assertIn(".light-mode-override", lite)
+        self.assertIn(".msg-mkdn-container:not(#_){font-size:var(--c-fs)!important;line-height:var(--c-lh)!important}", lite)
+
 if __name__ == "__main__":
     unittest.main()
