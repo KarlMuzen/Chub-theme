@@ -60,7 +60,30 @@ test("saves and reloads project and device preferences", () => {
   });
 });
 
-test("handles unavailable or invalid storage without throwing", () => {
+
+test("preserves original and working CSS through local project storage", () => {
+  const storage = memoryStorage();
+  const originalCss = "/* source */\\r\\n.card { color: #eee; }\\r\\n";
+  const workingCss = originalCss + "\\n/* local edit */";
+  const project = projectApi.createProject({
+    editorMode: "raw",
+    theme: { source: { kind: "imported", originalCss, workingCss } }
+  });
+  assert.equal(projectApi.saveProject(project, storage), true);
+  const restored = projectApi.loadProject(storage);
+  assert.equal(restored.theme.source.originalCss, originalCss);
+  assert.equal(restored.theme.source.workingCss, workingCss);
+  assert.equal(restored.editorMode, "raw");
+});
+
+test("defaults new profiles to dark appearance while allowing system preference", () => {
+  assert.equal(projectApi.loadProfile(memoryStorage()).appearance, "dark");
+  assert.equal(projectApi.cleanSettings({}).p, "warm");
+  const storage = memoryStorage();
+  projectApi.saveProfile({ device: "phone", platform: "chub", appearance: "system" }, storage);
+  assert.equal(projectApi.loadProfile(storage).appearance, "system");
+});
+\ntest("handles unavailable or invalid storage without throwing", () => {
   const storage = {
     getItem() { throw new Error("blocked"); },
     setItem() { throw new Error("quota"); }
