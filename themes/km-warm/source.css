@@ -1,0 +1,683 @@
+/* KM Warm v3.6 LITE — SINGLE FILE (upload this alone). v3.2 = header lines, headings, dock gap, funnel. v3.3 = chat page (circle buttons, tap fill, menus). v3.4 = override fix (plain html{--c-ga:.4} now works), composer icons, open-menu slab, switch label, menu width, dark card legibility. v3.5 = composer dots slab, Subscribe buttons (guess). v3.6 = solid bottom dock (page text no longer shows through it). LITE = no embers/dust layer, no blur, no paper grain, lighter shadows (same look, calmer on a phone's GPU); see the LITE block at the bottom. Swap look = replace the PRESET block. Your tweaks = the OVERRIDES block at the very bottom. */
+/* ===== PRESET (colours only: light-dark(phone-light, phone-dark)) ===== */
+html{
+  --c-bg:light-dark(#faf9f5,#262624); --c-surface:light-dark(#fffdf9,#30302e); --c-raised:light-dark(#f0eee6,#3a3935);
+  --c-text:light-dark(#1f1e1d,#e3e1d7); --c-strong:light-dark(#141413,#faf9f5); --c-muted:light-dark(#6b6a64,#a3a198);
+  --c-accent:light-dark(#c6613f,#d97757); --c-accent-hi:light-dark(#a8472a,#e8936f);
+  --c-btn:light-dark(#bc5a3c,#bc5a3c); --c-btn-hv:light-dark(#a94e32,#cc6a49); --c-act:light-dark(#9a4a30,#e2b295);
+}
+
+/* KM Warm v2.1 — CORE (layout/components). Palette lives in presets/*.css.
+   Customise: override any --c-* token in a later rule, e.g.  html{--c-accent:#7aa2f7;--c-ga:.4}
+   PRESET TOKENS (colours only; each = light-dark(<day>,<night>)):
+     --c-bg --c-surface --c-raised --c-text --c-strong --c-muted --c-accent --c-accent-hi --c-btn --c-btn-hv --c-act
+   KNOBS: --c-ga chat-card opacity | --c-blur | --c-fs/--c-lh message size | --c-rp reading font | --c-ui UI font
+   MODE: phone dark/light auto; Chub "Light Mode Active" ON forces light. Needs Chrome/Firefox 2024+ (light-dark()). */
+
+/* defaults: zero specificity -> any preset/override wins regardless of order */
+:where(html){
+  --c-blur:10px; --c-fs:1.06rem; --c-lh:1.7;
+  --c-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  --c-rp:"Source Serif 4","Anthropic Serif",Tiempos,"Iowan Old Style","Palatino Linotype",Georgia,"Noto Serif",serif;
+  /* warm palette fallback = presets/warm.css */
+  --c-bg:light-dark(#faf9f5,#262624); --c-surface:light-dark(#fffdf9,#30302e); --c-raised:light-dark(#f0eee6,#3a3935);
+  --c-text:light-dark(#1f1e1d,#e3e1d7); --c-strong:light-dark(#141413,#faf9f5); --c-muted:light-dark(#6b6a64,#a3a198);
+  --c-accent:light-dark(#c6613f,#d97757); --c-accent-hi:light-dark(#a8472a,#e8936f);
+  --c-btn:light-dark(#bc5a3c,#bc5a3c); --c-btn-hv:light-dark(#a94e32,#cc6a49); --c-act:light-dark(#9a4a30,#e2b295);
+}
+
+/* mode: scheme on html; tunables in :where() so YOUR overrides always win, wherever they sit in the file */
+html{color-scheme:dark}
+@media (prefers-color-scheme:light){html{color-scheme:light}}
+html:is([style*="--opposite-color: black"],[style*="--opposite-color:black"]){color-scheme:light}
+:where(html){--c-ga:.25;--c-img:brightness(1) saturate(1.1);--c-bf:saturate(150%) brightness(1.15);--c-icon:grayscale(1) sepia(1) saturate(3) hue-rotate(-16deg) brightness(1.55);
+  --c-fx-img:var(--km-embers);--c-fx-col:var(--c-accent-hi);--c-fx:.75;--c-fx-rot:0deg;--c-fx-dy:-360px;--c-fx-sway:28px;--c-fx-speed:20s;}
+@media (prefers-color-scheme:light){:where(html){--c-ga:.55;--c-img:opacity(.95) saturate(1.05);--c-bf:saturate(140%);--c-icon:grayscale(1) sepia(1) saturate(3) hue-rotate(-16deg) brightness(.95);
+  --c-fx-img:var(--km-motes);--c-fx-col:var(--c-accent);--c-fx:.6;--c-fx-rot:0deg;--c-fx-dy:-360px;--c-fx-sway:-34px;--c-fx-speed:30s;}}
+:where(html:is([style*="--opposite-color: black"],[style*="--opposite-color:black"])){--c-ga:.55;--c-img:opacity(.95) saturate(1.05);--c-bf:saturate(140%);--c-icon:grayscale(1) sepia(1) saturate(3) hue-rotate(-16deg) brightness(.95);
+  --c-fx-img:var(--km-motes);--c-fx-col:var(--c-accent);--c-fx:.6;--c-fx-rot:0deg;--c-fx-dy:-360px;--c-fx-sway:-34px;--c-fx-speed:30s;}
+
+/* derived tokens: computed from the preset (override-able too) */
+:where(html){
+  --c-glass:color-mix(in srgb,var(--c-surface) 86%,transparent);
+  --c-glass-strong:color-mix(in srgb,var(--c-bg) 88%,transparent);
+  --c-chat:color-mix(in srgb,var(--c-surface) calc(var(--c-ga)*100%),transparent);
+  --c-line:color-mix(in srgb,var(--c-text) 14%,transparent);
+  --c-line-hi:color-mix(in srgb,var(--c-text) 27%,transparent);
+  --c-ring:color-mix(in srgb,var(--c-accent) 30%,transparent);
+  --c-sel:color-mix(in srgb,var(--c-accent) 34%,transparent);
+  --c-glow:color-mix(in srgb,var(--c-accent) 10%,transparent);
+  --c-switch-off:color-mix(in srgb,var(--c-text) 25%,transparent);
+  --c-shadow:light-dark(rgba(20,20,19,.07),rgba(0,0,0,.26));
+  --c-ts:light-dark(transparent,rgba(0,0,0,.4));
+  --c-shallow:light-dark(color-mix(in srgb,var(--c-bg) 72%,transparent),transparent);
+}
+
+/* Chub's own colour variables -> ours (stylesheet !important beats Chub's inline values) */
+html:not(#_){
+  --link-color:var(--c-accent-hi)!important;
+  --quote-color:var(--c-text)!important;
+  --dark-background-color:var(--c-surface)!important;
+  --light-background-color:var(--c-raised)!important;
+  --ribbon-color:var(--c-raised)!important;
+  --background-deep-alpha:transparent!important;
+  --background-shallow-alpha:var(--c-shallow)!important;
+  --opposite-color:var(--c-text)!important}   /* keeps Chub's own icons/text in step with auto mode; delete this line if icons look wrong */
+
+/* no backdrop-filter support: use the more solid glass so text stays readable */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  html:not(#_){--c-glass:var(--c-glass-strong);--c-chat:var(--c-glass-strong)}
+}
+
+/* ===== base + warm backdrop (shows when Chub's background image is off) ===== */
+html{background-color:var(--c-bg)!important}
+body{background:transparent!important;color:var(--c-text)!important;font-family:var(--c-ui)!important}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(90% 50% at 50% -10%,var(--c-glow),transparent 70%),var(--c-bg)}
+#root,#root>div,.ant-layout,.ant-layout-content{background:transparent!important}
+.ant-layout-header{
+  background:var(--c-glass-strong)!important;border-bottom:1px solid var(--c-line)!important;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+
+/* chat page: clear Chub's own layers around the messages so the backdrop shows through */
+:not(html):not(body):has(#chat-messages),
+:not(html):not(body):has(#chat-messages)>*:not([role="menu"],.ant-dropdown,[class*="dropdown" i],[class*="popover" i],[class*="popup" i]){background-color:transparent!important}
+
+/* nothing around the messages may blur/filter or paint, or the cards' own glass can't reach the cover art */
+:not(html):not(body):has(#chat-messages):not(#_),#chat-messages:not(#_){
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important}
+#chat-messages:not(#_){background:transparent!important}
+
+a{color:var(--c-accent-hi);text-underline-offset:.18em} a:hover{color:var(--c-accent)}
+::selection{background:var(--c-sel);color:inherit}
+:is(a,button):focus-visible{outline:2px solid var(--c-accent);outline-offset:2px}
+
+/* serif headings, like Claude's greeting/titles */
+:is(h1,h2,h3,h4,h5,h6,.ant-modal-title,.ant-drawer-title,.ant-card-head-title,.ant-card-meta-title):not(#_){
+  font-family:var(--c-rp)!important;font-weight:500;letter-spacing:-.005em}
+:is(h1,h2,h3,h4,h5,h6,.ant-typography,.ant-card-meta-title,.ant-modal-title,.ant-drawer-title):not(a,.ant-card-head *){color:var(--c-strong)!important}
+
+/* ===== cards (browse pages): matte paper, hairline border ===== */
+.ant-card,.ant-card-bordered{
+  background:var(--c-glass)!important;border:1px solid var(--c-line)!important;
+  border-radius:16px!important;color:var(--c-text)!important;
+  box-shadow:0 1px 2px var(--c-shadow),0 6px 20px var(--c-shadow);
+  transition:border-color .2s,box-shadow .2s,transform .2s}
+.ant-card:hover{border-color:color-mix(in srgb,var(--c-accent) 55%,transparent)!important;transform:translateY(-2px)}
+.ant-card-head{
+  background:transparent!important;border-bottom:1px solid var(--c-line)!important;
+  color:var(--c-strong)!important;border-radius:16px 16px 0 0!important}
+.ant-row.card-title-row{color:var(--c-strong)!important}
+.card-title-row,.card-title-row :is(span,div,a,p){font-family:var(--c-rp)!important;font-weight:500}
+.ant-card-actions{background:transparent!important;border-top:1px solid var(--c-line)!important}
+.ant-card-actions>li{border-color:var(--c-line)!important}
+.ant-card-actions :is(a,button,span,.anticon):not([disabled],[aria-disabled="true"]){color:var(--c-text)!important}
+.chats-list-container,[class*="chats-list-container"]{border:initial!important;box-shadow:initial!important}
+.quote-color{color:var(--c-muted)!important}
+.fake-ribbon{color:var(--c-accent-hi)!important}
+
+/* ===== tags / buttons / switches / controls ===== */
+.ant-tag{background:var(--c-raised)!important;border:1px solid var(--c-line)!important;color:var(--c-muted)!important;border-radius:8px!important}
+.ant-tag.ant-tag-error{
+  background:color-mix(in srgb,var(--c-accent) 16%,transparent)!important;
+  border-color:color-mix(in srgb,var(--c-accent) 40%,transparent)!important;color:var(--c-accent-hi)!important}
+.ant-btn{border-radius:12px!important;box-shadow:none!important;font-weight:500}
+.ant-btn-variant-outlined{background:var(--c-glass)!important;border-color:var(--c-line-hi)!important;color:var(--c-text)!important}
+.ant-btn-variant-outlined:hover{background:var(--c-raised)!important;border-color:var(--c-line-hi)!important;color:var(--c-strong)!important}
+.ant-btn-primary,.ant-btn-color-primary.ant-btn-variant-solid{background:var(--c-btn)!important;border:none!important;color:#fff!important}
+.ant-btn-primary:hover,.ant-btn-color-primary.ant-btn-variant-solid:hover{background:var(--c-btn-hv)!important;color:#fff!important}
+.ant-btn-variant-text,.ant-btn-variant-link,.ant-btn-text,.ant-btn-link{color:var(--c-text)!important}
+.ant-btn-variant-text:hover,.ant-btn-text:hover{background:var(--c-raised)!important;color:var(--c-strong)!important}
+
+.ant-switch.ant-switch-checked{background:var(--c-btn)!important}
+.ant-switch:not(.ant-switch-checked){background:var(--c-switch-off)!important}
+.ant-checkbox-checked .ant-checkbox-inner{background:var(--c-btn)!important;border-color:var(--c-btn)!important}
+.ant-radio-checked .ant-radio-inner{border-color:var(--c-btn)!important}
+.ant-radio-inner::after{background-color:var(--c-btn)!important}
+.ant-slider-track{background:var(--c-accent)!important}
+.ant-slider-handle::after{box-shadow:0 0 0 2px var(--c-accent)!important}
+.ant-pagination-item{background:var(--c-glass)!important;border:1px solid var(--c-line)!important;border-radius:10px!important}
+.ant-pagination-item a{color:var(--c-text)!important}
+.ant-pagination-item-active{border-color:var(--c-accent)!important}
+.ant-pagination-item-active a{color:var(--c-accent-hi)!important}
+.ant-pagination-prev .ant-pagination-item-link,.ant-pagination-next .ant-pagination-item-link{background:transparent!important;color:var(--c-muted)!important}
+.ant-progress-bg{background:var(--c-accent)!important}
+.ant-spin,.ant-spin-dot-item{color:var(--c-accent)!important}
+.ant-badge-count{background:var(--c-btn)!important;color:#fff!important;box-shadow:0 0 0 1px var(--c-bg)!important}
+
+/* ===== inputs ===== */
+input,textarea,select,.ant-input,.ant-select-selector,.ant-input-affix-wrapper,.ant-input-number{
+  background:var(--c-glass)!important;color:var(--c-text)!important;
+  border:1px solid var(--c-line-hi)!important;border-radius:12px!important}
+/* inner <input> of a wrapped control: no second border */
+:is(.ant-input-number,.ant-input-affix-wrapper,.ant-select-selection-search) input:not(#_){
+  background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+input:focus,textarea:focus,.ant-input:focus,.ant-input-focused,.ant-input-number-focused,.ant-select-focused .ant-select-selector{
+  border-color:var(--c-accent)!important;box-shadow:0 0 0 3px var(--c-ring)!important}
+::placeholder{color:var(--c-muted)!important;opacity:.85}
+textarea{font-family:var(--c-rp)!important;font-size:1.02rem;line-height:1.55}
+.ant-select-arrow,.ant-select-clear,.ant-select-selection-placeholder{color:var(--c-muted)!important}
+.ant-select-item{color:var(--c-text)!important}
+.ant-form-item-label>label{color:var(--c-muted)!important}
+.ant-picker{background:var(--c-glass)!important;border:1px solid var(--c-line-hi)!important;border-radius:12px!important;color:var(--c-text)!important}
+.ant-picker-dropdown .ant-picker-panel-container{background:var(--c-surface)!important;border:1px solid var(--c-line)!important;border-radius:16px!important;color:var(--c-text)!important}
+.ant-upload.ant-upload-drag{background:var(--c-glass)!important;border:1px dashed var(--c-line-hi)!important;border-radius:16px!important}
+
+/* ===== tabs / modals / popups: solid paper ===== */
+.ant-tabs-tab{color:var(--c-muted)!important}
+.ant-tabs-ink-bar{background:var(--c-accent)!important}
+.ant-tabs-tab-active .ant-tabs-tab-btn{color:var(--c-strong)!important}
+.ant-tabs-nav::before{border-color:var(--c-line)!important}
+.ant-modal-content,.ant-drawer-content,.ant-popover-inner,.ant-select-dropdown{
+  background:var(--c-surface)!important;color:var(--c-text)!important;
+  border:1px solid var(--c-line)!important;border-radius:20px!important;
+  box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.ant-modal-header,.ant-drawer-header{background:transparent!important;border-bottom:0!important}
+.ant-modal-mask,.ant-drawer-mask{background:rgba(20,20,19,.55)!important}
+.ant-menu-item-selected,.ant-dropdown-menu-item:hover,.ant-select-item-option-active{
+  background:color-mix(in srgb,var(--c-accent) 14%,transparent)!important;color:var(--c-strong)!important}
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled){
+  background:color-mix(in srgb,var(--c-accent) 18%,transparent)!important;color:var(--c-accent-hi)!important;font-weight:500}
+.ant-divider,hr{border-color:var(--c-line)!important}
+/* menus: fully solid + blur so chat text can't show through */
+.ant-dropdown-menu:not(#_),.ant-dropdown-menu-root:not(#_),[role="menu"]:not(#_){
+  background-color:var(--c-surface)!important;background-image:none!important;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid var(--c-line)!important;border-radius:14px!important;color:var(--c-text)!important}
+
+/* ===== rest of the component kit (tables, lists, alerts, toasts, tooltips...) ===== */
+.ant-menu{background:transparent!important;color:var(--c-text)!important;border-color:var(--c-line)!important}
+.ant-menu-item,.ant-menu-submenu-title{color:var(--c-text)!important}
+.ant-table{background:transparent!important;color:var(--c-text)!important}
+.ant-table-thead>tr>th{background:var(--c-raised)!important;color:var(--c-strong)!important;border-color:var(--c-line)!important}
+.ant-table-tbody>tr>td{border-color:var(--c-line)!important}
+.ant-table-tbody>tr:hover>td{background:color-mix(in srgb,var(--c-accent) 8%,transparent)!important}
+.ant-list-item{border-color:var(--c-line)!important;color:var(--c-text)!important}
+.ant-collapse{background:var(--c-glass)!important;border-color:var(--c-line)!important;border-radius:14px!important}
+.ant-collapse>.ant-collapse-item{border-color:var(--c-line)!important}
+.ant-collapse-header,.ant-collapse-content{background:transparent!important;color:var(--c-text)!important;border-color:var(--c-line)!important}
+.ant-alert{background:var(--c-raised)!important;border:1px solid var(--c-line)!important;border-radius:12px!important;color:var(--c-text)!important}
+.ant-alert-message,.ant-alert-description{color:var(--c-text)!important}
+.ant-message-notice-content,.ant-notification-notice{
+  background:var(--c-surface)!important;color:var(--c-text)!important;
+  border:1px solid var(--c-line)!important;border-radius:14px!important;box-shadow:0 10px 30px var(--c-shadow)!important}
+.ant-notification-notice-message{color:var(--c-strong)!important}
+.ant-tooltip-inner{background:var(--c-surface)!important;color:var(--c-text)!important;border:1px solid var(--c-line)!important;border-radius:10px!important}
+.ant-tooltip-arrow::before,.ant-popover-arrow::before{background:var(--c-surface)!important}
+.ant-segmented{background:var(--c-raised)!important;color:var(--c-muted)!important;border-radius:12px!important}
+.ant-segmented-item-selected{background:var(--c-surface)!important;color:var(--c-strong)!important}
+.ant-breadcrumb,.ant-breadcrumb a,.ant-breadcrumb-separator{color:var(--c-muted)!important}
+.ant-empty-description{color:var(--c-muted)!important}
+.ant-descriptions-item-label{color:var(--c-muted)!important}
+.ant-skeleton-content .ant-skeleton-title,.ant-skeleton-paragraph>li{background:var(--c-raised)!important}
+
+/* ===== v1.9 light-mode fixes =====
+   Every rule below uses only --c-* tokens or transparent, no fixed colours, so it adapts to dark and light alike.
+   Selectors for the logo block, Timeline button, bottom nav and the chat "..." pill are best-effort guesses. */
+
+/* header logo: no filled block behind it */
+.ant-layout-header img,header img{background:transparent!important}
+.ant-layout-header :is(a,div,span,picture):has(>img,>svg):not(#_),
+.ant-layout-header [class*="logo" i]:not(#_),header [class*="logo" i]:not(#_){
+  background-color:transparent!important;background-image:none!important}
+
+/* filled / dark-solid / dropdown-trigger buttons (the Timeline sort button): paper chip instead of grey slab */
+.ant-btn-variant-filled:not(#_),
+.ant-btn-color-default.ant-btn-variant-solid:not(#_),
+.ant-btn.ant-dropdown-trigger:not(.ant-btn-primary,.ant-btn-variant-text,.ant-btn-variant-link,.ant-btn-text,.ant-btn-link):not(#_){
+  background:var(--c-raised)!important;border:1px solid var(--c-line)!important;color:var(--c-text)!important}
+:is(.ant-btn-variant-filled,.ant-btn-color-default.ant-btn-variant-solid,.ant-btn.ant-dropdown-trigger:not(.ant-btn-primary,.ant-btn-variant-text,.ant-btn-variant-link,.ant-btn-text,.ant-btn-link)):is(:hover,:active,.ant-dropdown-open):not(#_){
+  background:color-mix(in srgb,var(--c-raised) 86%,var(--c-text))!important;color:var(--c-strong)!important}
+:is(.ant-btn-variant-filled,.ant-btn-color-default.ant-btn-variant-solid) :is(span,.anticon,svg):not(#_){color:inherit!important}
+
+/* popover menus (chat "..." tools list): palette text + clay icons instead of Chub blue */
+.ant-popover-inner :is(a,button,span,div,p,li):not(.ant-tag,.ant-tag *,.ant-btn-primary,.ant-btn-primary *):not(#_){color:var(--c-text)!important}
+.ant-popover-inner :is(svg,.anticon):not(.ant-btn-primary *):not(#_){color:var(--c-accent)!important}
+
+/* chat "..." button: no dark pill behind the dots when pressed */
+.chat-layout-bigbox .w-full.transition-all.duration-500 :is(button,.ant-btn):is(:hover,:active,:focus,.ant-dropdown-open,.ant-popover-open):not(#_){
+  background-color:var(--c-raised)!important;background-image:none!important}
+.chat-layout-bigbox .w-full.transition-all.duration-500 svg:not(#_){background-color:transparent!important;background-image:none!important}
+
+/* ===== v2.0 our own chrome (logo, header, bottom dock, promo bar, grain). Selectors are best-effort guesses. ===== */
+
+/* logo: Chub's mark is hidden, our serif wordmark is drawn instead */
+:is(.ant-layout-header,header) a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"]):not(#_){
+  display:inline-block;white-space:nowrap;background:transparent!important;text-decoration:none!important}
+:is(.ant-layout-header,header) a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"])>*:not(#_){display:none!important}
+:is(.ant-layout-header,header) a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"])::before{
+  content:"chub";font:600 28px/1 var(--c-rp);letter-spacing:-.02em;color:var(--c-strong)}
+:is(.ant-layout-header,header) a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"])::after{
+  content:".";font:700 28px/1 var(--c-rp);color:var(--c-accent)}
+
+/* header: flat paper bar with a hairline, round search, ringed avatar */
+:is(.ant-layout-header,header):not(#_){
+  border-radius:0!important;border:0!important;border-bottom:1px solid var(--c-line)!important;box-shadow:none!important}
+:is(.ant-layout-header,header) :is(.ant-input-affix-wrapper,input):not(#_){
+  border-radius:999px!important;background:var(--c-raised)!important}
+:is(.ant-layout-header,header) .ant-avatar:not(.ant-avatar-square):not(#_){
+  border:1px solid var(--c-line-hi)!important;box-shadow:0 0 0 3px var(--c-glow)}
+
+/* mobile bottom nav / footer: our own paper dock */
+:is(.ant-layout-footer,[class*="bottom-nav" i],[class*="bottomnav" i],[class*="tab-bar" i],[class*="tabbar" i],
+[class~="fixed"][class~="bottom-0"]:is([class~="w-full"],[class~="left-0"],[class~="inset-x-0"]):not(:has(textarea))):not(#_){
+  background-color:var(--c-glass-strong)!important;border:1px solid var(--c-line)!important;border-radius:22px!important;
+  box-shadow:0 8px 28px var(--c-shadow)!important;overflow:hidden;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+[class~="fixed"][class~="bottom-0"]:is([class~="w-full"],[class~="left-0"],[class~="inset-x-0"]):not(:has(textarea)):not(#_){
+  left:12px!important;right:12px!important;width:auto!important;bottom:calc(10px + env(safe-area-inset-bottom,0px))!important}
+:is(.ant-layout-footer,[class*="bottom-nav" i],[class*="bottomnav" i],[class*="tab-bar" i],[class*="tabbar" i],
+[class~="fixed"][class~="bottom-0"]:is([class~="w-full"],[class~="left-0"],[class~="inset-x-0"]):not(:has(textarea))) :is(svg,a,button,span,.anticon):not(#_){
+  color:var(--c-muted)!important;opacity:1!important}
+:is(.ant-layout-footer,[class*="bottom-nav" i],[class*="bottomnav" i],[class*="tab-bar" i],[class*="tabbar" i],
+[class~="fixed"][class~="bottom-0"]:is([class~="w-full"],[class~="left-0"],[class~="inset-x-0"]):not(:has(textarea))) :is([aria-current="page"],[aria-selected="true"],.active,[class*="active" i],[class*="selected" i]):is(svg,a,button,span,.anticon):not(#_){
+  color:var(--c-accent-hi)!important}
+
+/* promo bar (indigo in Chub): warm paper strip with clay type */
+:is([class~="bg-indigo-600"],[class~="bg-indigo-700"],[class~="bg-indigo-800"],[class~="bg-indigo-900"]):not(button,.ant-btn):not(#_){
+  background-color:color-mix(in srgb,var(--c-accent) 12%,var(--c-surface))!important;
+  border-block:1px solid var(--c-line)!important;color:var(--c-accent-hi)!important;
+  font-family:var(--c-rp)!important;font-weight:500}
+:is([class~="bg-indigo-600"],[class~="bg-indigo-700"],[class~="bg-indigo-800"],[class~="bg-indigo-900"]) :is(a,span,div,p,strong):not(#_){
+  color:var(--c-accent-hi)!important}
+
+/* type + touch polish */
+:is([class~="text-xl"],[class~="text-2xl"],[class~="text-3xl"],[class~="text-4xl"]):not(#_){font-family:var(--c-rp)!important}
+.ant-tabs-tab-btn{font-family:var(--c-rp)!important;font-size:1.05rem}
+.ant-btn{transition:transform .12s,background-color .2s,border-color .2s}
+.ant-btn:active{transform:scale(.97)}
+
+/* ===== CHAT: paper message cards ===== */
+#chat-messages>*:has(.msg-mkdn-container){
+  background:var(--c-chat)!important;
+  backdrop-filter:blur(var(--c-blur)) var(--c-bf);-webkit-backdrop-filter:blur(var(--c-blur)) var(--c-bf);
+  border:1px solid var(--c-line)!important;
+  border-radius:20px!important;
+  padding-bottom:12px!important;
+  margin:10px 8px!important;
+  box-shadow:0 1px 2px var(--c-shadow),0 8px 24px var(--c-shadow)}
+
+/* Chub's own fills inside each card go transparent: one clean surface, no bands */
+#chat-messages>*:has(.msg-mkdn-container) *:not(img,svg,path,button,input,textarea,code,pre,
+  [class*="avatar" i],[class*="btn" i],[class*="tag" i]){
+  background-color:transparent!important;background-image:none!important}
+
+/* message text: serif reading column */
+.msg-mkdn-container{
+  background:none!important;border:0!important;box-shadow:none!important;
+  border-radius:0!important;padding:0!important;margin:0!important;
+  font-family:var(--c-rp)!important;
+  font-size:var(--c-fs);line-height:var(--c-lh);letter-spacing:.002em;font-weight:400;text-shadow:0 0 1px var(--c-ts);
+  color:var(--c-text)!important;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  font-feature-settings:"kern","liga";
+  text-wrap:pretty;hyphens:manual;word-break:normal;overflow-wrap:anywhere}
+.msg-mkdn-container p,.msg-mkdn-container li{color:var(--c-text)!important}
+.msg-mkdn-container :where(span,q,mark){color:var(--c-text)!important}   /* quoted dialogue */
+.msg-mkdn-container p{margin:0 0 .8em}
+.msg-mkdn-container p:last-child{margin-bottom:0}
+.msg-mkdn-container em{color:var(--c-act)!important;font-style:italic}
+.msg-mkdn-container strong{color:var(--c-strong)!important;font-weight:600}
+.msg-mkdn-container a{color:var(--c-accent-hi)!important}
+.msg-mkdn-container li::marker{color:var(--c-accent)}
+.msg-mkdn-container :is(h1,h2,h3,h4){font-weight:600;line-height:1.3;margin:1em 0 .4em}
+.msg-mkdn-container blockquote{margin:.7em 0;padding:.1em 0 .1em 14px;border-left:2px solid color-mix(in srgb,var(--c-accent) 60%,transparent);color:var(--c-muted)}
+.msg-mkdn-container code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;background:var(--c-raised);
+  border:1px solid var(--c-line);border-radius:6px;padding:1px 6px}
+.msg-mkdn-container pre{background:var(--c-raised);border:1px solid var(--c-line);border-radius:12px;padding:12px 14px;overflow-x:auto}
+.msg-mkdn-container pre code{background:none;border:0;padding:0}
+.msg-mkdn-container hr{border-color:var(--c-line)!important;margin:1em 0}
+
+/* ===== chat page chrome (selectors confirmed with Chub's debug view: .chat-layout-bigbox) ===== */
+/* header + input bar: solid-ish paper so they read evenly over a cover image */
+:not(html):not(body):has(#chat-messages)>:not(:has(#chat-messages),#chat-messages,img,[role="menu"],.ant-dropdown,[class*="dropdown" i],[class*="popover" i],[class*="popup" i]):not(#_),
+:is(.ant-layout-header,header):not(#_){
+  background-color:var(--c-glass-strong)!important;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.chat-layout-bigbox>.ant-row-center:not(#_){
+  background-color:var(--c-glass-strong)!important;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--c-line)!important}
+/* input bar: Claude-style rounded composer, clay-tinted icons instead of Chub's blue */
+.chat-layout-bigbox .w-full.transition-all.duration-500:not(#_){
+  background-color:var(--c-glass-strong)!important;border-top:1px solid var(--c-line)!important}
+.chat-layout-bigbox .w-full.transition-all.duration-500>*:not(textarea,svg,button,[class*="absolute"],[style*="absolute"],[role="menu"],[class*="popup" i],[class*="popover" i],[class*="dropdown" i],[class*="menu" i]):not(#_),
+.chat-layout-bigbox .w-full.transition-all.duration-500>*>*:not(textarea,svg,button,[class*="absolute"],[style*="absolute"],[role="menu"],[class*="popup" i],[class*="popover" i],[class*="dropdown" i],[class*="menu" i]):not(#_){
+  background-color:transparent!important;background-image:none!important}
+/* every wrapper around the composer textarea gets the bar fill, whatever Chub calls it (kills the gray band) */
+.chat-layout-bigbox :is(div,form,section):has(textarea):not(:has(#chat-messages),#chat-messages *,[role="menu"],[class*="popup" i],[class*="popover" i],[class*="dropdown" i]):not(#_){
+  background-color:var(--c-glass-strong)!important;background-image:none!important}
+.chat-layout-bigbox .w-full.transition-all.duration-500 textarea:not(#_){
+  background-color:var(--c-surface)!important;
+  border:1px solid var(--c-line-hi)!important;border-radius:22px!important;
+  box-shadow:0 4px 22px var(--c-shadow);
+  font-size:.92rem!important;line-height:1.4!important}
+.chat-layout-bigbox .w-full.transition-all.duration-500 textarea:focus:not(#_){
+  border-color:var(--c-accent)!important;
+  box-shadow:0 0 0 3px var(--c-ring),0 4px 22px var(--c-shadow)!important}
+.chat-layout-bigbox .w-full.transition-all.duration-500 svg{filter:var(--c-icon)}
+/* background image = the character's cover art: dimmed (dark) / washed with ivory (light) */
+:not(html):not(body):has(#chat-messages)>img{filter:var(--c-img)}
+
+/* ===== scrollbar ===== */
+@media (hover:hover){*{scrollbar-width:thin;scrollbar-color:var(--c-line-hi) transparent}}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--c-line-hi);border-radius:8px}
+/* touch screens: hide scrollbars so they can't sit on top of tag rows */
+@media (hover:none){*{scrollbar-width:none}::-webkit-scrollbar{display:none}}
+
+/* ===== phones: denser text, more per screen ===== */
+@media (max-width:640px){
+  #chat-messages>*:has(.msg-mkdn-container){margin:6px 4px!important;border-radius:18px!important}
+  .msg-mkdn-container{font-size:1rem;line-height:1.62}
+  .msg-mkdn-container p{margin:0 0 .7em}
+}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ===== v2.6 : glass popups, header fixes, Select fix. Selectors inferred from screenshots (no DOM access). ===== */
+:where(html){--c-pa:70%;--c-pb:blur(22px) saturate(125%)}
+
+/* popups = glass. --c-pa = paper opacity (lower = clearer). Modals/drawers stay solid. */
+:is(.ant-dropdown-menu,.ant-select-dropdown,.ant-popover-inner,[role="menu"]):not(:is(.ant-dropdown-menu,[role="menu"]) :is(.ant-dropdown-menu,[role="menu"])):not(#_){
+  background-color:color-mix(in srgb,var(--c-surface) var(--c-pa),transparent)!important;background-image:none!important;
+  backdrop-filter:var(--c-pb);-webkit-backdrop-filter:var(--c-pb);
+  border:1px solid var(--c-line-hi)!important;box-shadow:0 12px 40px var(--c-shadow)!important}
+:is(.ant-dropdown-menu-item,.ant-dropdown-menu-submenu-title,.ant-select-item):not(:hover,.ant-dropdown-menu-item-active,.ant-select-item-option-active,.ant-select-item-option-selected):not(#_){background-color:transparent!important}
+.ant-dropdown-menu-item-active:not(#_),.ant-dropdown-menu-item:hover:not(#_){background-color:color-mix(in srgb,var(--c-accent) 14%,transparent)!important}
+/* popup text/icons: palette instead of Chub blue (chat "Tools" popover) */
+:is(.ant-popover,.ant-dropdown,[role="menu"]) :is(a,button,span,div,p,li,label):not(.ant-tag,.ant-tag *,.ant-btn-primary,.ant-btn-primary *,svg,.anticon):not(#_){color:var(--c-text)!important}
+:is(.ant-popover,.ant-dropdown,[role="menu"]) :is(svg,.anticon):not(.ant-btn-primary *):not(#_){color:var(--c-accent)!important}
+
+
+/* header: "KM" brand mark in the logo slot. Fixed-width slot so the search is pushed right, never overlapped. */
+:where(html){--c-logo-text:"KM";--c-logo-size:21px;--c-logo-w:46px;--c-logo-y:7px}
+:is(.ant-layout-header,header) a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"]):not(#_){
+  display:flex!important;align-items:center;position:static!important;flex:none!important;
+  width:var(--c-logo-w)!important;min-width:var(--c-logo-w)!important;max-width:none!important;min-height:44px;
+  margin:0 8px 0 0!important;overflow:visible!important;background:transparent!important;text-decoration:none!important}
+:is(.ant-layout-header,header) a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"]):not(#_)::before{
+  content:var(--c-logo-text);position:relative;top:var(--c-logo-y);white-space:nowrap;
+  font:600 var(--c-logo-size)/1 var(--c-rp);letter-spacing:-.01em;color:var(--c-strong);
+  text-decoration:underline;text-decoration-color:var(--c-accent);text-decoration-thickness:2px;text-underline-offset:5px}
+:is(.ant-layout-header,header) a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"]):not(#_)::after{content:none}
+/* stray dark block left of the logo: any header wrapper without inputs/avatar/buttons paints nothing */
+:is(.ant-layout-header,header) :is(div,a,span,picture):not(:has(input,.ant-avatar,.ant-select,button)):not(#_){
+  background-color:transparent!important;background-image:none!important;box-shadow:none!important}
+
+/* antd Select (Timeline sort): paper chip, readable when open. */
+.ant-select:not(:is(.ant-layout-header,header) *):not(#_),.ant-select:not(:is(.ant-layout-header,header) *):not(#_) .ant-select-selector{
+  background-color:var(--c-raised)!important;color:var(--c-text)!important;border-radius:12px!important}
+.ant-select:not(:is(.ant-layout-header,header) *):not(#_) .ant-select-selector{border:1px solid var(--c-line)!important;box-shadow:none!important}
+.ant-select-open:not(#_) .ant-select-selector,.ant-select-focused:not(#_) .ant-select-selector{border-color:var(--c-accent)!important}
+.ant-select:not(#_) :is(.ant-select-selection-item,.ant-select-content-value){color:var(--c-text)!important;opacity:1!important}
+/* header search: transparent root (was a full-height slab), pill on the inner box */
+:is(.ant-layout-header,header) .ant-select:not(#_){background:transparent!important;border:0!important;box-shadow:none!important}
+:is(.ant-layout-header,header) .ant-select:not(#_) .ant-select-selector{
+  background:var(--c-raised)!important;border:1px solid var(--c-line-hi)!important;border-radius:999px!important}
+
+
+
+/* ===== design ideas from the bio ===== */
+/* primary buttons: clay gradient + soft glow */
+.ant-btn-primary:not(#_),.ant-btn-color-primary.ant-btn-variant-solid:not(#_){
+  background:linear-gradient(135deg,var(--c-btn),var(--c-btn-hv))!important;box-shadow:0 4px 14px var(--c-glow)!important}
+/* cards: clay edge on hover */
+.ant-card:hover:not(#_){box-shadow:-3px 0 0 var(--c-accent),0 6px 20px var(--c-shadow)!important}
+/* TITLES: page headings (h1/h2/h5) in the bio's serif gradient. Delete this block to disable. */
+:is(h1,h2,h5):not(.msg-mkdn-container *,.ant-card *,.ant-modal *,.ant-drawer *,.ant-popover *,.ant-layout-header *,header *):not(#_){
+  display:block!important;width:fit-content!important;max-width:100%;
+  background:linear-gradient(90deg,var(--c-strong),var(--c-accent-hi));-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent!important}
+
+/* ===================================================================================
+   v2.8 — fixes + polish. Only adds rules; delete this whole block to get v2.6 back.
+   Rules marked (guess) are inferred from screenshots (no DOM access).
+   =================================================================================== */
+
+/* --- A. chat legibility: calmer glass so text never sits on bright cover-art blobs --- */
+:where(html){--c-ga:.7;--c-blur:16px;--c-bf:saturate(112%) brightness(.8);--c-ts:rgba(0,0,0,.55)}
+@media (prefers-color-scheme:light){:where(html){--c-ga:.7;--c-blur:14px;--c-bf:saturate(120%) brightness(1.02);--c-ts:transparent;--c-fx:.3}}
+:where(html:is([style*="--opposite-color: black"],[style*="--opposite-color:black"])){--c-ga:.7;--c-blur:14px;--c-bf:saturate(120%) brightness(1.02);--c-ts:transparent;--c-fx:.3}
+.msg-mkdn-container:not(#_){text-shadow:0 1px 2px var(--c-ts)}
+#chat-messages>*:has(.msg-mkdn-container):not(#_){
+  box-shadow:inset 0 1px 0 light-dark(rgba(255,255,255,.65),rgba(255,255,255,.06)),0 1px 2px var(--c-shadow),0 8px 24px var(--c-shadow)}
+
+/* --- B. header (guess) --- */
+/* logo slot: hide anything Chub still draws inside the logo link; our "KM" is a pseudo-element and stays */
+:is(.ant-layout-header,header) a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"]):not(#_)>*{opacity:0!important;visibility:hidden!important;background:none!important}
+/* v2.8: every non-interactive element inside the header paints nothing (was only div/a/span/picture: nav, li, ul, h1, figure... slipped through) */
+:is(.ant-layout-header,header) *:not(input,textarea,button,img,svg,svg *,canvas,.ant-avatar,.ant-avatar *,.anticon,.ant-select-selector,.ant-input-affix-wrapper):not(:has(input,.ant-avatar,.ant-select,button)):not(#_){
+  background:none!important;box-shadow:none!important}
+:is(.ant-layout-header,header) *:not(:has(input,.ant-avatar,.ant-select,button)):not(#_)::before,
+:is(.ant-layout-header,header) *:not(:has(input,.ant-avatar,.ant-select,button)):not(#_)::after{background:none!important}
+/* square, edge-to-edge bar: the header itself, a wrapper around it, or whatever wraps logo + search + avatar */
+:is(.ant-layout-header,header,:has(>:is(.ant-layout-header,header)),:has(a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"])):has(.ant-avatar):has(input)):not(html,body,#root,#__next,#_){
+  border-radius:0!important;border-left:0!important;border-right:0!important;border-top:0!important;outline:0!important;box-shadow:none!important}
+:is(.ant-layout-header,header,:has(>:is(.ant-layout-header,header))):not(html,body,#root,#__next,#_)::before,
+:is(.ant-layout-header,header,:has(>:is(.ant-layout-header,header))):not(html,body,#root,#__next,#_)::after{
+  border:0!important;box-shadow:none!important;outline:0!important}
+
+/* --- C. promo strip (guess): Tailwind classes, hex/rgb inline styles for indigo-600..950 --- */
+:is([class*="bg-indigo" i],[class*="bg-violet" i],[class*="bg-purple" i],[class*="312e81" i],[class*="1e1b4b" i],[class*="3730a3" i],[class*="4338ca" i],[style*="indigo" i],[style*="#312e81" i],[style*="#1e1b4b" i],[style*="#3730a3" i],[style*="#4338ca" i],[style*="rgb(49, 46, 129)" i],[style*="rgb(30, 27, 75)" i],[style*="rgb(55, 48, 163)" i],[style*="rgb(67, 56, 202)" i]):not(button,.ant-btn,svg,path):not(#_){
+  background-color:color-mix(in srgb,var(--c-accent) 12%,var(--c-surface))!important;background-image:none!important;
+  border-block:1px solid var(--c-line)!important;font-family:var(--c-ui)!important;font-weight:600;text-align:center!important;justify-content:center!important}
+:is([class*="bg-indigo" i],[class*="bg-violet" i],[class*="bg-purple" i],[class*="312e81" i],[class*="1e1b4b" i],[class*="3730a3" i],[class*="4338ca" i],[style*="indigo" i],[style*="#312e81" i],[style*="#1e1b4b" i],[style*="#3730a3" i],[style*="#4338ca" i],[style*="rgb(49, 46, 129)" i],[style*="rgb(30, 27, 75)" i],[style*="rgb(55, 48, 163)" i],[style*="rgb(67, 56, 202)" i]) :is(a,span,div,p,strong,b):not(#_){
+  color:var(--c-accent-hi)!important;background:transparent!important}
+
+/* --- D. bottom dock: floats inset (confirmed working); active tab = guess --- */
+:is(.ant-layout-footer,[class*="bottom-nav" i],[class*="bottomnav" i],[class*="tab-bar" i],[class*="tabbar" i],[class~="fixed"][class~="bottom-0"]:is([class~="w-full"],[class~="left-0"],[class~="inset-x-0"]):not(:has(textarea))):not(#_){
+  left:12px!important;right:12px!important;width:auto!important;
+  bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;border-radius:24px!important}
+:is(.ant-layout-footer,[class*="bottom-nav" i],[class*="bottomnav" i],[class*="tab-bar" i],[class*="tabbar" i],[class~="fixed"][class~="bottom-0"]:is([class~="w-full"],[class~="left-0"],[class~="inset-x-0"]):not(:has(textarea))) :is(a,button,li):is([aria-current],[aria-selected="true"],.active,.ant-menu-item-selected,[class*="selected" i],[class*="current" i]):not(#_){
+  background:color-mix(in srgb,var(--c-accent) 16%,transparent)!important;border-radius:16px!important}
+:is(.ant-layout-footer,[class*="bottom-nav" i],[class*="bottomnav" i],[class*="tab-bar" i],[class*="tabbar" i],[class~="fixed"][class~="bottom-0"]:is([class~="w-full"],[class~="left-0"],[class~="inset-x-0"]):not(:has(textarea))) :is(a,button,li):is([aria-current],[aria-selected="true"],.active,.ant-menu-item-selected,[class*="selected" i],[class*="current" i]) :is(svg,.anticon,span):not(#_){
+  color:var(--c-accent-hi)!important}
+
+/* --- E. controls row: fit on a phone, clearer chevron chip --- */
+@media (max-width:640px){
+  .ant-input::placeholder,.ant-select-selection-placeholder,.ant-select-selection-item{font-size:.84rem!important}
+}
+.ant-select-arrow:not(#_){color:var(--c-accent)!important;font-size:15px!important}
+.ant-select-arrow svg{width:1em;height:1em}
+:is(.ant-input,.ant-input-affix-wrapper,.ant-select-selector):is(:focus,.ant-input-affix-wrapper-focused,.ant-input-focused):not(#_),
+.ant-select-focused:not(#_) .ant-select-selector{
+  border-color:var(--c-accent)!important;box-shadow:0 0 0 3px var(--c-ring)!important}
+
+/* --- F. type: heading-like bold text (e.g. "All Chats") joins the serif system --- */
+:is([class~="text-lg"],[class~="text-xl"],[class~="text-2xl"]):is([class~="font-bold"],[class~="font-semibold"],[class~="font-medium"]):not(.msg-mkdn-container *,button,.ant-btn):not(#_){
+  font-family:var(--c-rp)!important;font-weight:500!important;color:var(--c-strong)!important;letter-spacing:-.005em}
+
+/* --- G. character-page stats: ONE quiet glass chip instead of the solid orange ribbon (guess) ---
+   v2.8: only the outermost ribbon gets the chip (v2.7 boxed every nested element too), and the
+   small stats strip on browse-card thumbnails is back to how it looked in v2.6. */
+[class*="ribbon" i]:not(.ant-ribbon-wrapper,.ant-badge,[class*="ribbon" i] [class*="ribbon" i],.ant-card [class*="ribbon" i],#_){
+  background:color-mix(in srgb,var(--c-surface) 78%,transparent)!important;color:var(--c-text)!important;
+  border:1px solid var(--c-line-hi)!important;border-radius:12px!important;box-shadow:none!important;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+[class*="ribbon" i] [class*="ribbon" i]:not(#_){
+  background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+[class*="ribbon" i] div:empty:not(#_){display:none!important}
+[class*="ribbon" i]:not(#_){text-shadow:0 1px 4px light-dark(rgba(255,255,255,.7),rgba(0,0,0,.7))}
+.ant-ribbon-corner,[class*="ribbon" i]::before,[class*="ribbon" i]::after{display:none!important}
+[class*="ribbon" i] :is(svg,.anticon):not(#_){color:var(--c-accent)!important;fill:currentColor}
+
+/* --- H. touch --- */
+.ant-card:active:not(#_){transform:scale(.99)}
+@media (hover:none){.ant-card:hover:not(#_){transform:none}}  /* phones: no hover-lift stuck after a tap */
+
+/* --- I. brand mark: KM monogram instead of a text wordmark ---------------------------
+   A clay tile (follows --c-btn, so a preset swap recolours it) with a tightly-set KM ligature cut from
+   Source Serif 4 Bold, and two embers rising off the M - the same embers that drift across the page.
+   The letters are an inline SVG mask: no font to load, razor-sharp at any size, ivory on clay in both modes.
+   Size: html{--c-mark:40px}. Height in the bar: html{--c-mark-y:9px} (bigger = lower).  Back to the old text logo: delete this section I. */
+:where(html){--c-mark:38px;--c-mark-y:9px;--c-logo-ink:#fff7ec;--km-mark:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M17 70V67.3L20.4 67.1Q20.4 66.4 20.5 65.8Q20.5 63.6 20.5 61.4V50.5Q20.5 48.4 20.5 46.2Q20.4 45.6 20.4 44.9L17 44.7V42H31.2V44.7L27.9 44.9Q27.9 45.6 27.9 46.2Q27.8 48.3 27.8 50.5V57.2L29.7 54.7L38 45L34.7 44.7V42H45.6V44.7L41.7 45L35.3 51.8L44.2 67.1L46.9 67.3V70H33.5V67.3L35.9 67.1L30.5 57L27.8 59.9V61.5Q27.8 63.6 27.9 65.7Q27.9 66.4 27.9 67.1L30.8 67.3V70ZM45.8 70V67.3L49.7 67V45L46.4 44.7V42H58L64.7 61.3L66 56.7L71 42H82.9V44.7L79.6 44.9Q79.6 45.6 79.6 46.2Q79.5 48.4 79.5 50.5V61.4Q79.5 63.6 79.6 65.8Q79.6 66.4 79.6 67.1L83 67.3V70H68.8V67.3L72.1 67Q72.1 66.4 72.1 65.7V57.4L72.2 46.8L71.1 50.6L64.3 70H60.6L52.3 46.5L52.8 56.9V67L56.3 67.3V70Z'/><circle cx='78.5' cy='34.5' r='2.9'/><circle cx='71.5' cy='26.5' r='1.7'/></svg>")}
+:is(.ant-layout-header,header) a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"]):not(#_):not(#__){position:relative!important;justify-content:flex-start!important}
+:is(.ant-layout-header,header) a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"]):not(#_):not(#__)::before{
+  content:""!important;position:relative!important;top:var(--c-mark-y)!important;display:block;box-sizing:border-box;flex:none;
+  width:var(--c-mark);height:var(--c-mark);border-radius:27%;
+  font:0/0 serif!important;color:transparent!important;text-decoration:none!important;
+  background:
+    radial-gradient(90% 70% at 50% 118%,rgba(255,210,161,.5),transparent 62%),
+    linear-gradient(150deg,color-mix(in srgb,var(--c-btn) 92%,#fff),color-mix(in srgb,var(--c-btn) 72%,#000))!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),0 4px 14px var(--c-glow)!important;
+  transition:transform .15s}
+:is(.ant-layout-header,header) a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"]):not(#_):not(#__):active::before{transform:scale(.95)}
+@supports ((-webkit-mask:url(x)) or (mask:url(x))){
+  :is(.ant-layout-header,header) a:is([href="/"],[href="https://chub.ai/"],[href="https://chub.ai"],[href="/home"]):not(#_):not(#__)::after{
+    content:""!important;display:block!important;position:absolute;left:0;top:50%;transform:translateY(calc(-50% + var(--c-mark-y)));
+    width:var(--c-mark);height:var(--c-mark);pointer-events:none;
+    background:var(--c-logo-ink)!important;
+    -webkit-mask:var(--km-mark) center/100% 100% no-repeat;mask:var(--km-mark) center/100% 100% no-repeat}
+}
+
+/* ===================================================================================
+   v3.2 — fixes written from real class names (Eruda + saved page), not guesses.
+   Only adds rules; delete this whole block to get v3.1 back.
+   =================================================================================== */
+
+/* --- A. header side lines: the header menu is a <ul role="menu">, so the popup-glass rule gave it a
+   full 1px border + drop shadow (that was the line down both edges). It is not a popup: strip it. --- */
+ul.ant-menu-root.ant-menu-horizontal:not(#_):not(#__){
+  border:0!important;box-shadow:none!important;border-radius:0!important;background:none!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+
+/* --- B. page headings such as "All Chats": <p class="font-extrabold text-md"> joins the serif system --- */
+p.font-extrabold:is(.text-md,.text-lg,.text-xl,.text-2xl):not(.msg-mkdn-container *,button,.ant-btn):not(#_){
+  font-family:var(--c-rp)!important;font-weight:500!important;
+  color:var(--c-strong)!important;letter-spacing:-.005em}
+
+/* --- C. floating dock: solid strip under it so page text no longer shows in the gap,
+   and extra room at the end of every page so the last card is never hidden behind it.
+   Only active on pages that have the dock (not the chat page). --- */
+html:has(footer.ant-layout-footer):not(#_)::after{
+  content:"";position:fixed;left:0;right:0;bottom:0;pointer-events:none;z-index:5;
+  height:calc(10px + env(safe-area-inset-bottom,0px));background:var(--c-bg)}
+main.ant-layout-content:not(#_){padding-bottom:7rem!important}
+
+/* --- D. filter funnel button (Characters / Presets): paper chip + clay icon like the other controls.
+   BEST GUESS: matched by its icon label because the funnel's own classes were never captured.
+   If the funnel is still a grey slab after this, send its class list and it gets an exact rule. --- */
+:is(.ant-btn,button,[role="button"]):has([aria-label="filter"]):not(#_){
+  background:var(--c-raised)!important;border:1px solid var(--c-line-hi)!important;
+  border-radius:12px!important;box-shadow:none!important;color:var(--c-text)!important}
+:is(.ant-btn,button,[role="button"]):has([aria-label="filter"]) :is(.anticon,svg):not(#_){
+  color:var(--c-accent)!important;fill:currentColor}
+
+/* --- E. touch polish: no grey flash on tap, no auto text inflation on rotate --- */
+a,button,[role="button"]{-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+
+/* ===================================================================================
+   v3.3 — chat-page fixes, written from the chat capture (real class names + computed styles).
+   Only adds rules; delete this whole block to get v3.2 back.
+   =================================================================================== */
+
+/* --- A. circle buttons were rounded squares: the global .ant-btn radius (12px) also hit the
+   message controls (edit/delete/sound...), the header "?" and similar. Circle buttons are circles again. --- */
+.ant-btn.ant-btn-circle:not(#_){border-radius:50%!important}
+
+/* --- B. phones: no sticky grey slab behind a button after you tap it.
+   The hover fill stays "stuck" on touch screens (seen on the chat menu and the composer's dots).
+   Tap feedback is now a brief fill while pressed, and the open-menu state keeps its fill. --- */
+@media (hover:none){
+  .ant-btn-text:hover:not(:active):not(.ant-dropdown-open):not(#_),
+  .ant-btn-variant-text:hover:not(:active):not(.ant-dropdown-open):not(#_){
+    background:transparent!important;color:var(--c-text)!important}
+}
+.ant-btn-text:active:not(#_),.ant-btn-variant-text:active:not(#_){
+  background:var(--c-raised)!important}
+
+/* --- C. composer icons (menu dots, mic, send): Chub paints them blue inline and v3.1 recoloured them with a
+   colour filter, which came out amber. Now they take the exact clay accent, in both modes. --- */
+.chat-layout-bigbox .w-full.transition-all.duration-500 svg:not(#_){filter:none!important}
+button:is([style*="rgb(52, 152, 219)"],[style*="rgb(52,152,219)"],[style*="#3498db" i]):not(#_){
+  color:var(--c-accent)!important}
+
+/* --- D. popup menu items: keep "Change Persona", "Chat Settings" etc. on one line so the menu grows
+   instead of wrapping under its icon. (Best effort: written without seeing the composer menu's HTML.) --- */
+.ant-dropdown-menu-title-content:not(#_){white-space:nowrap}
+
+/* ===================================================================================
+   v3.4 — from the full screenshot pass (chat dark + light, composer menu, header menu, modals).
+   Only adds rules (plus the token fix in v2.8-A above); delete this whole block to get v3.3 back.
+   Rules marked (guess) are best effort: the exact HTML was not captured.
+   =================================================================================== */
+
+/* --- A. composer icons (menu dots, mic, send): were still Chub blue. Everything drawn inside the composer
+   strip now takes the clay accent: colour for currentColor icons, fill/stroke for icons with their own paint.
+   Fill/stroke "none" is left alone so outline icons stay outlines. (guess: same container as the v1.9/v3.3 rules) --- */
+.chat-layout-bigbox .w-full.transition-all.duration-500 :is(svg,.anticon):not(#_):not(#__){color:var(--c-accent)!important}
+.chat-layout-bigbox .w-full.transition-all.duration-500 :is(svg[fill],svg [fill]):not([fill="none"]):not(#_):not(#__){fill:var(--c-accent)!important}
+.chat-layout-bigbox .w-full.transition-all.duration-500 :is(svg[stroke],svg [stroke]):not([stroke="none"]):not(#_):not(#__){stroke:var(--c-accent)!important}
+.chat-layout-bigbox :is([style*="rgb(52, 152, 219)"],[style*="rgb(52,152,219)"],[style*="#3498db" i]):not(#_):not(#__){color:var(--c-accent)!important}
+
+/* --- B. open-menu state: the tall grey slab behind the dots and the header hamburger while their menu is open.
+   Now just the clay icon on the page, no slab. --- */
+.ant-dropdown-open:is(.ant-btn-text,.ant-btn-variant-text):not(#_):not(#__):not(#___){background:transparent!important}
+.ant-dropdown-open:is(.ant-btn-text,.ant-btn-variant-text) :is(svg,.anticon):not(#_):not(#__){color:var(--c-accent)!important}
+
+/* --- C. switches: the "off" label (Hide Background Image) was light grey on grey; now the strong text colour --- */
+.ant-switch:not(.ant-switch-checked) :is(.ant-switch-inner,.ant-switch-inner-unchecked):not(#_):not(#__){color:var(--c-strong)!important}
+
+/* --- D. header menu: "Character Settings" / "View Full Chat Tree" ran off the right edge. Slightly tighter
+   item padding and text, same one-line behaviour as v3.3-D. --- */
+.ant-dropdown-menu-item:not(#_):not(#__){padding-inline:10px!important}
+.ant-dropdown-menu-title-content:not(#_):not(#__){font-size:.9rem}
+
+/* --- E. plum "Subscribe" buttons (Secrets): same clay gradient as every other primary button. (guess: matched by
+   Tailwind colour class; if they stay purple, send that button's HTML.) --- */
+button:is([class*="bg-purple" i],[class*="bg-violet" i],[class*="bg-fuchsia" i],[class*="bg-indigo" i],[style*="purple" i]):not(.ant-btn-primary):not(#_):not(#__){
+  background:linear-gradient(135deg,var(--c-btn),var(--c-btn-hv))!important;color:#fff!important;
+  border:0!important;border-radius:12px!important;box-shadow:0 4px 14px var(--c-glow)!important}
+
+/* ===================================================================================
+   v3.5 — follow-up from the v3.4 screenshots. Only adds rules; delete this block to get v3.4 back.
+   =================================================================================== */
+
+/* --- A. composer dots: the grey slab behind them while their menu is open is still there. v1.9 paints it on any
+   composer button that is hovered / focused / menu-open; v3.4 only cleared text-variant buttons, and this one is
+   evidently a plain popover trigger. Now every composer button, in those states. A pressed tap still flashes
+   (the :not(:active)), and the icon stays clay. --- */
+.chat-layout-bigbox .w-full.transition-all.duration-500 :is(button,.ant-btn,[role="button"]):is(:hover,:focus,:focus-visible,.ant-dropdown-open,.ant-popover-open,[aria-expanded="true"]):not(:active):not(#_):not(#__):not(#___){
+  background:transparent!important;background-color:transparent!important;background-image:none!important;box-shadow:none!important}
+
+/* --- B. "Subscribe" / "Subscribe Annually" (Secrets) are still plum. (guess x2, HTML not captured):
+   1) anything with "subscribe" in its class or id, 2) plain (non-antd) buttons inside the Secrets collapse panels.
+   Both get the same clay gradient as every primary button. Switches and dropdowns are excluded. --- */
+:is(button,a,[role="button"]):is([class*="subscribe" i],[id*="subscribe" i]):not(#_):not(#__),
+.ant-collapse-content-box button:not(.ant-btn,.ant-switch,[role="switch"],[role="combobox"],.ant-select *,.ant-picker *):not(#_):not(#__){
+  background:linear-gradient(135deg,var(--c-btn),var(--c-btn-hv))!important;color:#fff!important;
+  border:0!important;border-radius:12px!important;box-shadow:0 4px 14px var(--c-glow)!important}
+
+/* ===================================================================================
+   LITE — performance pass. Delete this block to put the blur and shadows back (the embers/dust layer and
+   paper grain were removed from the file itself, so those need the full v3.5 file).
+   =================================================================================== */
+
+/* no backdrop blur anywhere: it is the most expensive effect on a phone, and it is redrawn every scroll frame.
+   Cards compensate below by being a little more solid, so text stays readable over the cover art. */
+*,*::before,*::after{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+:where(html){--c-ga:.82;--c-pa:96%;--c-ts:transparent}
+@media (prefers-color-scheme:light){:where(html){--c-ga:.85}}
+:where(html:is([style*="--opposite-color: black"],[style*="--opposite-color:black"])){--c-ga:.85}
+
+/* lighter shadows (big soft shadows are repainted on every scroll) and no text halo */
+#chat-messages>*:has(.msg-mkdn-container):not(#_):not(#__){
+  box-shadow:inset 0 1px 0 light-dark(rgba(255,255,255,.65),rgba(255,255,255,.06)),0 1px 2px var(--c-shadow)}
+.msg-mkdn-container:not(#_):not(#__){text-shadow:none!important}
+.ant-card:not(#_):not(#__){box-shadow:0 1px 2px var(--c-shadow)}
+.ant-card:hover:not(#_):not(#__){box-shadow:-3px 0 0 var(--c-accent),0 1px 2px var(--c-shadow)!important}
+
+/* --- bottom dock: without blur, the 88% glass let the cards scrolling underneath show through behind the icons
+   ("OUTDATED : The V2 has..." was readable under the buttons). Now 97% solid paper, same border and radius. --- */
+:is(.ant-layout-footer,[class*="bottom-nav" i],[class*="bottomnav" i],[class*="tab-bar" i],[class*="tabbar" i],
+[class~="fixed"][class~="bottom-0"]:is([class~="w-full"],[class~="left-0"],[class~="inset-x-0"]):not(:has(textarea))):not(#_):not(#__){
+  background-color:color-mix(in srgb,var(--c-bg) 97%,transparent)!important;background-image:none!important}
+
+/* ===== YOUR OVERRIDES — plain html{...} now wins. examples: html{--c-ga:.7;--c-pa:90%;--c-mark-y:7px} ===== */
+html{ }
