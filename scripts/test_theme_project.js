@@ -91,6 +91,6 @@ test("handles unavailable or invalid storage without throwing", () => {
   assert.equal(projectApi.saveProject(projectApi.createProject(), storage), false);
   assert.equal(projectApi.loadProject(storage), null);
   assert.deepEqual(projectApi.loadProfile(storage), {
-    device: "phone", platform: "chub", appearance: "system"
+    device: "phone", platform: "chub", appearance: "dark"
   });
 });
