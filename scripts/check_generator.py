@@ -14,6 +14,9 @@ if len(scripts) != 1:
 
 required = [
     'id="mock-shell"',
+    'class="mock-nav"',
+    'class="mock-message-text"',
+    'class="mock-composer-bar"',
     'id="share"',
     'id="download"',
     'fetch("themes/km-warm/source.css")',
