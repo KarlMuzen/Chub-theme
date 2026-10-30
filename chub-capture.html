@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#19221c">
+<title>KM Themes · Chub UI Capture</title>
+<style>
+:root{color-scheme:light dark;--bg:#19221c;--panel:#222d25;--line:#425246;--text:#e9efe5;--muted:#adbdab;--accent:#c66a4b;--sage:#8fa78b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,sans-serif}
+main{max-width:720px;margin:auto;padding:22px 16px 48px}
+header{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.mark{width:46px;height:46px;border:2px solid var(--sage);border-radius:50%;display:grid;place-items:center;color:#e9c0a4;font-size:25px}
+h1,h2{font-family:Georgia,serif}h1{font-size:1.6rem;margin:0}h2{font-size:1.12rem;margin:0 0 8px}
+p{color:var(--muted);margin:8px 0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin:14px 0}
+button{width:100%;min-height:50px;border:0;border-radius:12px;background:var(--accent);color:#211b17;font:700 1rem system-ui;padding:12px}
+button.secondary{background:transparent;border:1px solid var(--line);color:var(--text)}
+textarea{width:100%;height:220px;margin-top:12px;background:#111914;color:#dce8dc;border:1px solid var(--line);border-radius:10px;padding:12px;font:12px/1.4 monospace}
+ol{padding-left:22px;color:var(--muted)}li{padding:4px 0}
+.status{min-height:1.4em;font-size:.88rem}
+small{color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<header><div class="mark" aria-hidden="true">✿</div><div><h1>KM Themes</h1><small>Chub UI Reference Capture</small></div></header>
+<section class="panel">
+<h2>One-run page inspection</h2>
+<p>This helper captures the current page's visible element structure, selector paths, computed layout and styles, stylesheet references, and root CSS variables. It does not capture page text, typed values, links, cookies, storage or network payloads.</p>
+<p>It runs locally in your browser. It does not send captured information to KM Themes.</p>
+<button id="copy" type="button">Copy capture script</button>
+<p class="status" id="status" role="status" aria-live="polite">Loading the capture script…</p>
+<textarea id="script" readonly spellcheck="false" aria-label="Capture script source"></textarea>
+<button class="secondary" id="select" type="button">Select script manually</button>
+</section>
+<section class="panel">
+<h2>How to use it</h2>
+<ol>
+<li>Open Chub in Firefox with MobiDevTools.</li>
+<li>Open the Chub tab, then open MobiDevTools → Console.</li>
+<li>Return here, tap <b>Copy capture script</b>, then switch back to the Console.</li>
+<li>Paste the script into the Console input and tap Run.</li>
+<li>Allow the browser to download the JSON file. Attach that file in your chat with ChatGPT.</li>
+</ol>
+<p><b>Capture one UI state at a time.</b> For a different view, navigate to that Chub screen and run the same script again.</p>
+</section>
+<section class="panel">
+<h2>Privacy scope</h2>
+<p>Only structural selectors and computed visual properties are collected. No message text, character descriptions, form contents, account identifiers, cookies, authentication tokens or request bodies are read.</p>
+<p>Do not run third-party inspection tools on private conversations unless you are comfortable inspecting that page. This helper intentionally avoids collecting conversation content.</p>
+</section>
+<p><small>KM Themes is an independent community customization project, not affiliated with Chub.</small></p>
+</main>
+<script>
+(function(){
+"use strict";
+var status=document.getElementById("status"),field=document.getElementById("script"),copy=document.getElementById("copy");
+fetch("tools/chub-reference-capture.js").then(function(response){
+ if(!response.ok)throw new Error("Could not load capture script ("+response.status+").");
+ return response.text();
+}).then(function(source){
+ field.value=source;
+ status.textContent="Capture script ready. Copy it once, then run it in MobiDevTools Console on Chub.";
+}).catch(function(error){status.textContent=error.message;copy.disabled=true;});
+copy.addEventListener("click",function(){
+ if(!field.value)return;
+ if(navigator.clipboard&&navigator.clipboard.writeText){
+  navigator.clipboard.writeText(field.value).then(function(){status.textContent="Copied. Switch to MobiDevTools Console and paste, then Run.";}).catch(selectManually);
+ }else selectManually();
+});
+function selectManually(){field.focus();field.select();status.textContent="Script selected. Use your browser's Copy command, then paste into MobiDevTools Console.";}
+document.getElementById("select").addEventListener("click",selectManually);
+})();
+</script>
+</body>
+</html>
