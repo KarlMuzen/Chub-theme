@@ -1,84 +1,73 @@
 # KM Theme Generator: URL parameter spec (v1)
 
-Contract between the generator page, the KM Theme Studio bot, and shared links.
-Page is static (GitHub Pages): no server, no remote fetches. It builds the CSS in the browser and offers it as a download.
+Contract between the generator page, the Chub Theme Helper bot, and shared links. The page is static (GitHub Pages): no server, no third-party requests. It builds the CSS in the browser and offers a download.
 
-Example: `{GEN}?v=1&p=warm&a=5b8def&fs=1.16`
-Only changed params are needed. Unknown params are ignored. Invalid value = default.
+Example: https://karlmuzen.github.io/KM-CHUB-THEME/?v=1&p=warm&a=5b8def&fs=1.16
+
+Only changed parameters are needed. Unknown parameters are ignored. Invalid values use defaults.
 
 ## Parameters
 
 | Key | Meaning | Allowed | Default | Emits |
 |---|---|---|---|---|
-| `v` | spec version | `1` | 1 | n/a |
-| `p` | palette | `warm` (v1). Planned, not shipped: oled, midnight, forest, parchment | warm | selects PRESET block |
-| `a` | accent colour | 6 hex digits, no `#` | palette's own | accent family (see below) |
-| `fs` | message text size (rem) | 0.90 to 1.40 | 1.06 | `--c-fs` |
-| `lh` | line height | 1.40 to 2.00 | 1.7 | `--c-lh` |
-| `ga` | chat-card opacity | 0 to 1 | .25 dark / .55 light | `--c-ga` (one value covers both modes) |
-| `rp` | reading font | `serif` `sans` `mono` | serif | `--c-rp` |
-| `fx` | effects | `lite` `full` | lite | `lite` = include LITE block; `full` = omit it |
-| `blur` | glass blur px (full only) | 0 to 20 | 10 | `--c-blur` |
-| `m` | forced dark/light | **reserved, not in v1** | n/a | n/a |
+| v | spec version | 1 | 1 | n/a |
+| p | palette | warm (v1) | warm | selects the warm PRESET |
+| a | accent colour | six hex digits, no # | c6613f | accent family |
+| fs | message text size (rem) | 0.90–1.40 | 1.06 | --c-fs |
+| lh | line height | 1.40–2.00 | 1.70 | --c-lh |
+| ga | chat-card opacity | 0–1 | automatic dark .25 / light .55 | --c-ga when explicitly changed |
+| rp | reading font | serif, sans, mono | serif | --c-rp |
+| fx | effects | lite | lite | includes the LITE block |
+| blur | glass blur px | 0–20 | 10 | reserved for a future FULL source |
+| m | forced dark/light | reserved | n/a | n/a |
 
-Font stacks (local fonts only, remote fonts are blocked):
-- `serif` = base file's `--c-rp` default
-- `sans` = `system-ui,-apple-system,"Segoe UI",Roboto,sans-serif`
-- `mono` = `ui-monospace,SFMono-Regular,Menlo,Consolas,monospace`
+Planned palettes (oled, midnight, forest, parchment) are not shipped. Only warm is accepted in v1. The FULL profile is not offered because the supplied v3.6 source is already LITE; its effects were removed and cannot be reconstructed from that file. A genuine FULL profile requires the original v3.5 full-effects CSS.
 
-### Why `m` is reserved
-v3.6 keys its light/dark tuning (`--c-ga`, `--c-img`, `--c-bf`, `--c-icon`, `--c-fx-*`) to `@media (prefers-color-scheme:light)`, not to `color-scheme`. Emitting only `html{color-scheme:dark}` on a light-mode phone would give dark colours with light-mode icon filters and opacity. Ship `m` only after the generator also re-emits those tokens for the forced mode. Chub's own "Light Mode Active" attribute selector has higher specificity and will still win.
+## Font stacks
 
-## Accent derivation (`a` = X)
-Appended in the OVERRIDES block, same features the base file already uses (`light-dark`, `color-mix`):
+- serif = base file's --c-rp default
+- sans = system-ui,-apple-system,"Segoe UI",Roboto,sans-serif
+- mono = ui-monospace,SFMono-Regular,Menlo,Consolas,monospace
 
-```
---c-accent:X;
---c-accent-hi:light-dark(color-mix(in srgb,X 78%,#000),color-mix(in srgb,X 78%,#fff));
---c-btn:X;
---c-btn-hv:light-dark(color-mix(in srgb,X 88%,#000),color-mix(in srgb,X 88%,#fff));
---c-act:light-dark(color-mix(in srgb,X 72%,#000),color-mix(in srgb,X 55%,#fff));
-```
-Percentages are a starting point. Tune against screenshots in both modes, and check contrast of `--c-accent-hi` text on the light background.
+Only local/system font stacks are used.
 
-## Output assembly
-Order: PRESET (from `p`) → CORE → LITE block (only if `fx=lite`) → generated OVERRIDES.
-Add explicit markers to the source so the build can split it: `/*@@PRESET*/` `/*@@CORE*/` `/*@@LITE*/` `/*@@OVERRIDES*/`.
-Plain `html{...}` in OVERRIDES beats the `:where(html)` defaults (v3.4 behaviour).
-Filename: `KM-Warm-<fx>-v<ver>.css`. Header comment lists version and the validated params only.
+## Why m is reserved
 
-## Safety (required)
-Links can be crafted by anyone, so the page must never put raw input in the CSS.
-- Parse with `URLSearchParams`.
-- `a`: regex `^[0-9a-fA-F]{6}$`, else ignore.
-- Numbers: `Number()`, `isFinite`, clamp to range, format with `toFixed`.
-- Enums: lookup table, else default.
-- No other input reaches the output. The file never contains `@import`, remote `url()`, `@font-face`, or `@charset`. CI lint fails the build on any of them.
-- Download via `Blob` with type `text/css` and a `download` attribute.
+v3.6 keys light/dark tuning to prefers-color-scheme, not just color-scheme. Forcing the scheme without re-emitting all mode-dependent tokens can mix dark colours with light-mode opacity and icon filters. Chub's own Light Mode Active attribute selector has higher specificity.
 
-## Page behaviour
-- Controls mirror the table. The page rewrites its own URL as options change (`history.replaceState`) so a look can be shared.
-- Show 3 install lines: Download > profile Edit Theme (or chat Change Theme) > Upload Custom CSS.
-- Show: latest version, tested-on date, "phone-tested, desktop beta", link to Releases (fallback files) and to Issues.
-- Optional: static preview card using the same tokens.
+## Accent derivation
 
-## Test vectors
-1. `?v=1` → stock LITE file, OVERRIDES block empty.
-2. `?v=1&a=5b8def&fs=1.16&ga=0.5&fx=lite` → OVERRIDES contains:
-```
-html{
-  --c-accent:#5b8def;
-  --c-accent-hi:light-dark(color-mix(in srgb,#5b8def 78%,#000),color-mix(in srgb,#5b8def 78%,#fff));
-  --c-btn:#5b8def;
-  --c-btn-hv:light-dark(color-mix(in srgb,#5b8def 88%,#000),color-mix(in srgb,#5b8def 88%,#fff));
-  --c-act:light-dark(color-mix(in srgb,#5b8def 72%,#000),color-mix(in srgb,#5b8def 55%,#fff));
-  --c-fs:1.16rem;--c-ga:.5;
-}
-```
-3. `?a=zzz&fs=9&rp=comic` → all invalid: output equals vector 1.
-4. `?a=5b8def;}@import url(x)` → `a` fails the regex: output equals vector 1.
+The accent input is strictly validated against six hexadecimal digits before any CSS is generated. The generator emits these values into a plain html rule:
+
+- --c-accent: selected colour
+- --c-accent-hi: 78% selected colour mixed toward black in light mode and white in dark mode
+- --c-btn: selected colour
+- --c-btn-hv: 88% selected colour mixed toward black/light or white/dark
+- --c-act: selected colour with mode-specific mix
+
+All numeric inputs are parsed, checked for finiteness, clamped to the documented range, and formatted before CSS generation. No raw URL value is inserted into CSS.
+
+## Source assembly
+
+The original source.css is kept byte-for-byte as supplied. To avoid editing that source, the build script identifies the PRESET, CORE, LITE and OVERRIDES boundaries using their existing section headings. Assembly order is PRESET → CORE → LITE → generated OVERRIDES.
+
+The browser generator fetches only the same-origin source.css file. It has no external CSS imports, remote assets, or server-side generation.
+
+## Builds
+
+- LITE: source preset + core + lite + generated options.
+- Compat: a static legacy build with dark defaults, prefers-color-scheme light fallbacks, and rgba fallbacks for key derived colour tokens. Best effort for older browsers; verify visually before broad distribution.
+- FULL: skipped until the original v3.5 full-effects source is supplied.
+
+The release workflow publishes available LITE and Compat assets when a version tag is pushed.
+
+## Safety and lint
+
+The source and generated CSS must not contain @import, remote url(), @font-face, or @charset. A data: SVG URI already present in the source is allowed. CI builds the files, runs the CSS lint, and executes the build tests.
 
 ## Verify on a phone
-- Release-asset link downloads instead of opening as text.
-- Generated file uploads in Chub without the "harmful content" error.
-- Both modes look right with a custom `a` (contrast).
+
+- Confirm the release asset link downloads instead of opening as text.
+- Upload the generated file in Chub without the harmful-content rejection.
+- Check custom accent contrast in both light and dark modes.
+- Confirm Clear Custom CSS restores the default theme.
