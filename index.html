@@ -567,7 +567,7 @@ function renderCssReport(target,report){
  target.innerHTML="";
  target.hidden=false;
  var heading=document.createElement("strong");
- heading.textContent=report.valid?"Structure check passed":"CSS needs attention";
+ heading.textContent=report.valid?"Structure check passed":(report.importable?"Loaded with issues to review":"Cannot import this CSS");
  target.appendChild(heading);
  var summary=document.createElement("p");
  summary.textContent=formatBytes(report.bytes)+" · Original text is not modified by this check.";
@@ -588,7 +588,7 @@ function saveRawProject(){
  activeProject.editorMode="raw";
  activeProject.updatedAt=new Date().toISOString();
  var saved=window.KMThemeProject.saveProject(activeProject);
- el("raw-css-state").textContent=saved?"Saved on this device":"Could not save locally";
+ el("raw-css-state").textContent=saved?"Saved on this device":"Could not save locally — download a backup";
  return saved;
 }
 function updateRawMeta(){
@@ -616,7 +616,8 @@ function showRawEditor(){
  el("raw-css-report").hidden=true;
  el("raw-css-size").textContent=formatBytes(window.KMCssWorkbench.byteLength(source.workingCss));
  el("raw-css-state").textContent="Saved on this device";
- window.KMThemeProject.saveProject(activeProject);
+ var projectSaved=window.KMThemeProject.saveProject(activeProject);
+ el("raw-css-state").textContent=projectSaved?"Saved on this device":"Could not save locally — download a backup";
  el("raw-css-editor").focus();
  window.scrollTo(0,0);
 }
@@ -638,7 +639,7 @@ function loadImportedCss(css,label){
   editorMode:"raw",
   theme:{source:result.value,settings:readControls()}
  });
- window.KMThemeProject.saveProject(activeProject);
+ var projectSaved=window.KMThemeProject.saveProject(activeProject);
  el("raw-css-editor").value=result.value.workingCss;
  el("raw-css-title").textContent="Raw CSS · "+result.value.label;
  el("raw-css-subtitle").textContent="Imported stylesheet. Review compatibility notes before installing.";
@@ -649,7 +650,7 @@ function loadImportedCss(css,label){
  el("raw-css-panel").hidden=false;
  renderCssReport(el("raw-css-report"),result.report);
  el("raw-css-size").textContent=formatBytes(result.report.bytes);
- el("raw-css-state").textContent="Saved on this device";
+ el("raw-css-state").textContent=projectSaved?"Saved on this device":"Could not save locally — download a backup";
  window.scrollTo(0,0);
  return true;
 }
@@ -685,6 +686,7 @@ function handleImport(){
  loadImportedCss(css,label);
 }
 function copyRawCss(){
+ saveRawProject();
  var value=el("raw-css-editor").value;
  copyText(value).then(function(){
   el("raw-css-state").textContent="Copied to clipboard";
@@ -693,16 +695,16 @@ function copyRawCss(){
  });
 }
 function downloadRawCss(){
+ saveRawProject();
  var value=el("raw-css-editor").value;
  var report=window.KMCssWorkbench.analyzeCss(value);
  renderCssReport(el("raw-css-report"),report);
- if(!report.valid)return;
  var blob=new Blob([value],{type:"text/css;charset=utf-8"});
  var url=URL.createObjectURL(blob),anchor=document.createElement("a");
  anchor.href=url;anchor.download="KM-Theme.css";
  document.body.appendChild(anchor);anchor.click();anchor.remove();
  setTimeout(function(){URL.revokeObjectURL(url)},1200);
- el("raw-css-state").textContent="Downloaded CSS";
+ el("raw-css-state").textContent=report.valid?"Downloaded CSS":"Downloaded unchanged; review the CSS findings above";
 }
 function restoreOriginalCss(){
  if(!activeProject)return;
@@ -744,6 +746,7 @@ function installEvents(){
  });
  el("raw-css-editor").addEventListener("change",saveRawProject);
  el("validate-raw-css").addEventListener("click",function(){
+  saveRawProject();
   var report=window.KMCssWorkbench.analyzeCss(el("raw-css-editor").value);
   renderCssReport(el("raw-css-report"),report);
  });
