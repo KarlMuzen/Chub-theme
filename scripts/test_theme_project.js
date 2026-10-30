@@ -83,7 +83,7 @@ test("defaults new profiles to dark appearance while allowing system preference"
   projectApi.saveProfile({ device: "phone", platform: "chub", appearance: "system" }, storage);
   assert.equal(projectApi.loadProfile(storage).appearance, "system");
 });
-\ntest("handles unavailable or invalid storage without throwing", () => {
+test("handles unavailable or invalid storage without throwing", () => {
   const storage = {
     getItem() { throw new Error("blocked"); },
     setItem() { throw new Error("quota"); }
