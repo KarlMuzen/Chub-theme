@@ -29,6 +29,8 @@ test("preserves imported CSS byte-for-byte", () => {
     theme: { source: { kind: "imported", originalCss } }
   });
   assert.equal(project.theme.source.originalCss, originalCss);
+  assert.equal(project.theme.source.workingCss, "");
+  assert.equal(project.editorMode, "visual");
 });
 
 test("sanitizes settings and rejects unsupported project schemas", () => {
@@ -50,6 +52,8 @@ test("saves and reloads project and device preferences", () => {
   const project = projectApi.createProject({ device: "phone", platform: "chub" });
   assert.equal(projectApi.saveProject(project, storage), true);
   assert.equal(projectApi.loadProject(storage).id, project.id);
+  assert.equal(projectApi.clearProject(storage), true);
+  assert.equal(projectApi.loadProject(storage), null);
   assert.equal(projectApi.saveProfile({ device: "desktop", platform: "risuai", appearance: "dark" }, storage), true);
   assert.deepEqual(projectApi.loadProfile(storage), {
     device: "desktop", platform: "risuai", appearance: "dark"
