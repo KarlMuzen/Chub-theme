@@ -123,6 +123,27 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 .workspace-heading-actions{display:flex;gap:7px;flex-wrap:wrap}
 @media(max-width:390px){.guide-choice-grid{grid-template-columns:1fr}.guide-choice{min-height:70px}.guide-panel{margin:10px 0}}
 
+
+.css-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.css-tools button{flex:1 1 130px}
+.css-workbench,.raw-css-panel{margin-top:14px}
+.css-workbench-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.css-workbench textarea{display:block;width:100%;min-height:190px;resize:vertical;border:1px solid var(--line);border-radius:11px;padding:12px;background:var(--panel2);color:var(--text);font: .82rem/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;tab-size:2}
+.raw-css-panel textarea{min-height:min(62vh,620px);white-space:pre;overflow:auto}
+.css-report{border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-top:10px;background:var(--panel2);font-size:.82rem}
+.css-report ul{margin:6px 0 0;padding-left:20px}
+.css-report li{margin:4px 0}
+.css-report .report-error{color:#b64b3d}
+.css-report .report-warning{color:var(--accent-strong)}
+.css-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.css-meta .pill{font-size:.72rem}
+.css-file-label{display:block;font-size:.84rem;color:var(--muted);margin:0 0 7px}
+.css-file-input{display:block;width:100%;min-height:46px;border:1px dashed var(--line);border-radius:10px;padding:8px;background:var(--panel2);color:var(--text);font-size:.82rem}
+.css-preservation-note{font-size:.79rem;padding:10px 12px;border-left:3px solid var(--focus);background:var(--panel2);border-radius:0 9px 9px 0;margin:10px 0}
+.raw-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.raw-toolbar button{flex:1 1 120px}
+@media(min-width:700px){.css-workbench-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}}
+
 </style>
 </head>
 <body>
@@ -180,7 +201,7 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 <div class="field"><label for="lh">Line height · <output id="lhout">1.70</output></label><input id="lh" type="range" min="1.40" max="2.00" step=".01" value="1.70"></div>
 <div class="field" style="grid-column:1/-1"><label for="ga">Chat-card opacity · <output id="gaout">Automatic by mode</output></label><input id="ga" type="range" min="0" max="1" step=".01" value=".25"></div>
 </div>
-<div class="actions"><button id="download" type="button" disabled>Download custom CSS</button><button class="secondary" id="share" type="button">Copy share link</button><button class="tertiary" id="reset" type="button">Reset</button></div>
+<div class="actions"><button id="download" type="button" disabled>Download custom CSS</button><button class="secondary" id="copy-generated-css" type="button" disabled>Copy CSS</button><button class="secondary" id="share" type="button">Copy share link</button><button class="tertiary" id="reset" type="button">Reset</button></div><div class="css-tools"><button class="secondary" id="open-css-import" type="button">Import existing CSS</button><button class="tertiary" id="open-raw-css" type="button" disabled>Advanced CSS editor</button></div>
 <p id="status" class="status" role="status" aria-live="polite">Loading the KM Warm source…</p>
 <p class="small muted">The generated file is assembled in this browser. Your settings are encoded in the share link; there is no account or server-side theme builder.</p>
 </section>
@@ -227,6 +248,39 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 </section>
 </div>
 
+<section class="panel css-workbench" id="css-workbench" hidden aria-labelledby="css-workbench-title">
+ <div class="section-head"><div><h2 id="css-workbench-title">Import an existing stylesheet</h2><p>Upload a CSS file from Android or paste a raw CSS block.</p></div></div>
+ <div class="css-preservation-note">Your original CSS is kept exactly as supplied. Analysis checks basic structure and reports potential compatibility concerns; it does not rewrite, sanitize or preview imported styles.</div>
+ <div class="css-workbench-grid">
+  <div>
+   <label class="css-file-label" for="css-file">Upload a .css file</label>
+   <input class="css-file-input" id="css-file" type="file" accept=".css,text/css">
+   <p class="small muted">Maximum import size: 1 MB. The file stays in this browser.</p>
+  </div>
+  <div>
+   <label class="css-file-label" for="css-source">Or paste raw CSS</label>
+   <textarea id="css-source" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Paste the complete CSS stylesheet here…"></textarea>
+  </div>
+ </div>
+ <div class="actions"><button id="load-imported-css" type="button">Analyze and open in editor</button><button class="secondary" id="cancel-css-import" type="button">Cancel</button></div>
+ <div id="css-import-report" class="css-report" role="status" aria-live="polite" hidden></div>
+</section>
+
+<section class="panel raw-css-panel" id="raw-css-panel" hidden aria-labelledby="raw-css-title">
+ <div class="section-head"><div><h2 id="raw-css-title">Raw CSS editor</h2><p id="raw-css-subtitle">Edit the complete stylesheet directly.</p></div><span class="pill">Local editing</span></div>
+ <div class="css-preservation-note" id="raw-css-preservation">Original source is preserved as a restore point. Your edits are saved locally on this device.</div>
+ <textarea id="raw-css-editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Raw CSS editor"></textarea>
+ <div class="css-meta"><span class="pill" id="raw-css-size">0 bytes</span><span class="pill" id="raw-css-state">No changes yet</span></div>
+ <div class="raw-toolbar">
+  <button id="validate-raw-css" class="secondary" type="button">Check CSS</button>
+  <button id="copy-raw-css" type="button">Copy raw CSS</button>
+  <button id="download-raw-css" class="secondary" type="button">Download CSS</button>
+  <button id="restore-original-css" class="tertiary" type="button" disabled>Restore original</button>
+  <button id="new-theme-from-raw" class="tertiary" type="button">New theme</button>
+ </div>
+ <div id="raw-css-report" class="css-report" role="status" aria-live="polite" hidden></div>
+</section>
+
 <section class="panel" aria-labelledby="ready-title">
 <h2 id="ready-title">Explore the KM Warm releases</h2>
 <p><a href="https://github.com/KarlMuzen/KM-THEMES/releases/latest/download/KM-Warm-lite-v3.6.min.css">Download KM Warm LITE</a> · <a href="https://github.com/KarlMuzen/KM-THEMES/releases/latest/download/KM-Warm-compat-v3.6.min.css">Download compatibility build</a> · <a href="https://github.com/KarlMuzen/KM-THEMES/issues">Report a problem</a></p>
@@ -255,6 +309,7 @@ Independent Chub customization tools by KM Themes. Not affiliated with or endors
 </main>
 
 <script src="assets/js/theme-project.js"></script>
+<script src="assets/js/css-workbench.js"></script>
 <script>
 (function(){
 "use strict";
