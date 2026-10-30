@@ -17,6 +17,7 @@ jobs:
           python-version: "3.12"
       - run: python scripts/build.py
       - run: python scripts/lint.py
+      - run: python scripts/check_generator.py
       - run: python -m unittest scripts/test_build.py -v
       - uses: actions/upload-artifact@v4
         with:
