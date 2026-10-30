@@ -173,7 +173,23 @@ The KM repository's own scripts/lint.py is intentionally stricter in some respec
 
 The existing KM Warm source contains a data-URI SVG. The build and lint pipeline should preserve and validate it.
 
-## 5. Compatibility implications for KM Themes
+## 5. Phase 1 KM Warm / Chub compatibility matrix (Audit: 2026-10-30)
+
+This matrix compares `themes/km-warm/source.css` against the 2026-10-07 Chub frontend snapshot and records adapter mitigations applied in `scripts/build.py` and `index.html`.
+
+| Target / Hook | Status in `source.css` | Evidence in 2026-10-07 Snapshot | Classification & Adapter Action |
+|---|---|---|---|
+| `--dark-background-color`, `--light-background-color`, `--ribbon-color`, `--background-deep-alpha`, `--background-shallow-alpha`, `--quote-color`, `--link-color`, `--opposite-color` | Mapped in `html:not(#_)` | Observed in main stylesheet & `MarsPrice` chunk | **Confirmed.** Preserved. |
+| `--message-font-size`, `--message-line-height` | Missing in `source.css` | Observed in main stylesheet | **Patched in Adapter.** Mapped to `var(--c-fs)!important` and `var(--c-lh)!important`. |
+| `--dark-primary-color`, `--light-primary-color`, `--bright-icon` | Missing in `source.css` | Observed in main stylesheet | **Patched in Adapter.** Mapped to `var(--c-btn)!important` and `var(--c-accent)!important`. |
+| `.light-mode-override`, `.light-mobile-override` | Missing in `source.css` (only checks inline `--opposite-color: black`) | Observed in main stylesheet | **Patched in Adapter.** Added light-mode scheme and `--c-ga:.85` fallback for these classes. |
+| `@media (max-width:640px) .msg-mkdn-container` | Hardcodes `font-size:1rem;line-height:1.62` in `source.css` line 236 | Observed `.msg-mkdn-container` in main stylesheet | **Fixed in Adapter.** Appended `.msg-mkdn-container:not(#_){font-size:var(--c-fs)!important;line-height:var(--c-lh)!important}` so phone screens respect user `fs` and `lh` controls. |
+| `--c-ga` default opacity | `source.css` LITE block sets `.82` dark / `.85` light (overriding earlier `.25`/`.55`) | Observed in `source.css` lines 455–457 | **Synchronized.** Studio preview and default slider now match LITE's `.82` dark / `.85` light. |
+| `#chat-messages`, `.msg-mkdn-container` | Active in `source.css` | Observed in main stylesheet & chat chunk | **Confirmed.** |
+| `.chat-layout-bigbox .w-full.transition-all.duration-500` | Active in `source.css` for composer bar | Chat chunk also exposes `.chat-input-container` and `.chat-input-background` | **Candidate / Fragile.** Works when Tailwind classes match, but should be verified against a fresh live DOM capture and paired with `.chat-input-container`. |
+| `[class*="subscribe" i]`, `[class*="bg-indigo" i]` | Active in `source.css` | Inferred from screenshots | **Unverified Guess.** Retain until live DOM capture confirms exact class names. |
+
+## 6. Compatibility implications for KM Themes
 
 1. Prefer mapping semantic KM tokens to Chub's existing CSS variables before writing selector-level overrides.
 2. Use narrow component overrides only when a variable cannot control the required surface.
@@ -183,7 +199,7 @@ The existing KM Warm source contains a data-URI SVG. The build and lint pipeline
 6. The preview must remain KM-authored and only approximate Chub's DOM/layout.
 7. The user's CSS is uploaded through Chub's own UI. KM Themes does not have account integration or an automatic installation API.
 
-## 6. Required next research
+## 7. Required next research
 
 Before a high-impact Chub selector is relied on in released CSS:
 - Capture the current live build's asset names and date.
@@ -191,10 +207,10 @@ Before a high-impact Chub selector is relied on in released CSS:
 - Capture only structural DOM paths, computed styles, viewport and CSS custom properties.
 - Do not collect message text, form contents, cookies, tokens, local storage, request bodies or response payloads.
 - Confirm selector presence, specificity and computed effect.
-- Record route, viewport, build ID/date and verification result in a compatibility matrix.
+- Record route, viewport, build ID/date and verification result in the compatibility matrix.
 
 The existing privacy-conscious capture helper is in chub-capture.html and tools/chub-reference-capture.js.
 
-## 7. Handling and licensing boundary
+## 8. Handling and licensing boundary
 
 The archives were provided for private technical analysis. Do not commit or redistribute Chub's compiled JavaScript, CSS, source maps, copied component source or large excerpts. Record concise observations, selectors, variable names and compatibility conclusions only. Implement KM-owned CSS and preview code independently.
