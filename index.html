@@ -16,10 +16,18 @@ main{width:min(1120px,100%);margin:auto;padding:24px 20px 58px}header{padding:18
 .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:17px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label{font-size:.84rem;color:var(--muted)}output{color:var(--text);font-variant-numeric:tabular-nums}input,select,button{font:inherit}input,select{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#211f1d;color:var(--text)}input[type=color]{padding:4px;height:44px}input[type=range]{padding:0;accent-color:var(--accent);min-height:28px}
 .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}button{border:0;border-radius:11px;padding:11px 16px;background:var(--accent);color:#1c1714;font-weight:750;min-height:44px;cursor:pointer}button:hover{filter:brightness(1.06)}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}button.secondary{background:#48413a;color:var(--text);border:1px solid #65594e}button.tertiary{background:transparent;border:1px solid var(--line);color:var(--text)}button:disabled{opacity:.45;cursor:not-allowed}
 .preview-panel{padding:17px}.preview-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.mode-switch{display:flex;gap:4px;padding:4px;background:var(--panel2);border:1px solid var(--line);border-radius:11px}.mode-button{padding:6px 10px;min-height:34px;background:transparent;border:0;color:var(--muted);font-size:.78rem}.mode-button[aria-pressed=true]{background:#55453b;color:#fff1e7}
-.mock-shell{--pv-bg:#262624;--pv-surface:#30302e;--pv-raised:#3a3935;--pv-text:#e3e1d7;--pv-strong:#faf9f5;--pv-muted:#a3a198;--pv-accent:#d97757;--pv-accent-hi:#e8936f;--pv-font:Georgia,serif;--pv-size:1rem;--pv-line:1.55;background:var(--pv-bg);color:var(--pv-text);border:1px solid color-mix(in srgb,var(--pv-accent) 35%,transparent);border-radius:15px;overflow:hidden;font-family:var(--pv-font);transition:background .15s,color .15s}
-.mock-topbar{height:38px;display:flex;align-items:center;gap:6px;padding:0 12px;background:var(--pv-surface);border-bottom:1px solid color-mix(in srgb,var(--pv-text) 12%,transparent)}.dot{width:7px;height:7px;border-radius:50%;background:var(--pv-muted);opacity:.7}.mock-title{margin-left:6px;font:600 .72rem system-ui,sans-serif;color:var(--pv-muted);letter-spacing:.02em}
-.mock-profile{display:flex;align-items:center;gap:10px;padding:15px 15px 12px;border-bottom:1px solid color-mix(in srgb,var(--pv-text) 10%,transparent)}.avatar{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--pv-accent),var(--pv-accent-hi));display:grid;place-items:center;color:#fff;font:700 .78rem system-ui,sans-serif}.profile-name{font:700 .88rem system-ui,sans-serif;color:var(--pv-strong)}.profile-sub{font: .69rem system-ui,sans-serif;color:var(--pv-muted)}
-.chat-body{padding:13px;display:flex;flex-direction:column;gap:11px;font-size:var(--pv-size);line-height:var(--pv-line);min-height:265px}.chat-label{font:650 .66rem system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--pv-muted);text-align:center}.bubble{max-width:88%;padding:10px 12px;border-radius:13px;background:color-mix(in srgb,var(--pv-surface) var(--pv-card-alpha),transparent);border:1px solid color-mix(in srgb,var(--pv-text) 9%,transparent);color:var(--pv-text)}.bubble strong{color:var(--pv-strong)}.bubble.ai{border-top-left-radius:4px;align-self:flex-start}.bubble.user{border-top-right-radius:4px;align-self:flex-end;background:color-mix(in srgb,var(--pv-accent) 13%,var(--pv-surface));border-color:color-mix(in srgb,var(--pv-accent) 28%,transparent)}.bubble .highlight{color:var(--pv-accent-hi);font-weight:700}.mock-composer{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--pv-surface);border-top:1px solid color-mix(in srgb,var(--pv-text) 10%,transparent)}.composer-input{flex:1;border:1px solid color-mix(in srgb,var(--pv-text) 16%,transparent);border-radius:9px;padding:8px 10px;color:var(--pv-muted);font: .72rem system-ui,sans-serif}.send-dot{display:grid;place-items:center;border-radius:9px;width:30px;height:30px;background:var(--pv-accent);color:#fff;font:700 .9rem system-ui,sans-serif}
+.mock-shell{--pv-bg:#262624;--pv-page:#30302e;--pv-raised:#3a3935;--pv-text:#e3e1d7;--pv-strong:#faf9f5;--pv-muted:#a3a198;--pv-accent:#d97757;--pv-accent-hi:#e8936f;--pv-font:Georgia,serif;--pv-size:1rem;--pv-line:1.55;--pv-card-alpha:25%;width:min(100%,340px);height:clamp(620px,min(720px,184vw),720px);margin:0 auto;background:var(--pv-page);color:var(--pv-text);border:1px solid color-mix(in srgb,var(--pv-text) 18%,transparent);border-radius:18px;overflow:hidden;font-family:var(--pv-font);display:flex;flex-direction:column;box-shadow:0 5px 18px #00000018}
+.mock-safe{height:34px;flex:0 0 34px;background:#000;display:flex;justify-content:center;align-items:center}.mock-safe:after{content:"";width:38px;height:4px;border-radius:99px;background:#161616}
+.mock-nav{height:39px;flex:0 0 39px;background:var(--pv-bg);color:var(--pv-text);display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:0 14px;border-bottom:1px solid color-mix(in srgb,var(--pv-text) 7%,transparent);font-family:system-ui,sans-serif}
+.nav-side{display:flex;align-items:center;gap:12px}.nav-side.right{justify-content:flex-end}.nav-back{width:19px;height:19px;border-radius:50%;display:grid;place-items:center;background:var(--pv-text);color:var(--pv-bg);font-size:18px;line-height:1;font-weight:800}.nav-avatar{width:29px;height:29px;border-radius:50%;justify-self:center;display:grid;place-items:center;background:linear-gradient(145deg,#665b4d,#292d27);border:1px solid #ffffff35;color:#f1c3a2;font-size:19px;line-height:1}.nav-pencil{font-size:22px;line-height:1;transform:rotate(-8deg)}.nav-radio{font-size:21px;line-height:1}.nav-menu{font-size:25px;line-height:1}
+.mock-stage{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;background:var(--pv-page)}
+.mock-message{margin:7px 7px 0;padding:13px 14px 14px;border:1px solid color-mix(in srgb,var(--pv-text) 17%,transparent);border-radius:18px;background:color-mix(in srgb,var(--pv-raised) var(--pv-card-alpha),var(--pv-page));box-shadow:0 1px 3px #00000012}
+.mock-message-head{display:flex;align-items:center;gap:9px;margin-bottom:12px}.mock-bot-avatar{width:20px;height:20px;flex:0 0 20px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#786653,#282b25);color:#f4c5a2;font:14px/1 system-ui,sans-serif}.mock-bot-name{font-size:1.04rem;line-height:1.2;color:var(--pv-strong);font-weight:600}
+.mock-message-text{font-size:var(--pv-size);line-height:var(--pv-line);color:var(--pv-text);overflow-wrap:anywhere}.mock-message-text p{margin:0 0 12px;color:inherit}.mock-message-text p:last-child{margin-bottom:0}.mock-message-text em{color:var(--pv-accent-hi)}
+.mock-empty{flex:1;min-height:55px}
+.mock-composer-bar{height:90px;flex:0 0 90px;display:flex;align-items:center;gap:8px;padding:8px 12px 10px;border-top:1px solid color-mix(in srgb,var(--pv-text) 14%,transparent);background:var(--pv-page);font-family:system-ui,sans-serif}
+.mock-kebab{width:15px;flex:0 0 15px;color:var(--pv-accent);font-size:21px;line-height:1;text-align:center}.mock-input{height:72px;min-width:0;flex:1;border:1px solid color-mix(in srgb,var(--pv-text) 24%,transparent);border-radius:20px;padding:9px 11px;background:color-mix(in srgb,var(--pv-raised) 18%,var(--pv-page));color:var(--pv-muted);font: .72rem/1.45 var(--pv-font);display:flex;align-items:flex-start;overflow:hidden}.mock-input span{opacity:.9}.mock-send-tools{display:flex;flex-direction:column;align-items:center;justify-content:space-around;gap:7px;flex:0 0 18px;height:70px;color:var(--pv-accent);font:20px/1 system-ui,sans-serif}
+
 .status{font-size:.86rem;min-height:1.35em;margin:12px 0 0}.small{font-size:.79rem}.muted{color:var(--muted)}.install-list{padding-left:21px;color:var(--muted);margin:10px 0}.install-list li{padding:4px 0}.note{border-left:3px solid #9d7059;padding:8px 11px;margin-top:12px;background:#292724;border-radius:0 9px 9px 0;font-size:.8rem;color:var(--muted)}
 footer{padding:16px 0;color:var(--muted);font-size:.8rem}.footer-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:7px}
 @media(max-width:760px){main{padding:16px 14px 44px}.studio-grid{grid-template-columns:1fr;gap:0}.controls-panel{grid-row:auto}.preview-panel{grid-row:1}.panel{padding:15px;margin:10px 0}.hero-copy{font-size:.96rem}}
@@ -60,20 +68,33 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}.footer-links{display:f
 </section>
 
 <section class="panel preview-panel" aria-labelledby="preview-title">
-<div class="preview-toolbar"><div><h2 id="preview-title">Live preview</h2><p class="small">Illustrative chat layout · not a pixel-perfect Chub replica</p></div>
+<div class="preview-toolbar"><div><h2 id="preview-title">Live preview</h2><p class="small">Chub mobile layout reference · preview is approximate</p></div>
 <div class="mode-switch" role="group" aria-label="Preview colour mode"><button class="mode-button" type="button" data-mode-choice="light" aria-pressed="false">Light</button><button class="mode-button" type="button" data-mode-choice="dark" aria-pressed="true">Dark</button></div></div>
 <div class="mock-shell" id="mock-shell" data-mode="dark">
-<div class="mock-topbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="mock-title">CHUB · CHAT PREVIEW</span></div>
-<div class="mock-profile"><div class="avatar">KM</div><div><div class="profile-name">A quiet moment</div><div class="profile-sub">Example character · online</div></div></div>
-<div class="chat-body" id="chat-body">
-<div class="chat-label">Today · 9:41 PM</div>
-<div class="bubble ai"><strong>Character</strong><br>The room is quiet, rain tracing slow lines down the window. <span class="highlight">“You made it.”</span></div>
-<div class="bubble user">I brought something warm to drink.</div>
-<div class="bubble ai">A small smile appears. “Then stay a while. There is no rush tonight.”</div>
+<div class="mock-safe"></div>
+<div class="mock-nav">
+ <div class="nav-side"><span class="nav-back">‹</span></div>
+ <div class="nav-avatar">✿</div>
+ <div class="nav-side right"><span class="nav-pencil">✎</span><span class="nav-radio">◉</span><span class="nav-menu">☰</span></div>
 </div>
-<div class="mock-composer"><div class="composer-input">Write a message…</div><div class="send-dot">↑</div></div>
+<div class="mock-stage">
+ <article class="mock-message">
+  <div class="mock-message-head"><span class="mock-bot-avatar">✿</span><span class="mock-bot-name">Theme Helper</span></div>
+  <div class="mock-message-text" id="mock-message-text">
+   <p>Unofficial KM Warm theme helper. Tell me the look you want (colour, text size, how solid the chat cards are) and I'll give you a link that builds your theme file. Say "install" for the steps.</p>
+   <p>Setup: enable <b>Use V2 Spec</b>. (Menu &gt; Configuration &gt; Prompt Structure). Phone-tested; desktop is beta.</p>
+   <p><em>(For API, preset or lorebook help, use the Chub Helper bot.)</em></p>
+  </div>
+ </article>
+ <div class="mock-empty"></div>
 </div>
-<p class="small muted" id="preview-caption">Dark preview · automatic light/dark CSS behaviour stays enabled in the downloaded theme.</p>
+<div class="mock-composer-bar">
+ <span class="mock-kebab">⋮</span>
+ <div class="mock-input"><span>Press the button to send a message, or enter for a linebreak. Type '/' to see commands.</span></div>
+ <div class="mock-send-tools"><span>♩</span><span>↑</span></div>
+</div>
+</div>
+<p class="small muted" id="preview-caption">Dark mode reference · the downloaded CSS keeps automatic light/dark behaviour.</p>
 </section>
 
 <section class="panel" aria-labelledby="install-title">
@@ -180,8 +201,12 @@ function setPreviewMode(mode){
 }
 function renderPreview(p){
  var pal=palettes[p.p],colors=pal[previewMode],mock=el("mock-shell"),accent=p.a!==pal.accent?"#"+p.a:colors.accent;
- var keys=["bg","surface","raised","text","strong","muted"];
- keys.forEach(function(key){mock.style.setProperty("--pv-"+key,colors[key])});
+ mock.style.setProperty("--pv-bg",colors.bg);
+ mock.style.setProperty("--pv-page",colors.surface);
+ mock.style.setProperty("--pv-raised",colors.raised);
+ mock.style.setProperty("--pv-text",colors.text);
+ mock.style.setProperty("--pv-strong",colors.strong);
+ mock.style.setProperty("--pv-muted",colors.muted);
  mock.style.setProperty("--pv-accent",accent);
  mock.style.setProperty("--pv-accent-hi",p.a!==pal.accent?accent:colors.accentHi);
  mock.style.setProperty("--pv-card-alpha",Math.round((p.gaTouched?p.ga:(previewMode==="light"?.55:.25))*100)+"%");
