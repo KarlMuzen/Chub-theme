@@ -1,19 +1,28 @@
-# KM Chub Themes & Bots
+# KM Themes
 
-Independent Chub community tools by [KarlMuzen](https://github.com/KarlMuzen). Not affiliated with or endorsed by Chub.
+**Make Chub feel like yours.**
 
-## KM Warm theme
+KM Themes is an independent Chub customization ecosystem: thoughtfully designed themes, browser-based tools, configuration helpers and reusable presets. Built by [KarlMuzen](https://github.com/KarlMuzen). Not affiliated with or endorsed by Chub.
 
-A warm, low-distraction Chub theme with automatic light/dark colours. The current public source is **KM Warm v3.6 LITE**. The companion Studio lets users preview and configure palettes, then build a standalone CSS file locally in the browser.
+## The ecosystem
 
-- **[Open KM Theme Studio](https://karlmuzen.github.io/KM-CHUB-THEME/)** — live chat preview, five palettes, custom accents, typography controls and shareable settings links.
-- [Download the latest LITE CSS](https://github.com/KarlMuzen/KM-CHUB-THEME/releases/latest/download/KM-Warm-lite-v3.6.min.css)
-- [Download the compatibility CSS](https://github.com/KarlMuzen/KM-CHUB-THEME/releases/latest/download/KM-Warm-compat-v3.6.min.css)
-- [Report a problem or request a feature](https://github.com/KarlMuzen/KM-CHUB-THEME/issues)
+| Product | Purpose |
+|---|---|
+| [KM Theme Studio](https://karlmuzen.github.io/KM-THEMES/) | Preview palettes, customize typography and card opacity, share configurations, and build standalone CSS locally in the browser |
+| **KM Warm** | Flagship theme; v3.6 LITE is the current supplied source |
+| **KM Theme Helper** | Companion assistant for theme choices, installation and troubleshooting |
+| **Chub Helper** | Separate general-purpose Chub setup and configuration assistant |
+
+## KM Warm
+
+- [Open KM Theme Studio](https://karlmuzen.github.io/KM-THEMES/)
+- [Download the latest LITE CSS](https://github.com/KarlMuzen/KM-THEMES/releases/latest/download/KM-Warm-lite-v3.6.min.css)
+- [Download the compatibility CSS](https://github.com/KarlMuzen/KM-THEMES/releases/latest/download/KM-Warm-compat-v3.6.min.css)
+- [Report a problem or request a feature](https://github.com/KarlMuzen/KM-THEMES/issues)
 
 ### Install in Chub
 
-1. Download a CSS file (or build a custom one with the generator).
+1. Download a CSS file or build a custom one in KM Theme Studio.
 2. Open **Profile → Edit Theme**, or inside a chat use **bottom-left kebab → Change Theme**.
 3. Choose **Upload Custom CSS**. Leave other theme settings on **Default**.
 
@@ -25,12 +34,15 @@ The main LITE build requires a browser with light-dark() and color-mix() support
 
 A true FULL build is not published yet: it requires the original v3.5 full-effects stylesheet, which is not part of the supplied v3.6 LITE source.
 
-## Bots
+## Brand identity
 
-| Bot | Purpose | Status |
-|---|---|---|
-| Chub Helper | Chub setup, configuration, presets, lorebooks, macros and troubleshooting | Existing bot; see its [Chub page](https://chub.ai/characters/KarlMuzen/chub-helper-beta-unofficial-07e3084a3003) |
-| Chub Theme Helper | Explains KM Warm options, installation and troubleshooting | In development |
+- **Mark:** geometric rosette
+- **Style:** earthy, botanical, refined
+- **Palette:** evergreen, warm paper, terracotta, sage and antique gold
+- **Positioning:** independent Chub customization ecosystem
+- **Tagline:** Make Chub feel like yours.
+
+The KM Themes brand is the stable identity across the Studio and project materials. Individual theme previews retain their own selected palette.
 
 ## Repository layout
 
@@ -41,7 +53,12 @@ A true FULL build is not published yet: it requires the original v3.5 full-effec
 
 ## Build locally
 
-Run python scripts/build.py, python scripts/lint.py, and python -m unittest scripts/test_build.py -v.
+Run:
+
+    python scripts/build.py
+    python scripts/lint.py
+    python scripts/check_generator.py
+    python -m unittest scripts/test_build.py -v
 
 The CI workflow runs these checks on pushes and pull requests.
 
