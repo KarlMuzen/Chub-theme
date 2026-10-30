@@ -110,10 +110,10 @@ def light_dark_to_dark(css: str) -> str:
     return "".join(out)
 
 def compat_fallback():
-    return """html{--c-bg:#262624;--c-surface:#30302e;--c-raised:#3a3935;--c-text:#e3e1d7;--c-strong:#faf9f5;--c-muted:#a3a198;--c-accent:#d97757;--c-accent-hi:#e8936f;--c-btn:#bc5a3c;--c-btn-hv:#cc6a49;--c-act:#e2b295}
-:where(html){--c-glass:rgba(48,48,46,.86);--c-glass-strong:rgba(38,38,36,.88);--c-chat:rgba(48,48,46,.82);--c-line:rgba(227,225,215,.14);--c-line-hi:rgba(227,225,215,.27);--c-ring:rgba(217,119,87,.30);--c-sel:rgba(217,119,87,.34);--c-glow:rgba(217,119,87,.10);--c-switch-off:rgba(227,225,215,.25);--c-shallow:transparent}
-@media(prefers-color-scheme:light){html{--c-bg:#faf9f5;--c-surface:#fffdf9;--c-raised:#f0eee6;--c-text:#1f1e1d;--c-strong:#141413;--c-muted:#6b6a64;--c-accent:#c6613f;--c-accent-hi:#a8472a;--c-btn:#bc5a3c;--c-btn-hv:#a94e32;--c-act:#9a4a30}
-:where(html){--c-glass:rgba(255,253,249,.86);--c-glass-strong:rgba(250,249,245,.88);--c-chat:rgba(255,253,249,.85);--c-line:rgba(31,30,29,.14);--c-line-hi:rgba(31,30,29,.27);--c-ring:rgba(198,97,63,.30);--c-sel:rgba(198,97,63,.34);--c-glow:rgba(198,97,63,.10);--c-switch-off:rgba(31,30,29,.25);--c-shallow:rgba(250,249,245,.72)}}
+    return """@supports not (color:light-dark(white,black)){html{--c-bg:#262624;--c-surface:#30302e;--c-raised:#3a3935;--c-text:#e3e1d7;--c-strong:#faf9f5;--c-muted:#a3a198;--c-accent:#d97757;--c-accent-hi:#e8936f;--c-btn:#bc5a3c;--c-btn-hv:#cc6a49;--c-act:#e2b295}
+@media(prefers-color-scheme:light){html{--c-bg:#faf9f5;--c-surface:#fffdf9;--c-raised:#f0eee6;--c-text:#1f1e1d;--c-strong:#141413;--c-muted:#6b6a64;--c-accent:#c6613f;--c-accent-hi:#a8472a;--c-btn:#bc5a3c;--c-btn-hv:#a94e32;--c-act:#9a4a30}}}
+@supports not (color:color-mix(in srgb,red,blue)){:where(html){--c-glass:rgba(48,48,46,.86);--c-glass-strong:rgba(38,38,36,.88);--c-chat:rgba(48,48,46,.82);--c-line:rgba(227,225,215,.14);--c-line-hi:rgba(227,225,215,.27);--c-ring:rgba(217,119,87,.30);--c-sel:rgba(217,119,87,.34);--c-glow:rgba(217,119,87,.10);--c-switch-off:rgba(227,225,215,.25);--c-shallow:transparent}
+@media(prefers-color-scheme:light){:where(html){--c-glass:rgba(255,253,249,.86);--c-glass-strong:rgba(250,249,245,.88);--c-chat:rgba(255,253,249,.85);--c-line:rgba(31,30,29,.14);--c-line-hi:rgba(31,30,29,.27);--c-ring:rgba(198,97,63,.30);--c-sel:rgba(198,97,63,.34);--c-glow:rgba(198,97,63,.10);--c-switch-off:rgba(31,30,29,.25);--c-shallow:rgba(250,249,245,.72)}}}
 """
 
 def main():
@@ -121,7 +121,7 @@ def main():
     sections = split_source(source)
     DIST.mkdir(exist_ok=True)
     lite = sections["preset"] + sections["core"] + sections["lite"] + sections["overrides"]
-    compat = compat_fallback() + light_dark_to_dark(lite)
+    compat_base = light_dark_to_dark(lite)\n    compat = compat_base + compat_fallback() + "@supports (color:light-dark(white,black)){" + lite + "}"
     outputs = {
         "KM-Warm-lite-v3.6.min.css": minify(lite),
         "KM-Warm-compat-v3.6.min.css": minify(compat),
