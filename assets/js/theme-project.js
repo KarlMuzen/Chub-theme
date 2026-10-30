@@ -81,10 +81,12 @@
           kind: oneOf(source.kind, SOURCES, "preset"),
           label: typeof source.label === "string" ? source.label.slice(0, 100) : "",
           originalCss: typeof source.originalCss === "string" ? source.originalCss : "",
-          overrides: typeof source.overrides === "string" ? source.overrides : ""
+          overrides: typeof source.overrides === "string" ? source.overrides : "",
+          workingCss: typeof source.workingCss === "string" ? source.workingCss : ""
         },
         settings: cleanSettings(theme.settings)
-      }
+      },
+      editorMode: oneOf(input.editorMode, ["visual", "raw"], "visual")
     };
   }
 
