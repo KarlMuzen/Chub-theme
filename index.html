@@ -98,6 +98,31 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 @media(max-width:760px){main{padding:16px 14px 44px}.studio-grid{grid-template-columns:1fr;gap:0}.controls-panel{grid-row:auto}.preview-panel{grid-row:1}.panel{padding:15px;margin:10px 0}.hero-copy{font-size:.96rem}}
 @media(max-width:390px){.preset-grid{grid-template-columns:1fr 1fr}.field-grid{grid-template-columns:1fr}.preview-toolbar{align-items:flex-start;flex-direction:column}.mode-switch{width:100%}.mode-button{flex:1}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+
+[hidden]{display:none!important}
+.guide-panel{max-width:760px;margin:18px auto 22px}
+.guide-progress{display:flex;align-items:center;gap:12px;margin:12px 0 17px;color:var(--muted);font-size:.78rem}
+.guide-progress-track{height:5px;flex:1;border-radius:99px;background:var(--panel2);overflow:hidden}
+.guide-progress-fill{display:block;height:100%;width:10%;border-radius:99px;background:var(--accent);transition:width .18s ease}
+.guide-question{font-size:1rem;margin:0 0 5px}
+.guide-intro{font-size:.88rem;margin:0 0 14px}
+.guide-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.guide-choice{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;min-height:82px;padding:14px;text-align:left;border:1px solid var(--line);border-radius:14px;background:var(--panel2);color:var(--text)}
+.guide-choice[aria-pressed=true]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;background:color-mix(in srgb,var(--accent) 9%,var(--panel))}
+.guide-choice:disabled{opacity:.58;cursor:not-allowed;transform:none}
+.guide-choice-title{font-weight:750;font-size:.94rem}
+.guide-choice-note{font-size:.76rem;color:var(--muted);font-weight:450}
+.guide-choice-meta{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-strong);font-weight:750}
+.guide-select{margin-top:16px;max-width:360px}
+.guide-actions{display:flex;align-items:center;gap:9px;margin-top:17px}
+.guide-actions button{flex:1}
+.guide-preset-grid{margin-top:5px}
+.guide-preset-grid .preset{min-height:92px}
+.guide-actions button:disabled{opacity:.45}
+.guide-status{font-size:.8rem;min-height:1.2em;margin:10px 0 0}
+.workspace-heading-actions{display:flex;gap:7px;flex-wrap:wrap}
+@media(max-width:390px){.guide-choice-grid{grid-template-columns:1fr}.guide-choice{min-height:70px}.guide-panel{margin:10px 0}}
+
 </style>
 </head>
 <body>
@@ -128,9 +153,17 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 <p class="hero-copy">Thoughtfully designed themes, tools and presets for a more personal Chub experience. Explore a palette, tune the details, preview your design and build a standalone CSS file right in your browser.</p>
 </header>
 
+<section class="panel guide-panel" id="guide" aria-labelledby="guide-title">
+ <div class="section-head"><div><span class="eyebrow">GUIDED SETUP</span><h2 id="guide-title">Let's set up your workspace.</h2><p id="guide-description">A few choices will tailor the Studio to the device and chat platform you use.</p></div></div>
+ <div class="guide-progress"><span id="guide-step-label">Step 1 · Device</span><span class="guide-progress-track"><span class="guide-progress-fill" id="guide-progress-fill"></span></span></div>
+ <div id="guide-step" aria-live="polite"></div>
+ <div class="guide-actions"><button class="secondary" id="guide-back" type="button" disabled>Back</button><button id="guide-next" type="button" disabled>Continue</button></div>
+ <p class="guide-status" id="guide-status" role="status" aria-live="polite">Phone is selected by default. You can change it.</p>
+</section>
+<div id="studio-workspace" hidden>
 <div class="studio-grid">
 <section class="panel controls-panel" aria-labelledby="customize-title">
-<div class="section-head"><div><h2 id="customize-title">Make it yours</h2><p>Start with a palette, then adjust the details.</p></div></div>
+<div class="section-head"><div><h2 id="customize-title">Make it yours</h2><p>Start with a palette, then adjust the details.</p></div><div class="workspace-heading-actions"><button class="tertiary" id="change-guide" type="button">New theme</button></div></div>
 <h3>01 · Choose a palette</h3>
 <div class="preset-grid" id="preset-grid" role="group" aria-label="Theme palettes">
 <button class="preset" type="button" data-palette="warm" aria-pressed="true"><span class="swatches"><i style="background:#faf9f5"></i><i style="background:#30302e"></i><i style="background:#c6613f"></i><i style="background:#e3e1d7"></i></span><span class="preset-name">Warm</span><span class="preset-note">Soft paper & clay</span></button>
@@ -199,6 +232,7 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}
 <p><a href="https://github.com/KarlMuzen/KM-THEMES/releases/latest/download/KM-Warm-lite-v3.6.min.css">Download KM Warm LITE</a> · <a href="https://github.com/KarlMuzen/KM-THEMES/releases/latest/download/KM-Warm-compat-v3.6.min.css">Download compatibility build</a> · <a href="https://github.com/KarlMuzen/KM-THEMES/issues">Report a problem</a></p>
 <p class="small">The compatibility build includes legacy colour fallbacks and may look less exact in older browsers. The base theme is phone-tested; desktop remains beta.</p>
 </section>
+</div>
 <footer>
 <div class="footer-brand"><svg  viewBox="0 0 100 100" role="img" aria-label="KM Themes rosette emblem" xmlns="http://www.w3.org/2000/svg">
  <circle cx="50" cy="50" r="46" fill="#19221C" stroke="#8FA78B" stroke-width="2"/>
@@ -220,10 +254,11 @@ Independent Chub customization tools by KM Themes. Not affiliated with or endors
 </footer>
 </main>
 
+<script src="assets/js/theme-project.js"></script>
 <script>
 (function(){
 "use strict";
-var sourceParts=null,gaTouched=false,selectedPalette="warm",previewMode="dark";
+var sourceParts=null,gaTouched=false,selectedPalette="warm",previewMode="dark",activeProject=null;
 var defaults={p:"warm",a:"c6613f",fs:1.06,lh:1.70,ga:.25,rp:"serif",fx:"lite"};
 var ranges={fs:[.90,1.40],lh:[1.40,2.00],ga:[0,1]};
 var fontStacks={serif:'"Source Serif 4","Anthropic Serif",Tiempos,"Iowan Old Style","Palatino Linotype",Georgia,"Noto Serif",serif',sans:'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif',mono:"ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"};
@@ -318,7 +353,7 @@ function renderPreview(p){
 function render(){
  var p=readControls();
  el("fsout").textContent=p.fs.toFixed(2)+" rem";el("lhout").textContent=p.lh.toFixed(2);el("gaout").textContent=p.gaTouched?p.ga.toFixed(2):"Automatic by mode";
- renderPreview(p);safeParams(p);
+ renderPreview(p);safeParams(p);saveActiveProject();
 }
 function selectPalette(name){
  selectedPalette=validPalette(name);
@@ -335,6 +370,133 @@ function copyText(value){
  if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(value).catch(function(){return fallbackCopy(value)});
  return fallbackCopy(value);
 }
+
+var profile=window.KMThemeProject?window.KMThemeProject.loadProfile():{device:"phone",platform:"chub",appearance:"system"};
+var guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"system",goal:"",method:"preset",palette:"warm"};
+var progressLabels=["Step 1 · Device","Step 2 · Platform","Step 3 · Goal","Step 4 · Starting point","Step 5 · Theme"];
+var paletteNotes={warm:"Claude cream & warm clay",oled:"Pure black & crisp contrast",midnight:"Deep navy & blue",forest:"Forest green & sage",parchment:"Antique paper & ink"};
+function guideCard(field,value,title,note,selected,meta,disabled){
+ return '<button class="guide-choice" type="button" data-guide-field="'+field+'" data-value="'+value+'" aria-pressed="'+(selected?"true":"false")+'"'+(disabled?" disabled":"")+'><span class="guide-choice-title">'+title+'</span><span class="guide-choice-note">'+note+'</span>'+(meta?'<span class="guide-choice-meta">'+meta+'</span>':"")+'</button>';
+}
+function renderGuide(){
+ var step=guideState.step,markup="",descriptions=[
+  "Choose the device you mainly use for roleplay and reading conversations.",
+  "Choose the chat platform you want to customize. Chub is the first supported integration.",
+  "Decide whether to explore ready-made themes or build your own.",
+  "Choose how you want to begin your custom theme.",
+  "Select a starting palette. You can adjust every available setting in the editor."
+ ];
+ el("guide-step-label").textContent=progressLabels[step]||progressLabels[0];
+ el("guide-progress-fill").style.width=[20,40,60,80,100][step]+"%";
+ el("guide-description").textContent=descriptions[step]||descriptions[0];
+ if(step===0){
+  markup='<h3 class="guide-question">Which device do you mainly use?</h3><p class="guide-intro">Phone is selected by default. The editor will adapt its layout to your choice.</p><div class="guide-choice-grid">'+
+   guideCard("device","phone","Phone","Android or iPhone",guideState.device==="phone")+
+   guideCard("device","tablet","Tablet","iPad or Android tablet",guideState.device==="tablet")+
+   guideCard("device","desktop","Desktop","Computer or laptop",guideState.device==="desktop")+
+   guideCard("device","multiple","Multiple devices","Use more than one",guideState.device==="multiple")+
+   '</div><div class="field guide-select"><label for="guide-appearance">Preferred preview appearance</label><select id="guide-appearance"><option value="system">Follow device settings</option><option value="dark">Always dark</option><option value="light">Always light</option></select></div>';
+ }else if(step===1){
+  markup='<h3 class="guide-question">Which chat platform do you use?</h3><p class="guide-intro">Platform support is handled separately from your AI model provider.</p><div class="guide-choice-grid">'+
+   guideCard("platform","chub","Chub","Theme upload through Chub settings",guideState.platform==="chub","Available")+
+   guideCard("platform","sillytavern","SillyTavern","A separate native theme exporter",false,"Planned",true)+
+   guideCard("platform","risuai","RisuAI","A separate theme integration",false,"Planned",true)+
+   '</div>';
+ }else if(step===2){
+  markup='<h3 class="guide-question">What would you like to do?</h3><p class="guide-intro">You can switch between these paths whenever you start a new theme.</p><div class="guide-choice-grid">'+
+   guideCard("goal","browse","Browse themes","Explore the available KM palettes and presets",guideState.goal==="browse")+
+   guideCard("goal","custom","Create a custom theme","Build a theme using a guided editor",guideState.goal==="custom")+
+   '</div>';
+ }else if(step===3){
+  markup='<h3 class="guide-question">How would you like to start?</h3><p class="guide-intro">CSS file import and raw CSS paste will be available in the editor as those tools are completed.</p><div class="guide-choice-grid">'+
+   guideCard("method","preset","Use a preset","Choose a designed starting point",guideState.method==="preset")+
+   guideCard("method","remix","Remix a theme","Start from one of the KM palettes",guideState.method==="remix")+
+   guideCard("method","scratch","Start from scratch","Open a clean Warm-based canvas",guideState.method==="scratch")+
+   '</div>';
+ }else{
+  var title=guideState.goal==="browse"?"Choose a theme to preview":(guideState.method==="remix"?"Choose a theme to remix":"Choose your starting preset");
+  markup='<h3 class="guide-question">'+title+'</h3><p class="guide-intro">The palette is only a starting point. Colours, fonts and reading settings remain editable.</p><div class="preset-grid guide-preset-grid">';
+  Object.keys(palettes).forEach(function(key){
+   var p=palettes[key],active=guideState.palette===key;
+   markup+='<button class="preset" type="button" data-guide-field="palette" data-value="'+key+'" aria-pressed="'+(active?"true":"false")+'"><span class="swatches"><i style="background:'+p.light.bg+'"></i><i style="background:'+p.dark.bg+'"></i><i style="background:'+p.dark.accent+'"></i><i style="background:'+p.dark.text+'"></i></span><span class="preset-name">'+p.name+'</span><span class="preset-note">'+paletteNotes[key]+'</span></button>';
+  });
+  markup+='</div>';
+ }
+ el("guide-step").innerHTML=markup;
+ if(step===0)el("guide-appearance").value=guideState.appearance;
+ el("guide-back").disabled=step===0;
+ el("guide-next").disabled=(step===2&&!guideState.goal)||(step===3&&!guideState.method);
+ el("guide-next").textContent=step===4?"Open theme":(step===3&&guideState.method==="scratch"?"Create theme":"Continue");
+ el("guide-status").textContent=step===0?"Choose your main device.":step===1?"Chub is available now; other platform integrations will be added separately.":step===2?"Choose Browse or Custom.":step===3?"Choose a starting method.":"Choose a palette to continue.";
+}
+function initialPreviewMode(appearance){
+ if(appearance==="dark"||appearance==="light")return appearance;
+ return window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
+}
+function saveActiveProject(){
+ if(!activeProject||!window.KMThemeProject)return;
+ activeProject.theme.settings=readControls();
+ activeProject.updatedAt=new Date().toISOString();
+ window.KMThemeProject.saveProject(activeProject);
+}
+function startWorkspace(sourceKind,palette,label,settingsOverride){
+ var target=validPalette(palette||"warm"),settings=settingsOverride||{
+  p:target,a:palettes[target].accent,fs:defaults.fs,lh:defaults.lh,ga:defaults.ga,gaTouched:false,rp:"serif",fx:"lite"
+ };
+ updateControls(settings);
+ profile={device:guideState.device,platform:guideState.platform,appearance:guideState.appearance};
+ if(window.KMThemeProject){
+  window.KMThemeProject.saveProfile(profile);
+  activeProject=window.KMThemeProject.createProject({
+   name:label||((palettes[target].name)+" theme"),
+   platform:profile.platform,device:profile.device,appearance:profile.appearance,
+   theme:{source:{kind:sourceKind||"preset",label:label||palettes[target].name,originalCss:"",overrides:""},settings:readControls()}
+  });
+  window.KMThemeProject.saveProject(activeProject);
+ }
+ el("guide").hidden=true;el("studio-workspace").hidden=false;
+ setPreviewMode(initialPreviewMode(profile.appearance));render();
+ el("status").textContent=activeProject?"Theme project saved on this device. Changes are autosaved in this browser.":"Theme editor is ready. Local project storage is unavailable in this browser.";
+}
+function returnToGuide(){
+ profile=window.KMThemeProject?window.KMThemeProject.loadProfile():profile;
+ guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"system",goal:"",method:"preset",palette:"warm"};
+ el("studio-workspace").hidden=true;el("guide").hidden=false;renderGuide();window.scrollTo(0,0);
+}
+function handleGuideNext(){
+ var step=guideState.step;
+ if(step===0)guideState.step=1;
+ else if(step===1)guideState.step=2;
+ else if(step===2)guideState.step=guideState.goal==="browse"?4:3;
+ else if(step===3){
+  if(guideState.method==="scratch"){startWorkspace("scratch","warm","Untitled theme");return;}
+  guideState.step=4;
+ }else{
+  var kind=guideState.goal==="browse"?"preset":guideState.method,themeName=palettes[guideState.palette].name;
+  var label=guideState.goal==="browse"?themeName+" preset":(kind==="remix"?"Remix · "+themeName:themeName+" preset");
+  startWorkspace(kind,guideState.palette,label);return;
+ }
+ renderGuide();
+}
+function installGuideEvents(){
+ el("guide-step").addEventListener("click",function(event){
+  var button=event.target.closest("[data-guide-field]");
+  if(!button||button.disabled)return;
+  var field=button.getAttribute("data-guide-field"),value=button.getAttribute("data-value");
+  if(["device","platform","goal","method","palette"].indexOf(field)>=0)guideState[field]=value;
+  renderGuide();
+ });
+ el("guide-step").addEventListener("change",function(event){
+  if(event.target.id==="guide-appearance")guideState.appearance=event.target.value;
+ });
+ el("guide-next").addEventListener("click",handleGuideNext);
+ el("guide-back").addEventListener("click",function(){
+  if(guideState.step===4)guideState.step=guideState.goal==="browse"?2:3;
+  else guideState.step=Math.max(0,guideState.step-1);
+  renderGuide();
+ });
+}
+
 function installEvents(){
  Array.prototype.forEach.call(document.querySelectorAll("[data-palette]"),function(btn){btn.addEventListener("click",function(){selectPalette(btn.getAttribute("data-palette"))})});
  Array.prototype.forEach.call(document.querySelectorAll("[data-mode-choice]"),function(btn){btn.addEventListener("click",function(){setPreviewMode(btn.getAttribute("data-mode-choice"))})});
@@ -350,13 +512,30 @@ function installEvents(){
   copyText(link).then(function(){el("status").textContent="Share link copied. Anyone opening it will get these settings preloaded."}).catch(function(e){el("status").textContent=e.message});
  });
  el("reset").addEventListener("click",function(){window.accentWasCustom=false;gaTouched=false;updateControls({p:"warm",a:palettes.warm.accent,fs:defaults.fs,lh:defaults.lh,ga:defaults.ga,gaTouched:false,rp:"serif"});render();el("status").textContent="Settings reset to the Warm default."});
+ el("change-guide").addEventListener("click",returnToGuide);
+ installGuideEvents();
 }
 window.accentWasCustom=false;
 fetch("themes/km-warm/source.css").then(function(r){if(!r.ok)throw new Error("Could not load source CSS ("+r.status+").");return r.text()}).then(function(css){
- sourceParts=splitSource(css);el("download").disabled=false;
- var initial=parseParams();window.accentWasCustom=initial.a!==palettes[initial.p].accent;updateControls(initial);installEvents();setPreviewMode("dark");render();
- el("status").textContent="Ready. Preview and CSS generation are running locally in this browser.";
-}).catch(function(e){el("status").textContent=e.message+" Open an issue if this continues."});
+ sourceParts=splitSource(css);el("download").disabled=false;installEvents();
+ var query=new URLSearchParams(location.search),hasShared=["p","a","fs","lh","ga","rp"].some(function(key){return query.has(key)});
+ if(hasShared){
+  var shared=parseParams();window.accentWasCustom=shared.a!==palettes[shared.p].accent;
+  startWorkspace("preset",shared.p,"Shared theme configuration",shared);
+ }else{
+  var saved=window.KMThemeProject?window.KMThemeProject.loadProject():null;
+  if(saved){
+   activeProject=saved;profile={device:saved.device,platform:saved.platform,appearance:saved.appearance};
+   window.accentWasCustom=saved.theme.settings.a!==palettes[saved.theme.settings.p].accent;
+   updateControls(saved.theme.settings);el("guide").hidden=true;el("studio-workspace").hidden=false;
+   setPreviewMode(initialPreviewMode(profile.appearance));render();
+   el("status").textContent="Your last theme project was restored. Changes are autosaved in this browser.";
+  }else{
+   guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"system",goal:"",method:"preset",palette:"warm"};
+   el("guide").hidden=false;el("studio-workspace").hidden=true;renderGuide();
+  }
+ }
+}).catch(function(e){el("guide-status").textContent=e.message+" Open an issue if this continues.";el("status").textContent=e.message+" Open an issue if this continues.";});
 })();
 </script>
 </body>
