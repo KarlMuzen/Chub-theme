@@ -427,7 +427,7 @@ function copyText(value){
 }
 
 var profile=window.KMThemeProject?window.KMThemeProject.loadProfile():{device:"phone",platform:"chub",appearance:"system"};
-var guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"system",goal:"",method:"preset",palette:"warm"};
+var guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"dark",goal:"",method:"preset",palette:"warm"};
 var progressLabels=["Step 1 · Device","Step 2 · Platform","Step 3 · Goal","Step 4 · Starting point","Step 5 · Theme"];
 var paletteNotes={warm:"Claude cream & warm clay",oled:"Pure black & crisp contrast",midnight:"Deep navy & blue",forest:"Forest green & sage",parchment:"Antique paper & ink"};
 function guideCard(field,value,title,note,selected,meta,disabled){
@@ -450,7 +450,7 @@ function renderGuide(){
    guideCard("device","tablet","Tablet","iPad or Android tablet",guideState.device==="tablet")+
    guideCard("device","desktop","Desktop","Computer or laptop",guideState.device==="desktop")+
    guideCard("device","multiple","Multiple devices","Use more than one",guideState.device==="multiple")+
-   '</div><div class="field guide-select"><label for="guide-appearance">Preferred preview appearance</label><select id="guide-appearance"><option value="system">Follow device settings</option><option value="dark">Always dark</option><option value="light">Always light</option></select></div>';
+   '</div><div class="field guide-select"><label for="guide-appearance">Preferred preview appearance</label><select id="guide-appearance"><option value="dark">Always dark</option><option value="system">Follow device settings</option><option value="light">Always light</option></select></div>';
  }else if(step===1){
   markup='<h3 class="guide-question">Which chat platform do you use?</h3><p class="guide-intro">Platform support is handled separately from your AI model provider.</p><div class="guide-choice-grid">'+
    guideCard("platform","chub","Chub","Theme upload through Chub settings",guideState.platform==="chub","Available")+
@@ -518,7 +518,7 @@ function returnToGuide(){
  if(rawSaveTimer){clearTimeout(rawSaveTimer);rawSaveTimer=null;}
  if(window.KMThemeProject)window.KMThemeProject.clearProject();
  activeProject=null;
- guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"system",goal:"",method:"preset",palette:"warm"};
+ guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"dark",goal:"",method:"preset",palette:"warm"};
  el("studio-workspace").hidden=true;el("guide").hidden=false;
  el("studio-grid").hidden=false;el("css-workbench").hidden=true;el("raw-css-panel").hidden=true;
  el("css-file").value="";el("css-source").value="";pendingFileCss=null;pendingFileDisplay=null;
