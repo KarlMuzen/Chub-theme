@@ -515,6 +515,7 @@ function startWorkspace(sourceKind,palette,label,settingsOverride){
 }
 function returnToGuide(){
  profile=window.KMThemeProject?window.KMThemeProject.loadProfile():profile;
+ if(rawSaveTimer){clearTimeout(rawSaveTimer);rawSaveTimer=null;}
  if(window.KMThemeProject)window.KMThemeProject.clearProject();
  activeProject=null;
  guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"system",goal:"",method:"preset",palette:"warm"};
@@ -649,7 +650,7 @@ function loadImportedCss(css,label){
  rawEditorBaselineValue=el("raw-css-editor").value;
  el("raw-css-title").textContent="Raw CSS · "+result.value.label;
  el("raw-css-subtitle").textContent="Imported stylesheet. Review compatibility notes before installing.";
- el("raw-css-preservation").textContent="The original imported stylesheet is preserved byte-for-byte. Editing changes only the working copy; Restore original returns to the exact imported text.";
+ el("raw-css-preservation").textContent="The original imported CSS text is preserved exactly as read. Editing changes only the working copy; Restore original returns to the saved source text.";
  el("restore-original-css").disabled=false;
  el("css-workbench").hidden=true;
  el("studio-grid").hidden=true;
@@ -693,7 +694,8 @@ function handleImport(){
   renderCssReport(el("css-import-report"),{valid:false,bytes:0,errors:["Choose a CSS file or paste CSS before continuing."],warnings:[]});
   return;
  }
- loadImportedCss(css,label);
+ var loaded=loadImportedCss(css,label);
+ if(loaded){pendingFileCss=null;pendingFileDisplay=null;}
 }
 function copyRawCss(){
  saveRawProject();
