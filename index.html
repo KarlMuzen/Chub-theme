@@ -520,7 +520,7 @@ function returnToGuide(){
  guideState={step:0,device:profile.device||"phone",platform:profile.platform||"chub",appearance:profile.appearance||"system",goal:"",method:"preset",palette:"warm"};
  el("studio-workspace").hidden=true;el("guide").hidden=false;
  el("studio-grid").hidden=false;el("css-workbench").hidden=true;el("raw-css-panel").hidden=true;
- el("css-file").value="";el("css-source").value="";
+ el("css-file").value="";el("css-source").value="";pendingFileCss=null;pendingFileDisplay=null;
  renderGuide();window.scrollTo(0,0);
 }
 function handleGuideNext(){
@@ -662,6 +662,7 @@ function loadImportedCss(css,label){
 }
 function readSelectedFile(file){
  if(!file)return;
+ pendingFileCss=null;pendingFileDisplay=null;el("css-source").value="";
  if(!/\.css$/i.test(file.name||"") && file.type!=="text/css"){
   renderCssReport(el("css-import-report"),{valid:false,bytes:0,errors:["Choose a .css file."],warnings:[]});
   return;
@@ -724,9 +725,8 @@ function restoreOriginalCss(){
  activeProject.theme.source.workingCss=original;
  activeProject.updatedAt=new Date().toISOString();
  var restored=window.KMThemeProject.saveProject(activeProject);
- el("raw-css-state").textContent=restored?"Original restored":"Restored in editor; local save failed";
  updateRawMeta();
- el("raw-css-state").textContent="Original restored";
+ el("raw-css-state").textContent=restored?"Original restored":"Restored in editor; local save failed";
  renderCssReport(el("raw-css-report"),window.KMCssWorkbench.analyzeCss(original));
 }
 
