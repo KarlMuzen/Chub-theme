@@ -73,7 +73,7 @@
         ? input.name.trim().slice(0, 80) : "Untitled theme",
       platform: oneOf(input.platform, PLATFORMS, "chub"),
       device: oneOf(input.device, DEVICES, "phone"),
-      appearance: oneOf(input.appearance, MODES, "system"),
+      appearance: oneOf(input.appearance, MODES, "dark"),
       createdAt: typeof input.createdAt === "string" ? input.createdAt : now,
       updatedAt: now,
       theme: {
@@ -155,7 +155,7 @@
     return {
       device: oneOf(input.device, DEVICES, "phone"),
       platform: oneOf(input.platform, PLATFORMS, "chub"),
-      appearance: oneOf(input.appearance, MODES, "system")
+      appearance: oneOf(input.appearance, MODES, "dark")
     };
   }
 
