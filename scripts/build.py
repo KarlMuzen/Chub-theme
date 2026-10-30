@@ -78,11 +78,31 @@ def minify(css: str) -> str:
     return "".join(out).strip()
 
 def light_dark_to_dark(css: str) -> str:
-    """Replace light-dark(light, dark) with dark argument, respecting nested functions."""
+    """Replace light-dark(light, dark) with dark argument, ignoring comments and strings."""
     out, i, needle = [], 0, "light-dark("
     while i < len(css):
+        if css.startswith("/*", i):
+            j = css.find("*/", i + 2)
+            if j < 0:
+                raise ValueError("Unterminated CSS comment")
+            out.append(css[i:j + 2])
+            i = j + 2
+            continue
+        if css[i] in ("'", '"'):
+            quote, j = css[i], i + 1
+            while j < len(css):
+                if css[j] == "\\":
+                    j += 2
+                    continue
+                if css[j] == quote:
+                    j += 1
+                    break
+                j += 1
+            out.append(css[i:j])
+            i = j
+            continue
         if css.startswith(needle, i):
-            start, depth, quote, comma, j = i + len(needle), 1, None, -1, i + len(needle)
+            depth, quote, comma, j = 1, None, -1, i + len(needle)
             while j < len(css) and depth:
                 ch = css[j]
                 if quote:
