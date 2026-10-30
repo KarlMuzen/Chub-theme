@@ -63,7 +63,7 @@ Local storage is best-effort. If browser storage is disabled or full, the editor
 
 ## CSS preservation contract
 
-`source.originalCss` is the immutable restore point. `source.workingCss` is the editable stylesheet. Import processing stores the exact original string in both fields and never normalizes, minifies, sanitizes, or rewrites it. Raw edits update only `workingCss`. Restore copies `originalCss` back into `workingCss`. The current raw editor checks basic structure (balanced blocks, parentheses, comments and strings) and reports selected compatibility/security warnings; it is not a complete CSS parser. Imported CSS is not injected into the Studio preview. The current implementation does not map arbitrary third-party CSS into visual controls, so imported projects open in Raw mode.
+`source.originalCss` is the immutable restore point. `source.workingCss` is the editable stylesheet. File import stores the decoded CSS text as read by the browser in both fields. The original string, including its line endings, is retained in project storage; the editor's textarea may display normalized line endings, but the original remains unchanged until the user edits the working copy. Import analysis never normalizes, minifies, sanitizes, or rewrites the original. Raw edits update only `workingCss`. Restore copies `originalCss` back into `workingCss`. The current raw editor checks basic structure (balanced blocks, parentheses, comments and strings) and reports selected compatibility/security warnings; it is not a complete CSS parser. Imported CSS is not injected into the Studio preview. The current implementation does not map arbitrary third-party CSS into visual controls, so imported projects open in Raw mode.
 
 The v1 browser modules validate and store the project structure, import a `.css` file or pasted CSS (up to 1 MB), provide raw editing, copy and download actions, and restore the original import. Project history and multi-project management remain future features.
 
@@ -71,5 +71,5 @@ The v1 browser modules validate and store the project structure, import a `.css`
 
 - Keep the schema string and integer version stable for v1.
 - Introduce a new version when changing required structure or meaning.
-- Migrations must preserve `source.originalCss` byte-for-byte.
+- Migrations must preserve the `source.originalCss` string exactly.
 - Unknown or unsupported schema versions must not be overwritten automatically.
