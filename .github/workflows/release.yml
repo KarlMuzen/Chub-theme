@@ -22,4 +22,3 @@ jobs:
           files: |
             dist/KM-Warm-lite-v3.6.min.css
             dist/KM-Warm-compat-v3.6.min.css
-            dist/KM-Warm-full-v3.6.min.css
