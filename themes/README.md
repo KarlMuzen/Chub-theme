@@ -1,10 +1,10 @@
 # Themes
 
-CSS themes for Chub. Each theme folder contains its source, build notes, and tested status.
+Theme releases within the KM Themes independent Chub customization ecosystem.
 
 ## KM Warm v3.6
 
-The standalone source is in [themes/km-warm](km-warm/). The phone-first generator is deployed at [KM Warm Generator](https://karlmuzen.github.io/KM-CHUB-THEME/).
+The standalone source is in [themes/km-warm](km-warm/). Configure and build it with [KM Theme Studio](https://karlmuzen.github.io/KM-THEMES/).
 
 - **LITE**: current supplied theme, one self-contained CSS file.
 - **Compat**: legacy fallback build; best effort.
