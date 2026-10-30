@@ -3,33 +3,98 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#242321">
-<meta name="description" content="Preview, customize and share a KM Warm theme for Chub. Build and download safe standalone CSS in your browser.">
-<title>KM Theme Studio — KM Warm for Chub</title>
+<meta name="theme-color" content="#19221c">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="KM Themes is an independent Chub customization ecosystem. Explore themes, personalize palettes and build your own CSS in KM Theme Studio.">
+<title>KM Themes — Theme Studio</title>
 <style>
-:root{color-scheme:dark;--bg:#242321;--panel:#302e2a;--panel2:#272522;--line:#51483f;--text:#f1e9dd;--muted:#b8aa99;--accent:#d97757;--focus:#f3ad8f}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(90% 42% at 50% 0,#6a392b55,transparent 72%),var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
-main{width:min(1120px,100%);margin:auto;padding:24px 20px 58px}header{padding:18px 0 20px}.eyebrow{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:#efaa8e;font-weight:750}h1{font:500 clamp(2.15rem,7vw,3.7rem)/1.02 Georgia,serif;letter-spacing:-.035em;margin:8px 0 12px}h2{font-size:1.08rem;margin:0 0 6px}h3{font-size:.94rem;margin:0}p{margin:8px 0;color:var(--muted)}a{color:#efaa8e}
-.hero-copy{max-width:620px;font-size:1.03rem}.topline{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-size:.76rem;color:var(--muted)}
-.studio-grid{display:grid;grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr);gap:16px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0}.controls-panel{grid-row:span 2}.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}.section-head p{font-size:.84rem;margin:3px 0 0}
-.preset-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.preset{appearance:none;text-align:left;border:1px solid var(--line);border-radius:13px;background:var(--panel2);color:var(--text);padding:10px;min-width:0;cursor:pointer;transition:border-color .15s,background .15s}.preset:hover{border-color:#a77760}.preset[aria-pressed=true]{border-color:#df9677;box-shadow:0 0 0 1px #df967755 inset;background:#3b302b}.swatches{display:flex;overflow:hidden;border-radius:7px;height:20px;margin-bottom:8px;border:1px solid #ffffff20}.swatches i{display:block;flex:1}.preset-name{display:block;font-size:.87rem;font-weight:700}.preset-note{display:block;color:var(--muted);font-size:.74rem;margin-top:2px}
-.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:17px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label{font-size:.84rem;color:var(--muted)}output{color:var(--text);font-variant-numeric:tabular-nums}input,select,button{font:inherit}input,select{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#211f1d;color:var(--text)}input[type=color]{padding:4px;height:44px}input[type=range]{padding:0;accent-color:var(--accent);min-height:28px}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}button{border:0;border-radius:11px;padding:11px 16px;background:var(--accent);color:#1c1714;font-weight:750;min-height:44px;cursor:pointer}button:hover{filter:brightness(1.06)}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}button.secondary{background:#48413a;color:var(--text);border:1px solid #65594e}button.tertiary{background:transparent;border:1px solid var(--line);color:var(--text)}button:disabled{opacity:.45;cursor:not-allowed}
-.preview-panel{padding:17px}.preview-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.mode-switch{display:flex;gap:4px;padding:4px;background:var(--panel2);border:1px solid var(--line);border-radius:11px}.mode-button{padding:6px 10px;min-height:34px;background:transparent;border:0;color:var(--muted);font-size:.78rem}.mode-button[aria-pressed=true]{background:#55453b;color:#fff1e7}
+:root{color-scheme:light;--bg:#f4f2ea;--panel:#fffefa;--panel2:#e9ede4;--line:#d5dcd1;--text:#26342a;--muted:#627164;--accent:#c66a4b;--accent-strong:#a45137;--focus:#718f73;--link:#99533d;--button-ink:#211b17;--shadow:0 10px 30px #26342a0b}
+@media(prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#19221c;--panel:#222d25;--panel2:#28362d;--line:#425246;--text:#e9efe5;--muted:#adbdab;--accent:#c66a4b;--accent-strong:#db8b6c;--focus:#a7c1a1;--link:#e1a083;--button-ink:#211b17;--shadow:0 12px 32px #00000024}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(60% 28% at 8% 0,#c66a4b12,transparent 75%),radial-gradient(50% 24% at 96% 8%,#8fa78b18,transparent 75%),var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;transition:background .18s,color .18s}
+main{width:min(1120px,100%);margin:auto;padding:24px 20px 58px}
+header{padding:18px 0 24px}
+.brand-lockup{display:flex;align-items:center;gap:13px;margin-bottom:23px}
+.brand-symbol{width:54px;height:54px;flex:0 0 54px;filter:drop-shadow(0 3px 6px #00000016)}
+.brand-wordmark{display:flex;flex-direction:column;gap:2px}
+.brand-name{font:700 1.13rem/1.1 Georgia,"Times New Roman",serif;letter-spacing:.12em;color:var(--text)}
+.brand-kicker{font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:650}
+.brand-lockup .spacer{flex:1}
+.eyebrow{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-strong);font-weight:750}
+h1{font:500 clamp(2.25rem,7vw,3.8rem)/1.02 Georgia,"Times New Roman",serif;letter-spacing:-.035em;margin:8px 0 12px;max-width:780px}
+h2{font:600 1.12rem/1.25 Georgia,"Times New Roman",serif;margin:0 0 6px}
+h3{font-size:.94rem;margin:0;color:var(--text)}
+p{margin:8px 0;color:var(--muted)}
+a{color:var(--link);text-decoration-thickness:1px;text-underline-offset:3px}
+.hero-copy{max-width:650px;font-size:1.02rem}
+.topline{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-size:.76rem;color:var(--muted);background:var(--panel)}
+.studio-grid{display:grid;grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr);gap:16px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:18px;margin:14px 0;box-shadow:var(--shadow)}
+.controls-panel{grid-row:span 2}
+.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.section-head p{font-size:.84rem;margin:3px 0 0}
+.preset-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.preset{appearance:none;text-align:left;border:1px solid var(--line);border-radius:13px;background:var(--panel2);color:var(--text);padding:10px;min-width:0;cursor:pointer;transition:border-color .15s,background .15s,transform .15s}
+.preset:hover{border-color:var(--accent);transform:translateY(-1px)}
+.preset[aria-pressed=true]{border-color:var(--accent);box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 40%,transparent) inset;background:color-mix(in srgb,var(--accent) 9%,var(--panel))}
+.swatches{display:flex;overflow:hidden;border-radius:7px;height:20px;margin-bottom:8px;border:1px solid color-mix(in srgb,var(--text) 15%,transparent)}
+.swatches i{display:block;flex:1}
+.preset-name{display:block;font-size:.87rem;font-weight:700}
+.preset-note{display:block;color:var(--muted);font-size:.74rem;margin-top:2px}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:17px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-size:.84rem;color:var(--muted)}
+output{color:var(--text);font-variant-numeric:tabular-nums}
+input,select,button{font:inherit}
+input,select{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel2);color:var(--text)}
+input[type=color]{padding:4px;height:44px}
+input[type=range]{padding:0;accent-color:var(--accent);min-height:28px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+button{border:0;border-radius:11px;padding:11px 16px;background:var(--accent);color:var(--button-ink);font-weight:750;min-height:44px;cursor:pointer;transition:filter .15s,transform .15s}
+button:hover{filter:brightness(1.06);transform:translateY(-1px)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+button.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+button.tertiary{background:transparent;border:1px solid var(--line);color:var(--text)}
+button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.preview-panel{padding:17px}
+.preview-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.mode-switch{display:flex;gap:4px;padding:4px;background:var(--panel2);border:1px solid var(--line);border-radius:11px}
+.mode-button{padding:6px 10px;min-height:34px;background:transparent;border:0;color:var(--muted);font-size:.78rem}
+.mode-button[aria-pressed=true]{background:var(--accent);color:var(--button-ink)}
 .mock-shell{--pv-bg:#262624;--pv-page:#30302e;--pv-raised:#3a3935;--pv-text:#e3e1d7;--pv-strong:#faf9f5;--pv-muted:#a3a198;--pv-accent:#d97757;--pv-accent-hi:#e8936f;--pv-font:Georgia,serif;--pv-size:1rem;--pv-line:1.55;--pv-card-alpha:25%;width:min(100%,340px);height:clamp(620px,min(720px,184vw),720px);margin:0 auto;background:var(--pv-page);color:var(--pv-text);border:1px solid color-mix(in srgb,var(--pv-text) 18%,transparent);border-radius:18px;overflow:hidden;font-family:var(--pv-font);display:flex;flex-direction:column;box-shadow:0 5px 18px #00000018}
-.mock-safe{height:34px;flex:0 0 34px;background:#000;display:flex;justify-content:center;align-items:center}.mock-safe:after{content:"";width:38px;height:4px;border-radius:99px;background:#161616}
+.mock-safe{height:34px;flex:0 0 34px;background:#000;display:flex;justify-content:center;align-items:center}
+.mock-safe:after{content:"";width:38px;height:4px;border-radius:99px;background:#161616}
 .mock-nav{height:39px;flex:0 0 39px;background:var(--pv-bg);color:var(--pv-text);display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:0 14px;border-bottom:1px solid color-mix(in srgb,var(--pv-text) 7%,transparent);font-family:system-ui,sans-serif}
-.nav-side{display:flex;align-items:center;gap:12px}.nav-side.right{justify-content:flex-end}.nav-back{width:19px;height:19px;border-radius:50%;display:grid;place-items:center;background:var(--pv-text);color:var(--pv-bg);font-size:18px;line-height:1;font-weight:800}.nav-avatar{width:29px;height:29px;border-radius:50%;justify-self:center;display:grid;place-items:center;background:linear-gradient(145deg,#665b4d,#292d27);border:1px solid #ffffff35;color:#f1c3a2;font-size:19px;line-height:1}.nav-icon{display:grid;place-items:center;width:20px;height:24px;color:var(--pv-text)}.nav-icon svg{width:20px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.nav-menu{font-size:25px;line-height:1}
+.nav-side{display:flex;align-items:center;gap:12px}.nav-side.right{justify-content:flex-end}
+.nav-back{width:19px;height:19px;border-radius:50%;display:grid;place-items:center;background:var(--pv-text);color:var(--pv-bg);font-size:18px;line-height:1;font-weight:800}
+.nav-avatar{width:29px;height:29px;border-radius:50%;justify-self:center;display:grid;place-items:center;background:linear-gradient(145deg,#665b4d,#292d27);border:1px solid #ffffff35;color:#f1c3a2;font-size:19px;line-height:1}
+.nav-icon{display:grid;place-items:center;width:20px;height:24px;color:var(--pv-text)}
+.nav-icon svg{width:20px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-menu{font-size:25px;line-height:1}
 .mock-stage{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;background:var(--pv-page)}
 .mock-message{margin:7px 7px 0;padding:13px 14px 14px;border:1px solid color-mix(in srgb,var(--pv-text) 17%,transparent);border-radius:18px;background:color-mix(in srgb,var(--pv-raised) var(--pv-card-alpha),var(--pv-page));box-shadow:0 1px 3px #00000012}
-.mock-message-head{display:flex;align-items:center;gap:9px;margin-bottom:12px}.mock-bot-avatar{width:20px;height:20px;flex:0 0 20px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#786653,#282b25);color:#f4c5a2;font:14px/1 system-ui,sans-serif}.mock-bot-name{font-size:1.04rem;line-height:1.2;color:var(--pv-strong);font-weight:600}
-.mock-message-text{font-size:var(--pv-size);line-height:var(--pv-line);color:var(--pv-text);overflow-wrap:anywhere}.mock-message-text p{margin:0 0 12px;color:inherit}.mock-message-text p:last-child{margin-bottom:0}.mock-message-text em{color:var(--pv-accent-hi)}
+.mock-message-head{display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.mock-bot-avatar{width:20px;height:20px;flex:0 0 20px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#786653,#282b25);color:#f4c5a2;font:14px/1 system-ui,sans-serif}
+.mock-bot-name{font-size:1.04rem;line-height:1.2;color:var(--pv-strong);font-weight:600}
+.mock-message-text{font-size:var(--pv-size);line-height:var(--pv-line);color:var(--pv-text);overflow-wrap:anywhere}
+.mock-message-text p{margin:0 0 12px;color:inherit}.mock-message-text p:last-child{margin-bottom:0}.mock-message-text em{color:var(--pv-accent-hi)}
 .mock-empty{flex:1;min-height:55px}
 .mock-composer-bar{height:90px;flex:0 0 90px;display:flex;align-items:center;gap:8px;padding:8px 12px 10px;border-top:1px solid color-mix(in srgb,var(--pv-text) 14%,transparent);background:var(--pv-page);font-family:system-ui,sans-serif}
-.mock-kebab{width:15px;flex:0 0 15px;color:var(--pv-accent);font-size:21px;line-height:1;text-align:center}.mock-input{height:72px;min-width:0;flex:1;border:1px solid color-mix(in srgb,var(--pv-text) 24%,transparent);border-radius:20px;padding:9px 11px;background:color-mix(in srgb,var(--pv-raised) 18%,var(--pv-page));color:var(--pv-muted);font: .72rem/1.45 var(--pv-font);display:flex;align-items:flex-start;overflow:hidden}.mock-input span{opacity:.9}.mock-send-tools{display:flex;flex-direction:column;align-items:center;justify-content:space-around;gap:7px;flex:0 0 18px;height:70px;color:var(--pv-accent)}.mock-send-tools svg{width:18px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-
-.status{font-size:.86rem;min-height:1.35em;margin:12px 0 0}.small{font-size:.79rem}.muted{color:var(--muted)}.install-list{padding-left:21px;color:var(--muted);margin:10px 0}.install-list li{padding:4px 0}.note{border-left:3px solid #9d7059;padding:8px 11px;margin-top:12px;background:#292724;border-radius:0 9px 9px 0;font-size:.8rem;color:var(--muted)}
-footer{padding:16px 0;color:var(--muted);font-size:.8rem}.footer-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:7px}
+.mock-kebab{width:15px;flex:0 0 15px;color:var(--pv-accent);font-size:21px;line-height:1;text-align:center}
+.mock-input{height:72px;min-width:0;flex:1;border:1px solid color-mix(in srgb,var(--pv-text) 24%,transparent);border-radius:20px;padding:9px 11px;background:color-mix(in srgb,var(--pv-raised) 18%,var(--pv-page));color:var(--pv-muted);font:.72rem/1.45 var(--pv-font);display:flex;align-items:flex-start;overflow:hidden}
+.mock-input span{opacity:.9}
+.mock-send-tools{display:flex;flex-direction:column;align-items:center;justify-content:space-around;gap:7px;flex:0 0 18px;height:70px;color:var(--pv-accent)}
+.mock-send-tools svg{width:18px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.status{font-size:.86rem;min-height:1.35em;margin:12px 0 0}
+.small{font-size:.79rem}.muted{color:var(--muted)}
+.install-list{padding-left:21px;color:var(--muted);margin:10px 0}.install-list li{padding:4px 0}
+.note{border-left:3px solid var(--sage,var(--focus));padding:8px 11px;margin-top:12px;background:var(--panel2);border-radius:0 9px 9px 0;font-size:.8rem;color:var(--muted)}
+footer{padding:16px 0;color:var(--muted);font-size:.8rem}
+.footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:8px;color:var(--text);font:600 1rem Georgia,"Times New Roman",serif;letter-spacing:.11em}
+.footer-brand svg{width:27px;height:27px}
+.footer-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:7px}
 @media(max-width:760px){main{padding:16px 14px 44px}.studio-grid{grid-template-columns:1fr;gap:0}.controls-panel{grid-row:auto}.preview-panel{grid-row:1}.panel{padding:15px;margin:10px 0}.hero-copy{font-size:.96rem}}
 @media(max-width:390px){.preset-grid{grid-template-columns:1fr 1fr}.field-grid{grid-template-columns:1fr}.preview-toolbar{align-items:flex-start;flex-direction:column}.mode-switch{width:100%}.mode-button{flex:1}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
@@ -38,9 +103,29 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}.footer-links{display:f
 <body>
 <main>
 <header>
-<div class="topline"><span class="eyebrow">KM Warm · v3.6 LITE</span><span class="pill">KM Theme Studio</span><span class="pill">Builds locally</span></div>
-<h1>Your Chub theme,<br>your atmosphere.</h1>
-<p class="hero-copy">Choose a palette, tune the details and see the changes live. Share your setup with a link, or download a standalone CSS file for Chub.</p>
+<div class="brand-lockup">
+ <svg class="brand-symbol" viewBox="0 0 100 100" role="img" aria-label="KM Themes rosette emblem" xmlns="http://www.w3.org/2000/svg">
+ <circle cx="50" cy="50" r="46" fill="#19221C" stroke="#8FA78B" stroke-width="2"/>
+ <g fill="#C66A4B" stroke="#F2EBDD" stroke-width="1.5">
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(45 50 50)"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(90 50 50)"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(135 50 50)"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(180 50 50)"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(225 50 50)"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(270 50 50)"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(315 50 50)"/>
+ </g>
+ <circle cx="50" cy="50" r="12" fill="#D2B98C" stroke="#F2EBDD" stroke-width="2"/>
+ <circle cx="50" cy="50" r="4" fill="#19221C"/>
+</svg>
+ <div class="brand-wordmark"><span class="brand-name">KM THEMES</span><span class="brand-kicker">Independent Chub Customization</span></div>
+ <span class="spacer"></span>
+ <span class="pill">The ecosystem</span>
+</div>
+<div class="topline"><span class="eyebrow">THEME STUDIO</span><span class="pill">Builds locally · No account</span></div>
+<h1>Make Chub feel like yours.</h1>
+<p class="hero-copy">Thoughtfully designed themes, tools and presets for a more personal Chub experience. Explore a palette, tune the details, preview your design and build a standalone CSS file right in your browser.</p>
 </header>
 
 <div class="studio-grid">
@@ -105,17 +190,33 @@ footer{padding:16px 0;color:var(--muted);font-size:.8rem}.footer-links{display:f
 <li>Choose <b>Upload Custom CSS</b> and select the downloaded file. Leave other theme settings on Default.</li>
 </ol>
 <p class="small">To remove it, use <b>Clear Custom CSS</b>. Chub accepts a file upload; there is no paste box.</p>
-<div class="note">The available source is KM Warm v3.6 LITE. A true FULL build needs the original v3.5 full-effects stylesheet, which has not been supplied.</div>
+<div class="note">Flagship theme · KM Warm v3.6 LITE. A true FULL build needs the original v3.5 full-effects stylesheet, which has not been supplied.</div>
 </section>
 </div>
 
 <section class="panel" aria-labelledby="ready-title">
-<h2 id="ready-title">Prefer a ready-made build?</h2>
-<p><a href="https://github.com/KarlMuzen/KM-CHUB-THEME/releases/latest/download/KM-Warm-lite-v3.6.min.css">Download KM Warm LITE</a> · <a href="https://github.com/KarlMuzen/KM-CHUB-THEME/releases/latest/download/KM-Warm-compat-v3.6.min.css">Download compatibility build</a> · <a href="https://github.com/KarlMuzen/KM-CHUB-THEME/issues">Report a problem</a></p>
+<h2 id="ready-title">Explore the KM Warm releases</h2>
+<p><a href="https://github.com/KarlMuzen/KM-THEMES/releases/latest/download/KM-Warm-lite-v3.6.min.css">Download KM Warm LITE</a> · <a href="https://github.com/KarlMuzen/KM-THEMES/releases/latest/download/KM-Warm-compat-v3.6.min.css">Download compatibility build</a> · <a href="https://github.com/KarlMuzen/KM-THEMES/issues">Report a problem</a></p>
 <p class="small">The compatibility build includes legacy colour fallbacks and may look less exact in older browsers. The base theme is phone-tested; desktop remains beta.</p>
 </section>
-<footer>KM Warm is an independent community theme and is not affiliated with Chub.
-<div class="footer-links"><a href="https://github.com/KarlMuzen/KM-CHUB-THEME">Source & updates</a><a href="https://github.com/KarlMuzen/KM-CHUB-THEME/releases">Releases</a><a href="https://github.com/KarlMuzen/KM-CHUB-THEME/issues">Feedback</a></div>
+<footer>
+<div class="footer-brand"><svg  viewBox="0 0 100 100" role="img" aria-label="KM Themes rosette emblem" xmlns="http://www.w3.org/2000/svg">
+ <circle cx="50" cy="50" r="46" fill="#19221C" stroke="#8FA78B" stroke-width="2"/>
+ <g fill="#C66A4B" stroke="#F2EBDD" stroke-width="1.5">
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(45 50 50)"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(90 50 50)"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(135 50 50)"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(180 50 50)"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(225 50 50)"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(270 50 50)"/>
+  <path d="M50 12C58 24 59 33 50 42C41 33 42 24 50 12Z" transform="rotate(315 50 50)"/>
+ </g>
+ <circle cx="50" cy="50" r="12" fill="#D2B98C" stroke="#F2EBDD" stroke-width="2"/>
+ <circle cx="50" cy="50" r="4" fill="#19221C"/>
+</svg><span>KM THEMES</span></div>
+Independent Chub customization tools by KM Themes. Not affiliated with or endorsed by Chub.
+<div class="footer-links"><a href="https://github.com/KarlMuzen/KM-THEMES">Source & updates</a><a href="https://github.com/KarlMuzen/KM-THEMES/releases">Releases</a><a href="https://github.com/KarlMuzen/KM-THEMES/issues">Feedback</a></div>
 </footer>
 </main>
 
