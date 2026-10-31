@@ -40,7 +40,7 @@ Completed:
 
 Remaining tasks:
 - Identify responsibilities currently embedded in `index.html`.
-- Extract one responsibility at a time into native JavaScript modules (`palettes`, `chub-adapter`, `preview`, `guide`) while updating `scripts/check_generator.py` in lockstep.
+- Extract the remaining responsibilities into native JavaScript modules (`chub-adapter`, `preview`, `guide`) while updating `scripts/check_generator.py` in lockstep.
 - Keep the guide, theme preview, generated CSS, URL parameters and CSS Workbench behavior unchanged.
 - Reuse `theme-project.js` and `css-workbench.js` rather than duplicate their logic.
 - Add regression tests before moving complex behavior.
@@ -55,7 +55,7 @@ Acceptance criteria:
 
 Tasks:
 - Define a platform-neutral roleplay token vocabulary (including narration, spoken dialogue and action/thought tokens).
-- Move preset values into data definitions.
+- Extend the extracted preset definitions into the platform-neutral semantic roleplay token model.
 - Implement one deterministic compiler path from project state to preview tokens and exported CSS.
 - Isolate Chub custom properties and selectors in the Chub adapter.
 - Preserve source CSS assembly boundaries and compatibility output.

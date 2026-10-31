@@ -12,6 +12,8 @@ At the start of this implementation update, main pointed to commit 46aa8ab956398
 
 Phase 1 (KM Warm / Chub compatibility audit and high-impact generator/preview synchronization fixes) has been completed on top of that baseline while preserving `themes/km-warm/source.css` byte-for-byte.
 
+The Phase 2 palette extraction is committed on `main` at `139f60f00deeda12e59ff1c9192fa700c25a8c12`. GitHub Actions verified that commit successfully: [CSS validation run 41200731807](https://github.com/KarlMuzen/KM-THEMES/actions/runs/41200731807) and [GitHub Pages deployment run 41200731837](https://github.com/KarlMuzen/KM-THEMES/actions/runs/41200731837).
+
 ## Implemented
 
 - Static KM Theme Studio entry page and brand identity.
