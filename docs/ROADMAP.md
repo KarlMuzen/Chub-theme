@@ -32,9 +32,13 @@ Still open:
 
 ## Phase 2 — Incremental application modularization
 
-**Priority:** Next implementation task.
+**Priority:** Current implementation task.
 
-Tasks:
+Completed:
+- Extracted all five preset palette definitions from the inline Studio script into `assets/js/palettes.mjs` and imported them from the inline application ES module. Values and consumers were preserved.
+- Added palette structure regression tests and extended `scripts/check_generator.py`, CI and Pages packaging for the new module.
+
+Remaining tasks:
 - Identify responsibilities currently embedded in `index.html`.
 - Extract one responsibility at a time into native JavaScript modules (`palettes`, `chub-adapter`, `preview`, `guide`) while updating `scripts/check_generator.py` in lockstep.
 - Keep the guide, theme preview, generated CSS, URL parameters and CSS Workbench behavior unchanged.

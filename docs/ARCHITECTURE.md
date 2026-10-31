@@ -19,7 +19,8 @@ Last reviewed: 2026-10-30
 
 The current repository contains:
 
-- index.html: static Studio entry page, guide, controls, and preview markup/styles.
+- index.html: static Studio entry page, guide, controls, and preview markup/styles; its inline application is a native ES module.
+- assets/js/palettes.mjs: native ES module containing the five preset palette definitions shared by preview and CSS generation.
 - assets/js/theme-project.js: versioned browser project structure, validation, persistence, and project operations.
 - assets/js/css-workbench.js: CSS import/edit/restore/export workbench behavior.
 - themes/km-warm/source.css: preserved KM Warm v3.6 LITE source.

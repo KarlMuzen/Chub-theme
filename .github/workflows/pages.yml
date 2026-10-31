@@ -29,6 +29,7 @@ jobs:
           cp tools/chub-reference-capture.js _site/tools/chub-reference-capture.js
           cp assets/js/theme-project.js _site/assets/js/theme-project.js
           cp assets/js/css-workbench.js _site/assets/js/css-workbench.js
+          cp assets/js/palettes.mjs _site/assets/js/palettes.mjs
           cp themes/km-warm/source.css _site/themes/km-warm/source.css
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3

@@ -61,7 +61,7 @@ The repository's current CI runs:
 - python scripts/build.py
 - python scripts/lint.py
 - python scripts/check_generator.py
-- node --test scripts/test_theme_project.js scripts/test_css_workbench.js scripts/test_chub_reference_capture.js
+- node --test scripts/test_theme_project.js scripts/test_css_workbench.js scripts/test_chub_reference_capture.js scripts/test_palettes.mjs
 - python -m unittest scripts/test_build.py -v
 
 Do not invent additional package-manager or build commands. Check the current workflow if CI changes.

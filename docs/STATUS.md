@@ -1,6 +1,6 @@
 # Project status
 
-Last synchronized: 2026-10-30  
+Last synchronized: 2026-10-31  
 Repository: KarlMuzen/KM-THEMES  
 Branch: main
 
@@ -8,7 +8,7 @@ This file describes verified implementation state. Check the latest GitHub Actio
 
 ## Current baseline
 
-At the start of this documentation synchronization, main pointed to commit fb7dc6a57898bc7635254fd2d1b7fcccf3108175 (message: Document Chub frontend theme compatibility findings).
+At the start of this implementation update, main pointed to commit 46aa8ab956398e568aa9d6bc5fe0b5ae25eb10a8 (message: Update test_build.py).
 
 Phase 1 (KM Warm / Chub compatibility audit and high-impact generator/preview synchronization fixes) has been completed on top of that baseline while preserving `themes/km-warm/source.css` byte-for-byte.
 
@@ -27,6 +27,7 @@ Phase 1 (KM Warm / Chub compatibility audit and high-impact generator/preview sy
   - Adds `.light-mode-override` and `.light-mobile-override` support alongside inline `--opposite-color`.
 - Shareable validated URL configuration.
 - Browser-side CSS generation from the supplied KM Warm source.
+- Extracted the five preset palette definitions into `assets/js/palettes.mjs`; the Studio application imports the same data used by preview and CSS generation. Palette values are unchanged and covered by `scripts/test_palettes.mjs`.
 - Raw CSS copy and download.
 - CSS Workbench for CSS import, original preservation, working-copy editing, restore, copy and download.
 - Versioned v1 project format and localStorage persistence.
@@ -60,8 +61,8 @@ The Phase 1 audit comparing `themes/km-warm/source.css` against the captured Chu
 
 ## Immediate next work
 
-1. Run `chub-capture.html` on live mobile Chub routes (chat and character browse) to verify candidate selectors in the compatibility matrix.
-2. Begin Phase 2 incremental modularization of the inline script in `index.html` into native JavaScript modules while keeping `scripts/check_generator.py` and CI green.
+1. Continue Phase 2 modularization by extracting the Chub adapter and then preview/guide responsibilities from `index.html` while keeping current behavior and CI checks green.
+2. Run `chub-capture.html` on live mobile Chub routes (chat and character browse) to verify candidate selectors in the compatibility matrix.
 3. Expand the semantic token engine (Phase 3) for independent roleplay dialogue/action tokens.
 
 ## Verification commands
@@ -71,7 +72,7 @@ Run the same checks used by CI:
 - python scripts/build.py
 - python scripts/lint.py
 - python scripts/check_generator.py
-- node --test scripts/test_theme_project.js scripts/test_css_workbench.js scripts/test_chub_reference_capture.js
+- node --test scripts/test_theme_project.js scripts/test_css_workbench.js scripts/test_chub_reference_capture.js scripts/test_palettes.mjs
 - python -m unittest scripts/test_build.py -v
 
 A successful static build is not proof of visual correctness in Chub. Record visual verification separately.
