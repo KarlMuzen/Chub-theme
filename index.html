@@ -327,6 +327,7 @@ Independent Chub customization tools by KM Themes. Not affiliated with or endors
 <script src="assets/js/css-workbench.js"></script>
 <script type="module">
 import { palettes } from "./assets/js/palettes.mjs";
+import { chubAdapterFixes } from "./assets/js/chub-adapter.mjs";
 (function(){
 "use strict";
 var sourceParts=null,gaTouched=false,selectedPalette="warm",previewMode="dark",previewBackdrop="art",activeProject=null,rawSaveTimer=null,rawEditorBaselineValue=null,pendingFileCss=null,pendingFileDisplay=null;
@@ -382,9 +383,7 @@ function paletteOverrides(p){
  var rows=Object.keys(map).map(function(key){return map[key]+":light-dark("+pal.light[key]+","+pal.dark[key]+");"});
  return "\n/* Selected palette: "+p.p+" */\nhtml{"+rows.join("")+"}\n";
 }
-function chubAdapterFixes(){
- return "\n/* Chub compatibility adapter (phone typography & native token sync) */\nhtml:not(#_){--message-font-size:var(--c-fs)!important;--message-line-height:var(--c-lh)!important;--dark-primary-color:var(--c-btn)!important;--light-primary-color:var(--c-btn)!important;--bright-icon:var(--c-accent)!important}\nhtml:is(.light-mode-override,.light-mobile-override){color-scheme:light}\n:where(html:is(.light-mode-override,.light-mobile-override)){--c-ga:.85}\n.msg-mkdn-container:not(#_){font-size:var(--c-fs)!important;line-height:var(--c-lh)!important}\n";
-}
+
 function accentOverrides(p){
  var x="#"+p.a,base=palettes[p.p].accent;
  var fs=p.fs.toFixed(2).replace(/0+$/,"").replace(/\.$/,""),lh=p.lh.toFixed(2).replace(/0+$/,"").replace(/\.$/,""),ga=p.ga.toFixed(2).replace(/0+$/,"").replace(/\.$/,"");

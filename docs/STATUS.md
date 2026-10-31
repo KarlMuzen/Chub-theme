@@ -30,6 +30,7 @@ The Phase 2 palette extraction is committed on `main` at `139f60f00deeda12e59ff1
 - Shareable validated URL configuration.
 - Browser-side CSS generation from the supplied KM Warm source.
 - Extracted the five preset palette definitions into `assets/js/palettes.mjs`; the Studio application imports the same data used by preview and CSS generation. Palette values are unchanged and covered by `scripts/test_palettes.mjs`.
+- Extracted the browser-generated Chub compatibility CSS patch into `assets/js/chub-adapter.mjs`; its output is regression-tested byte-for-byte in `scripts/test_chub_adapter.mjs`.
 - Raw CSS copy and download.
 - CSS Workbench for CSS import, original preservation, working-copy editing, restore, copy and download.
 - Versioned v1 project format and localStorage persistence.
@@ -63,7 +64,7 @@ The Phase 1 audit comparing `themes/km-warm/source.css` against the captured Chu
 
 ## Immediate next work
 
-1. Continue Phase 2 modularization by extracting the Chub adapter and then preview/guide responsibilities from `index.html` while keeping current behavior and CI checks green.
+1. Continue Phase 2 modularization by extracting preview and guide responsibilities from `index.html` while keeping current behavior and CI checks green.
 2. Run `chub-capture.html` on live mobile Chub routes (chat and character browse) to verify candidate selectors in the compatibility matrix.
 3. Expand the semantic token engine (Phase 3) for independent roleplay dialogue/action tokens.
 
@@ -74,7 +75,7 @@ Run the same checks used by CI:
 - python scripts/build.py
 - python scripts/lint.py
 - python scripts/check_generator.py
-- node --test scripts/test_theme_project.js scripts/test_css_workbench.js scripts/test_chub_reference_capture.js scripts/test_palettes.mjs
+- node --test scripts/test_theme_project.js scripts/test_css_workbench.js scripts/test_chub_reference_capture.js scripts/test_palettes.mjs scripts/test_chub_adapter.mjs
 - python -m unittest scripts/test_build.py -v
 
 A successful static build is not proof of visual correctness in Chub. Record visual verification separately.

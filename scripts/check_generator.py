@@ -10,6 +10,7 @@ PAGE = ROOT / "index.html"
 PROJECT_MODULE = ROOT / "assets/js/theme-project.js"
 CSS_MODULE = ROOT / "assets/js/css-workbench.js"
 PALETTE_MODULE = ROOT / "assets/js/palettes.mjs"
+ADAPTER_MODULE = ROOT / "assets/js/chub-adapter.mjs"
 html = PAGE.read_text(encoding="utf-8")
 scripts = re.findall(r'<script type="module">([\s\S]*?)</script>', html)
 if len(scripts) != 1:
@@ -21,6 +22,7 @@ required = [
     'src="assets/js/css-workbench.js"',
     '<script type="module">',
     'import { palettes } from "./assets/js/palettes.mjs";',
+    'import { chubAdapterFixes } from "./assets/js/chub-adapter.mjs";',
     'id="open-css-import"',
     'id="load-imported-css"',
     'id="raw-css-editor"',
@@ -60,6 +62,7 @@ try:
     subprocess.run(["node", "--check", str(PROJECT_MODULE)], check=True)
     subprocess.run(["node", "--check", str(CSS_MODULE)], check=True)
     subprocess.run(["node", "--check", str(PALETTE_MODULE)], check=True)
+    subprocess.run(["node", "--check", str(ADAPTER_MODULE)], check=True)
 finally:
     js_path.unlink(missing_ok=True)
 

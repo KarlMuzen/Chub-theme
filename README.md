@@ -71,7 +71,7 @@ Run:
     python scripts/build.py
     python scripts/lint.py
     python scripts/check_generator.py
-    node --test scripts/test_theme_project.js scripts/test_css_workbench.js scripts/test_chub_reference_capture.js scripts/test_palettes.mjs
+    node --test scripts/test_theme_project.js scripts/test_css_workbench.js scripts/test_chub_reference_capture.js scripts/test_palettes.mjs scripts/test_chub_adapter.mjs
     python -m unittest scripts/test_build.py -v
 
 GitHub Actions runs these checks on pushes and pull requests.

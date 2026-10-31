@@ -175,7 +175,7 @@ The existing KM Warm source contains a data-URI SVG. The build and lint pipeline
 
 ## 5. Phase 1 KM Warm / Chub compatibility matrix (Audit: 2026-10-30)
 
-This matrix compares `themes/km-warm/source.css` against the 2026-10-07 Chub frontend snapshot and records adapter mitigations applied in `scripts/build.py` and `index.html`.
+This matrix compares `themes/km-warm/source.css` against the 2026-10-07 Chub frontend snapshot and records adapter mitigations applied in `scripts/build.py` and `assets/js/chub-adapter.mjs` for Studio-generated CSS.
 
 | Target / Hook | Status in `source.css` | Evidence in 2026-10-07 Snapshot | Classification & Adapter Action |
 |---|---|---|---|
